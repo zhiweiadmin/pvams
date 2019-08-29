@@ -39,9 +39,6 @@ public class ToolMaintainService {
 
     private static final Integer CONFIRM = 1;
 
-
-    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
     public List<ToolMaintain> query(Long stationId){
         Map<String,Object> param = Maps.newHashMap();
         param.put("stationId",stationId);
@@ -73,6 +70,7 @@ public class ToolMaintainService {
     }
 
     public void saveExcelData(Long stationId, Workbook workbook) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Sheet sheet = workbook.getSheetAt(0);
         int lastRowNum = sheet.getLastRowNum();
         if(lastRowNum > 1){

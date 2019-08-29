@@ -200,6 +200,7 @@ public class ToolMaintainController {
                 256*40+184,
                 256*18+184,
                 256*30+184,
+                256*25+184,
                 256*25+184};
         //设置宽度
         sheet.setColumnWidth(0,width[0]);
