@@ -211,6 +211,7 @@ public class ToolMaintainController {
         sheet.setColumnWidth(6,width[6]);
         sheet.setColumnWidth(7,width[7]);
         sheet.setColumnWidth(8,width[8]);
+        sheet.setColumnWidth(9,width[9]);
 
         //在sheet里创建第一行，参数为行索引(excel的行)，可以是0～65535之间的任何一个
         HSSFRow row1 = sheet.createRow(0);
