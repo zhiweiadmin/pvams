@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goodpower.pvams.mapper.PowerGenerateStatMapper">
+  <resultMap id="BaseResultMap" type="com.goodpower.pvams.model.PowerGenerateStat">
+    <id column="station_id" jdbcType="BIGINT" property="stationId" />
+    <id column="stat_date" jdbcType="DATE" property="statDate" />
+    <result column="year" jdbcType="VARCHAR" property="year" />
+    <result column="month" jdbcType="VARCHAR" property="month" />
+    <result column="quarter" jdbcType="VARCHAR" property="quarter" />
+    <result column="week" jdbcType="VARCHAR" property="week" />
+    <result column="stat_type" jdbcType="VARCHAR" property="statType" />
+    <result column="stat_val" jdbcType="DECIMAL" property="statVal" />
+    <result column="creator" jdbcType="VARCHAR" property="creator" />
+    <result column="updater" jdbcType="VARCHAR" property="updater" />
+    <result column="create_dttm" jdbcType="TIMESTAMP" property="createDttm" />
+    <result column="update_dttm" jdbcType="TIMESTAMP" property="updateDttm" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    station_id, stat_date, year, month,week,quarter, stat_type, stat_val, creator, updater,
+    create_dttm, update_dttm
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="com.goodpower.pvams.model.PowerGenerateStatKey" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_power_generate_stat
+    where station_id = #{stationId,jdbcType=BIGINT}
+      and stat_date = #{statDate,jdbcType=DATE}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.goodpower.pvams.model.PowerGenerateStatKey">
+    delete from t_power_generate_stat
+    where station_id = #{stationId,jdbcType=BIGINT}
+      and stat_date = #{statDate,jdbcType=DATE}
+  </delete>
+  <insert id="insert" parameterType="com.goodpower.pvams.model.PowerGenerateStat">
+    insert into t_power_generate_stat (station_id, stat_date, year,week,
+      month, quarter, stat_type, 
+      stat_val, creator, updater, 
+      create_dttm, update_dttm)
+    values (#{stationId,jdbcType=BIGINT}, #{statDate,jdbcType=DATE}, #{year,jdbcType=VARCHAR}, #{week,jdbcType=VARCHAR},
+      #{month,jdbcType=VARCHAR}, #{quarter,jdbcType=VARCHAR}, #{statType,jdbcType=VARCHAR}, 
+      #{statVal,jdbcType=DECIMAL}, #{creator,jdbcType=VARCHAR}, #{updater,jdbcType=VARCHAR}, 
+      now(), now()) on duplicate key update update_dttm = now(),stat_val = #{statVal,jdbcType=DECIMAL}
+  </insert>
+  <insert id="insertSelective" parameterType="com.goodpower.pvams.model.PowerGenerateStat">
+    insert into t_power_generate_stat
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="stationId != null">
+        station_id,
+      </if>
+      <if test="statDate != null">
+        stat_date,
+      </if>
+      <if test="year != null">
+        year,
+      </if>
+      <if test="week != null">
+        week,
+      </if>
+      <if test="month != null">
+        month,
+      </if>
+      <if test="quarter != null">
+        quarter,
+      </if>
+      <if test="statType != null">
+        stat_type,
+      </if>
+      <if test="statVal != null">
+        stat_val,
+      </if>
+      <if test="creator != null">
+        creator,
+      </if>
+      <if test="updater != null">
+        updater,
+      </if>
+      <if test="createDttm != null">
+        create_dttm,
+      </if>
+      <if test="updateDttm != null">
+        update_dttm,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="stationId != null">
+        #{stationId,jdbcType=BIGINT},
+      </if>
+      <if test="statDate != null">
+        #{statDate,jdbcType=DATE},
+      </if>
+      <if test="year != null">
+        #{year,jdbcType=VARCHAR},
+      </if>
+      <if test="week != null">
+        #{week,jdbcType=VARCHAR},
+      </if>
+      <if test="month != null">
+        #{month,jdbcType=VARCHAR},
+      </if>
+      <if test="quarter != null">
+        #{quarter,jdbcType=VARCHAR},
+      </if>
+      <if test="statType != null">
+        #{statType,jdbcType=VARCHAR},
+      </if>
+      <if test="statVal != null">
+        #{statVal,jdbcType=DECIMAL},
+      </if>
+      <if test="creator != null">
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="updater != null">
+        #{updater,jdbcType=VARCHAR},
+      </if>
+      <if test="createDttm != null">
+        #{createDttm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDttm != null">
+        #{updateDttm,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.goodpower.pvams.model.PowerGenerateStat">
+    update t_power_generate_stat
+    <set>
+      <if test="year != null">
+        year = #{year,jdbcType=VARCHAR},
+      </if>
+      <if test="week != null">
+        week = #{week,jdbcType=VARCHAR},
+      </if>
+      <if test="month != null">
+        month = #{month,jdbcType=VARCHAR},
+      </if>
+      <if test="quarter != null">
+        quarter = #{quarter,jdbcType=VARCHAR},
+      </if>
+      <if test="statType != null">
+        stat_type = #{statType,jdbcType=VARCHAR},
+      </if>
+      <if test="statVal != null">
+        stat_val = #{statVal,jdbcType=DECIMAL},
+      </if>
+      <if test="creator != null">
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="updater != null">
+        updater = #{updater,jdbcType=VARCHAR},
+      </if>
+      <if test="createDttm != null">
+        create_dttm = #{createDttm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDttm != null">
+        update_dttm = #{updateDttm,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where station_id = #{stationId,jdbcType=BIGINT}
+      and stat_date = #{statDate,jdbcType=DATE}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.goodpower.pvams.model.PowerGenerateStat">
+    update t_power_generate_stat
+    set year = #{year,jdbcType=VARCHAR},
+        week = #{week,jdbcType=VARCHAR},
+      month = #{month,jdbcType=VARCHAR},
+      quarter = #{quarter,jdbcType=VARCHAR},
+      stat_type = #{statType,jdbcType=VARCHAR},
+      stat_val = #{statVal,jdbcType=DECIMAL},
+      creator = #{creator,jdbcType=VARCHAR},
+      updater = #{updater,jdbcType=VARCHAR},
+      create_dttm = #{createDttm,jdbcType=TIMESTAMP},
+      update_dttm = #{updateDttm,jdbcType=TIMESTAMP}
+    where station_id = #{stationId,jdbcType=BIGINT}
+      and stat_date = #{statDate,jdbcType=DATE}
+  </update>
+
+  <select id="queryPowerStatByMonth" resultType="java.util.Map">
+    <![CDATA[
+        select * from (
+          SELECT
+            year,
+            month,
+            stat_type statType,
+            sum(stat_val) statValSum
+          FROM
+            t_power_generate_stat
+          WHERE
+            station_id = #{stationId,jdbcType=BIGINT}
+            AND stat_date >= #{startDate,jdbcType=TIMESTAMP}
+            and stat_date < #{endDate,jdbcType=TIMESTAMP}
+          GROUP BY
+            year,
+            month,
+            stat_type ) t ORDER BY year asc,month asc,statType
+    ]]>
+  </select>
+
+  <select id="queryPowerStatByQuarter" resultType="java.util.Map">
+    <![CDATA[
+        SELECT * FROM (
+            SELECT
+                year,
+                quarter,
+                stat_type statType,
+                sum(stat_val) statValSum
+            FROM
+                t_power_generate_stat
+            WHERE station_id = #{stationId,jdbcType=BIGINT}
+            and stat_date >= #{startDate,jdbcType=TIMESTAMP}
+            and stat_date < #{endDate,jdbcType=TIMESTAMP}
+        group by
+            year,
+            quarter,
+            stat_type
+        ) t
+        order by
+            year asc,
+            quarter asc,
+            statType
+    ]]>
+  </select>
+
+  <select id="getYearPowerStat" resultType="java.util.Map">
+    <![CDATA[
+        SELECT * FROM (
+            SELECT
+                year,
+                stat_type statType,
+                sum(stat_val) statValSum
+            FROM
+                t_power_generate_stat
+            WHERE
+                station_id = #{stationId,jdbcType=BIGINT}
+				and stat_type in (1,3,4,6)
+        group by
+            year,
+            stat_type
+        ) t
+        order by
+            year asc,
+            statType
+    ]]>
+  </select>
+
+  <select id="getMonthPowerStat" resultType="java.util.Map">
+    <![CDATA[
+        SELECT * FROM (
+            SELECT
+                year,
+                month,
+                stat_type statType,
+                sum(stat_val) statValSum
+            FROM
+                t_power_generate_stat
+            WHERE
+                station_id = #{stationId,jdbcType=BIGINT}
+				and stat_type in (1,3,4,6)
+				and year = #{year,jdbcType=BIGINT}
+        group by
+            year,
+            month,
+            stat_type
+        ) t
+        order by
+            month asc,
+            statType
+    ]]>
+  </select>
+
+  <select id="queryPowerStatByFields" resultType="java.util.Map" parameterType="java.util.Map">
+            SELECT
+                sum(stat_val) statValSum
+            FROM
+                t_power_generate_stat
+            WHERE
+              1 = 1
+              and station_id = #{stationId,jdbcType=BIGINT}
+              and stat_type = #{statType,jdbcType=VARCHAR}
+              <if test="year != null">and year = #{year,jdbcType=INTEGER}</if>
+              <if test="week != null">and week = #{week,jdbcType=INTEGER}</if>
+              <if test="month != null">and month = #{month,jdbcType=INTEGER}</if>
+              <if test="quarter != null">and quarter = #{quarter,jdbcType=INTEGER}</if>
+              <if test="startDate != null">and stat_date >= #{startDate,jdbcType=TIMESTAMP}</if>
+              <if test="endDate != null">and #{endDate,jdbcType=TIMESTAMP} >= stat_date </if>
+  </select>
+
+  <select id="selectByFields" parameterType="java.util.Map" resultMap="BaseResultMap" >
+    SELECT
+      *
+    FROM
+        t_power_generate_stat
+    WHERE
+      1 = 1
+      and station_id = #{stationId,jdbcType=BIGINT}
+      <if test="statType != null">and stat_type >= #{statType,jdbcType=VARCHAR}</if>
+      <if test="statDate != null">and stat_date = #{statDate,jdbcType=TIMESTAMP}</if>
+      <if test="startDate != null">and stat_date >= #{startDate,jdbcType=TIMESTAMP}</if>
+      <if test="endDate != null">and #{endDate,jdbcType=TIMESTAMP} >= stat_date</if>
+
+  </select>
+
+</mapper>

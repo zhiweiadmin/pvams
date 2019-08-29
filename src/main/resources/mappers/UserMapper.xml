@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goodpower.pvams.mapper.UserMapper">
+  <resultMap id="BaseResultMap" type="com.goodpower.pvams.model.User">
+    <id column="user_id" jdbcType="BIGINT" property="userId" />
+    <id column="user_type" jdbcType="INTEGER" property="userType" />
+    <result column="unit_id" jdbcType="BIGINT" property="unitId" />
+    <result column="role" jdbcType="INTEGER" property="role" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="realname" jdbcType="VARCHAR" property="realname" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="mail" jdbcType="VARCHAR" property="mail" />
+    <result column="create_dttm" jdbcType="TIMESTAMP" property="createDttm" />
+    <result column="update_dttm" jdbcType="TIMESTAMP" property="updateDttm" />
+    <result column="creator" jdbcType="VARCHAR" property="creator" />
+    <result column="updater" jdbcType="VARCHAR" property="updater" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    user_id, unit_id, role, username, password, realname, phone, mail, create_dttm, update_dttm, 
+    creator, updater, user_type
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_user
+    where user_id = #{userId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_user
+    where user_id = #{userId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.goodpower.pvams.model.User" useGeneratedKeys="true" keyProperty="userId">
+    insert into t_user (user_id,user_type, unit_id, role,
+      username, password, realname, 
+      phone, mail, create_dttm, 
+      update_dttm, creator, updater
+      )
+    values (#{userId,jdbcType=BIGINT}, #{userType,jdbcType=INTEGER}, #{unitId,jdbcType=BIGINT}, #{role,jdbcType=INTEGER},
+      #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{realname,jdbcType=VARCHAR}, 
+      #{phone,jdbcType=VARCHAR}, #{mail,jdbcType=VARCHAR}, #{createDttm,jdbcType=TIMESTAMP}, 
+      #{updateDttm,jdbcType=TIMESTAMP}, #{creator,jdbcType=VARCHAR}, #{updater,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.goodpower.pvams.model.User">
+    insert into t_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="userType != null">
+        user_type,
+      </if>
+      <if test="unitId != null">
+        unit_id,
+      </if>
+      <if test="role != null">
+        role,
+      </if>
+      <if test="username != null">
+        username,
+      </if>
+      <if test="password != null">
+        password,
+      </if>
+      <if test="realname != null">
+        realname,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="mail != null">
+        mail,
+      </if>
+      <if test="createDttm != null">
+        create_dttm,
+      </if>
+      <if test="updateDttm != null">
+        update_dttm,
+      </if>
+      <if test="creator != null">
+        creator,
+      </if>
+      <if test="updater != null">
+        updater,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="userType != null">
+        #{userType,jdbcType=INTEGER},
+      </if>
+      <if test="unitId != null">
+        #{unitId,jdbcType=BIGINT},
+      </if>
+      <if test="role != null">
+        #{role,jdbcType=INTEGER},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="realname != null">
+        #{realname,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="mail != null">
+        #{mail,jdbcType=VARCHAR},
+      </if>
+      <if test="createDttm != null">
+        #{createDttm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDttm != null">
+        #{updateDttm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creator != null">
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="updater != null">
+        #{updater,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.goodpower.pvams.model.User">
+    update t_user
+    <set>
+      <if test="unitId != null">
+        unit_id = #{unitId,jdbcType=BIGINT},
+      </if>
+      <if test="role != null">
+        role = #{role,jdbcType=INTEGER},
+      </if>
+      <if test="userType != null">
+        user_type = #{userType,jdbcType=INTEGER},
+      </if>
+      <if test="username != null">
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="realname != null">
+        realname = #{realname,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="mail != null">
+        mail = #{mail,jdbcType=VARCHAR},
+      </if>
+      <if test="createDttm != null">
+        create_dttm = #{createDttm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDttm != null">
+        update_dttm = #{updateDttm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creator != null">
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="updater != null">
+        updater = #{updater,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.goodpower.pvams.model.User">
+    update t_user
+    set unit_id = #{unitId,jdbcType=BIGINT},
+      role = #{role,jdbcType=INTEGER},
+      user_type = #{userType,jdbcType=INTEGER},
+      username = #{username,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      realname = #{realname,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      mail = #{mail,jdbcType=VARCHAR},
+      create_dttm = #{createDttm,jdbcType=TIMESTAMP},
+      update_dttm = #{updateDttm,jdbcType=TIMESTAMP},
+      creator = #{creator,jdbcType=VARCHAR},
+      updater = #{updater,jdbcType=VARCHAR}
+    where user_id = #{userId,jdbcType=BIGINT}
+  </update>
+
+  <select id="getRolePermission" resultType="java.util.Map">
+        select
+            distinct t1.permission
+        from
+            t_user t,t_role_permission t1
+        where
+            t.role = t1.role
+            and username = #{username}
+    </select>
+
+  <select id="getRolePermissionByRole" parameterType="java.lang.Integer" resultType="java.util.Map" >
+        select
+            distinct permission
+        from
+            t_role_permission
+        where
+            1 = 1
+            <if test="role != null">
+              and role = #{role}
+            </if>
+
+    </select>
+
+  <select id="selectByUsername" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_user
+    where username = #{username,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectByFields" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select
+        *
+    from t_user
+    where
+        1 = 1
+        <if test="unitId != null">
+            and unit_id = #{unitId,jdbcType=BIGINT}
+        </if>
+        <if test="userType != null">
+            and user_type = #{userType,jdbcType=BIGINT}
+        </if>
+        <if test="username != null">
+          and username = #{username,jdbcType=VARCHAR}
+        </if>
+        <if test="offset != null and limit != null">
+          limit #{offset,jdbcType=INTEGER},#{limit,jdbcType=INTEGER}
+        </if>
+  </select>
+
+  <select id="getCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+    select
+    count(1)
+    from t_user
+    where
+    1 = 1
+    <if test="unitId != null">
+      and unit_id = #{unitId,jdbcType=BIGINT}
+    </if>
+    <if test="userType != null">
+      and user_type = #{userType,jdbcType=BIGINT}
+    </if>
+    <if test="username != null">
+      and username = #{username,jdbcType=VARCHAR}
+    </if>
+    <if test="offset != null and limit != null">
+      limit #{offset,jdbcType=INTEGER},#{limit,jdbcType=INTEGER}
+    </if>
+  </select>
+
+  <delete id="batchDelete" parameterType="java.util.List">
+    delete
+    from
+        t_user
+    where user_id in
+        <foreach collection="list" item="item_id" separator="," open="(" close=")">
+            #{item_id}
+        </foreach>
+  </delete>
+
+
+</mapper>

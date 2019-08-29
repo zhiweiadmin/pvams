@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goodpower.pvams.mapper.PowerWeekRateMapper">
+  <resultMap id="BaseResultMap" type="com.goodpower.pvams.model.PowerWeekRate">
+    <result column="station_id" jdbcType="BIGINT" property="stationId" />
+    <result column="year_val" jdbcType="VARCHAR" property="yearVal" />
+    <result column="theory_weak_rate" jdbcType="VARCHAR" property="theoryWeakRate" />
+    <result column="real_weak_rate" jdbcType="VARCHAR" property="realWeakRate" />
+    <result column="creator" jdbcType="VARCHAR" property="creator" />
+    <result column="updater" jdbcType="VARCHAR" property="updater" />
+    <result column="create_dttm" jdbcType="TIMESTAMP" property="createDttm" />
+    <result column="update_dttm" jdbcType="TIMESTAMP" property="updateDttm" />
+  </resultMap>
+  <insert id="insert" parameterType="com.goodpower.pvams.model.PowerWeekRate">
+    insert into t_power_weak_rate (station_id, year_val, theory_weak_rate, 
+      real_weak_rate, creator, updater, 
+      create_dttm, update_dttm)
+    values (#{stationId,jdbcType=BIGINT}, #{yearVal,jdbcType=VARCHAR}, #{theoryWeakRate,jdbcType=VARCHAR}, 
+      #{realWeakRate,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{updater,jdbcType=VARCHAR}, 
+      #{createDttm,jdbcType=TIMESTAMP}, #{updateDttm,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.goodpower.pvams.model.PowerWeekRate">
+    insert into t_power_weak_rate
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="stationId != null">
+        station_id,
+      </if>
+      <if test="yearVal != null">
+        year_val,
+      </if>
+      <if test="theoryWeakRate != null">
+        theory_weak_rate,
+      </if>
+      <if test="realWeakRate != null">
+        real_weak_rate,
+      </if>
+      <if test="creator != null">
+        creator,
+      </if>
+      <if test="updater != null">
+        updater,
+      </if>
+      <if test="createDttm != null">
+        create_dttm,
+      </if>
+      <if test="updateDttm != null">
+        update_dttm,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="stationId != null">
+        #{stationId,jdbcType=BIGINT},
+      </if>
+      <if test="yearVal != null">
+        #{yearVal,jdbcType=VARCHAR},
+      </if>
+      <if test="theoryWeakRate != null">
+        #{theoryWeakRate,jdbcType=VARCHAR},
+      </if>
+      <if test="realWeakRate != null">
+        #{realWeakRate,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null">
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="updater != null">
+        #{updater,jdbcType=VARCHAR},
+      </if>
+      <if test="createDttm != null">
+        #{createDttm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDttm != null">
+        #{updateDttm,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+
+  <select id="queryPowerWeakRate" resultMap="BaseResultMap">
+        select * from t_power_weak_rate where station_id = #{stationId}
+  </select>
+
+</mapper>

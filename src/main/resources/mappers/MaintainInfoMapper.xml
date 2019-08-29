@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goodpower.pvams.mapper.MaintainInfoMapper">
+  <resultMap id="BaseResultMap" type="com.goodpower.pvams.model.MaintainInfo">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="subject" jdbcType="VARCHAR" property="subject" />
+    <result column="station_id" jdbcType="BIGINT" property="stationId" />
+    <result column="present_user_id" jdbcType="BIGINT" property="presentUserId" />
+    <result column="presenter" jdbcType="VARCHAR" property="presenter" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="present_date" jdbcType="TIMESTAMP" property="presentDate" />
+    <result column="start_date" jdbcType="TIMESTAMP" property="startDate" />
+    <result column="end_date" jdbcType="TIMESTAMP" property="endDate" />
+    <result column="info_detail" jdbcType="VARCHAR" property="infoDetail" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="approve_user_id" jdbcType="BIGINT" property="approveUserId" />
+    <result column="approver" jdbcType="VARCHAR" property="approver" />
+    <result column="create_dttm" jdbcType="TIMESTAMP" property="createDttm" />
+    <result column="update_dttm" jdbcType="TIMESTAMP" property="updateDttm" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, subject, station_id, present_user_id, presenter, type, present_date, start_date, 
+    end_date, info_detail, status, approve_user_id, approver, create_dttm, update_dttm
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_maintain_info
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_maintain_info
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.goodpower.pvams.model.MaintainInfo">
+    insert into t_maintain_info (id, subject, station_id, 
+      present_user_id, presenter, type, 
+      present_date, start_date, end_date, 
+      info_detail, status, approve_user_id, 
+      approver, create_dttm, update_dttm
+      )
+    values (#{id,jdbcType=BIGINT}, #{subject,jdbcType=VARCHAR}, #{stationId,jdbcType=BIGINT}, 
+      #{presentUserId,jdbcType=BIGINT}, #{presenter,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, 
+      #{presentDate,jdbcType=TIMESTAMP}, #{startDate,jdbcType=TIMESTAMP}, #{endDate,jdbcType=TIMESTAMP}, 
+      #{infoDetail,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{approveUserId,jdbcType=BIGINT}, 
+      #{approver,jdbcType=VARCHAR}, #{createDttm,jdbcType=TIMESTAMP}, #{updateDttm,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.goodpower.pvams.model.MaintainInfo">
+    insert into t_maintain_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="subject != null">
+        subject,
+      </if>
+      <if test="stationId != null">
+        station_id,
+      </if>
+      <if test="presentUserId != null">
+        present_user_id,
+      </if>
+      <if test="presenter != null">
+        presenter,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="presentDate != null">
+        present_date,
+      </if>
+      <if test="startDate != null">
+        start_date,
+      </if>
+      <if test="endDate != null">
+        end_date,
+      </if>
+      <if test="infoDetail != null">
+        info_detail,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="approveUserId != null">
+        approve_user_id,
+      </if>
+      <if test="approver != null">
+        approver,
+      </if>
+      <if test="createDttm != null">
+        create_dttm,
+      </if>
+      <if test="updateDttm != null">
+        update_dttm,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="subject != null">
+        #{subject,jdbcType=VARCHAR},
+      </if>
+      <if test="stationId != null">
+        #{stationId,jdbcType=BIGINT},
+      </if>
+      <if test="presentUserId != null">
+        #{presentUserId,jdbcType=BIGINT},
+      </if>
+      <if test="presenter != null">
+        #{presenter,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="presentDate != null">
+        #{presentDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="startDate != null">
+        #{startDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endDate != null">
+        #{endDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="infoDetail != null">
+        #{infoDetail,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="approveUserId != null">
+        #{approveUserId,jdbcType=BIGINT},
+      </if>
+      <if test="approver != null">
+        #{approver,jdbcType=VARCHAR},
+      </if>
+      <if test="createDttm != null">
+        #{createDttm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDttm != null">
+        #{updateDttm,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.goodpower.pvams.model.MaintainInfo">
+    update t_maintain_info
+    <set>
+      <if test="subject != null">
+        subject = #{subject,jdbcType=VARCHAR},
+      </if>
+      <if test="stationId != null">
+        station_id = #{stationId,jdbcType=BIGINT},
+      </if>
+      <if test="presentUserId != null">
+        present_user_id = #{presentUserId,jdbcType=BIGINT},
+      </if>
+      <if test="presenter != null">
+        presenter = #{presenter,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="presentDate != null">
+        present_date = #{presentDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="startDate != null">
+        start_date = #{startDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endDate != null">
+        end_date = #{endDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="infoDetail != null">
+        info_detail = #{infoDetail,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="approveUserId != null">
+        approve_user_id = #{approveUserId,jdbcType=BIGINT},
+      </if>
+      <if test="approver != null">
+        approver = #{approver,jdbcType=VARCHAR},
+      </if>
+      <if test="createDttm != null">
+        create_dttm = #{createDttm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDttm != null">
+        update_dttm = #{updateDttm,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.goodpower.pvams.model.MaintainInfo">
+    update t_maintain_info
+    set subject = #{subject,jdbcType=VARCHAR},
+      station_id = #{stationId,jdbcType=BIGINT},
+      present_user_id = #{presentUserId,jdbcType=BIGINT},
+      presenter = #{presenter,jdbcType=VARCHAR},
+      type = #{type,jdbcType=INTEGER},
+      present_date = #{presentDate,jdbcType=TIMESTAMP},
+      start_date = #{startDate,jdbcType=TIMESTAMP},
+      end_date = #{endDate,jdbcType=TIMESTAMP},
+      info_detail = #{infoDetail,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      approve_user_id = #{approveUserId,jdbcType=BIGINT},
+      approver = #{approver,jdbcType=VARCHAR},
+      create_dttm = #{createDttm,jdbcType=TIMESTAMP},
+      update_dttm = #{updateDttm,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByFields" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select
+        *
+    from
+        t_maintain_info
+    where
+        1 = 1
+        <if test="stationId != null">
+          and station_id = #{stationId,jdbcType=BIGINT}
+        </if>
+        <if test="presenter != null">
+          and presenter = #{presenter,jdbcType=VARCHAR}
+        </if>
+        <if test="type != null">
+          and type = #{type,jdbcType=INTEGER}
+        </if>
+        <if test="status != null">
+          and status = #{status,jdbcType=INTEGER}
+        </if>
+        <if test="startDate != null">
+          and present_date &gt;= #{startDate,jdbcType=TIMESTAMP}
+        </if>
+        <if test="endDate != null">
+          and #{endDate,jdbcType=TIMESTAMP} &gt; present_date
+        </if>
+        <if test="offset != null and limit != null">
+          limit #{offset,jdbcType=INTEGER},#{limit,jdbcType=INTEGER}
+        </if>
+  </select>
+  <select id="getPresenter" parameterType="java.util.Map" resultType="java.util.Map">
+    select
+        distinct t1.realname
+    from
+        t_maintain_info t,t_user t1
+    where
+        1 = 1
+        and t.present_user_id = t1.user_id
+        <if test="stationId != null">
+            and t.station_id = #{stationId,jdbcType=BIGINT}
+        </if>
+  </select>
+</mapper>

@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goodpower.pvams.mapper.StationFinanceDataMapper">
+  <resultMap id="BaseResultMap" type="com.goodpower.pvams.model.StationFinanceData">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="station_id" jdbcType="BIGINT" property="stationId" />
+    <result column="year" jdbcType="INTEGER" property="year" />
+    <result column="month" jdbcType="INTEGER" property="month" />
+    <result column="self_peak_power" jdbcType="DECIMAL" property="selfPeakPower" />
+    <result column="self_peak_elcprice" jdbcType="DECIMAL" property="selfPeakElcprice" />
+    <result column="self_peak_discount" jdbcType="DECIMAL" property="selfPeakDiscount" />
+    <result column="self_power" jdbcType="DECIMAL" property="selfPower" />
+    <result column="self_elcprice" jdbcType="DECIMAL" property="selfElcprice" />
+    <result column="self_discount" jdbcType="DECIMAL" property="selfDiscount" />
+    <result column="self_low_power" jdbcType="DECIMAL" property="selfLowPower" />
+    <result column="self_low_elcprice" jdbcType="DECIMAL" property="selfLowElcprice" />
+    <result column="self_low_discount" jdbcType="DECIMAL" property="selfLowDiscount" />
+    <result column="sell_power" jdbcType="DECIMAL" property="sellPower" />
+    <result column="total_power" jdbcType="DECIMAL" property="totalPower" />
+    <result column="p_power_price" jdbcType="DECIMAL" property="pPowerPrice" />
+    <result column="subsidy_price" jdbcType="DECIMAL" property="subsidyPrice" />
+    <result column="month_subsidy_profit" jdbcType="DECIMAL" property="monthSubsidyProfit" />
+    <result column="month_subsidy_price" jdbcType="DECIMAL" property="monthSubsidyPrice" />
+    <result column="plan_power" jdbcType="DECIMAL" property="planPower" />
+    <result column="plan_profit" jdbcType="DECIMAL" property="planProfit" />
+    <result column="totol_profit" jdbcType="DECIMAL" property="totolProfit" />
+    <result column="total_self_profit" jdbcType="DECIMAL" property="totalSelfProfit" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, station_id, year, month, self_peak_power, self_peak_elcprice, self_peak_discount, 
+    self_power, self_elcprice, self_discount, self_low_power, self_low_elcprice, self_low_discount, 
+    sell_power, total_power, p_power_price, subsidy_price, month_subsidy_profit, month_subsidy_price, 
+    plan_power, plan_profit, totol_profit, total_self_profit
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_station_finance_data
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_station_finance_data
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.goodpower.pvams.model.StationFinanceData">
+    insert into t_station_finance_data (id, station_id, year, 
+      month, self_peak_power, self_peak_elcprice, 
+      self_peak_discount, self_power, self_elcprice, 
+      self_discount, self_low_power, self_low_elcprice, 
+      self_low_discount, sell_power, total_power, 
+      p_power_price, subsidy_price, month_subsidy_profit, 
+      month_subsidy_price, plan_power, plan_profit, 
+      totol_profit, total_self_profit)
+    values (#{id,jdbcType=BIGINT}, #{stationId,jdbcType=BIGINT}, #{year,jdbcType=INTEGER}, 
+      #{month,jdbcType=INTEGER}, #{selfPeakPower,jdbcType=DECIMAL}, #{selfPeakElcprice,jdbcType=DECIMAL}, 
+      #{selfPeakDiscount,jdbcType=DECIMAL}, #{selfPower,jdbcType=DECIMAL}, #{selfElcprice,jdbcType=DECIMAL}, 
+      #{selfDiscount,jdbcType=DECIMAL}, #{selfLowPower,jdbcType=DECIMAL}, #{selfLowElcprice,jdbcType=DECIMAL}, 
+      #{selfLowDiscount,jdbcType=DECIMAL}, #{sellPower,jdbcType=DECIMAL}, #{totalPower,jdbcType=DECIMAL}, 
+      #{pPowerPrice,jdbcType=DECIMAL}, #{subsidyPrice,jdbcType=DECIMAL}, #{monthSubsidyProfit,jdbcType=DECIMAL}, 
+      #{monthSubsidyPrice,jdbcType=DECIMAL}, #{planPower,jdbcType=DECIMAL}, #{planProfit,jdbcType=DECIMAL}, 
+      #{totolProfit,jdbcType=DECIMAL}, #{totalSelfProfit,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.goodpower.pvams.model.StationFinanceData">
+    insert into t_station_finance_data
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="stationId != null">
+        station_id,
+      </if>
+      <if test="year != null">
+        year,
+      </if>
+      <if test="month != null">
+        month,
+      </if>
+      <if test="selfPeakPower != null">
+        self_peak_power,
+      </if>
+      <if test="selfPeakElcprice != null">
+        self_peak_elcprice,
+      </if>
+      <if test="selfPeakDiscount != null">
+        self_peak_discount,
+      </if>
+      <if test="selfPower != null">
+        self_power,
+      </if>
+      <if test="selfElcprice != null">
+        self_elcprice,
+      </if>
+      <if test="selfDiscount != null">
+        self_discount,
+      </if>
+      <if test="selfLowPower != null">
+        self_low_power,
+      </if>
+      <if test="selfLowElcprice != null">
+        self_low_elcprice,
+      </if>
+      <if test="selfLowDiscount != null">
+        self_low_discount,
+      </if>
+      <if test="sellPower != null">
+        sell_power,
+      </if>
+      <if test="totalPower != null">
+        total_power,
+      </if>
+      <if test="pPowerPrice != null">
+        p_power_price,
+      </if>
+      <if test="subsidyPrice != null">
+        subsidy_price,
+      </if>
+      <if test="monthSubsidyProfit != null">
+        month_subsidy_profit,
+      </if>
+      <if test="monthSubsidyPrice != null">
+        month_subsidy_price,
+      </if>
+      <if test="planPower != null">
+        plan_power,
+      </if>
+      <if test="planProfit != null">
+        plan_profit,
+      </if>
+      <if test="totolProfit != null">
+        totol_profit,
+      </if>
+      <if test="totalSelfProfit != null">
+        total_self_profit,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="stationId != null">
+        #{stationId,jdbcType=BIGINT},
+      </if>
+      <if test="year != null">
+        #{year,jdbcType=INTEGER},
+      </if>
+      <if test="month != null">
+        #{month,jdbcType=INTEGER},
+      </if>
+      <if test="selfPeakPower != null">
+        #{selfPeakPower,jdbcType=DECIMAL},
+      </if>
+      <if test="selfPeakElcprice != null">
+        #{selfPeakElcprice,jdbcType=DECIMAL},
+      </if>
+      <if test="selfPeakDiscount != null">
+        #{selfPeakDiscount,jdbcType=DECIMAL},
+      </if>
+      <if test="selfPower != null">
+        #{selfPower,jdbcType=DECIMAL},
+      </if>
+      <if test="selfElcprice != null">
+        #{selfElcprice,jdbcType=DECIMAL},
+      </if>
+      <if test="selfDiscount != null">
+        #{selfDiscount,jdbcType=DECIMAL},
+      </if>
+      <if test="selfLowPower != null">
+        #{selfLowPower,jdbcType=DECIMAL},
+      </if>
+      <if test="selfLowElcprice != null">
+        #{selfLowElcprice,jdbcType=DECIMAL},
+      </if>
+      <if test="selfLowDiscount != null">
+        #{selfLowDiscount,jdbcType=DECIMAL},
+      </if>
+      <if test="sellPower != null">
+        #{sellPower,jdbcType=DECIMAL},
+      </if>
+      <if test="totalPower != null">
+        #{totalPower,jdbcType=DECIMAL},
+      </if>
+      <if test="pPowerPrice != null">
+        #{pPowerPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="subsidyPrice != null">
+        #{subsidyPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="monthSubsidyProfit != null">
+        #{monthSubsidyProfit,jdbcType=DECIMAL},
+      </if>
+      <if test="monthSubsidyPrice != null">
+        #{monthSubsidyPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="planPower != null">
+        #{planPower,jdbcType=DECIMAL},
+      </if>
+      <if test="planProfit != null">
+        #{planProfit,jdbcType=DECIMAL},
+      </if>
+      <if test="totolProfit != null">
+        #{totolProfit,jdbcType=DECIMAL},
+      </if>
+      <if test="totalSelfProfit != null">
+        #{totalSelfProfit,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.goodpower.pvams.model.StationFinanceData">
+    update t_station_finance_data
+    <set>
+      <if test="stationId != null">
+        station_id = #{stationId,jdbcType=BIGINT},
+      </if>
+      <if test="year != null">
+        year = #{year,jdbcType=INTEGER},
+      </if>
+      <if test="month != null">
+        month = #{month,jdbcType=INTEGER},
+      </if>
+      <if test="selfPeakPower != null">
+        self_peak_power = #{selfPeakPower,jdbcType=DECIMAL},
+      </if>
+      <if test="selfPeakElcprice != null">
+        self_peak_elcprice = #{selfPeakElcprice,jdbcType=DECIMAL},
+      </if>
+      <if test="selfPeakDiscount != null">
+        self_peak_discount = #{selfPeakDiscount,jdbcType=DECIMAL},
+      </if>
+      <if test="selfPower != null">
+        self_power = #{selfPower,jdbcType=DECIMAL},
+      </if>
+      <if test="selfElcprice != null">
+        self_elcprice = #{selfElcprice,jdbcType=DECIMAL},
+      </if>
+      <if test="selfDiscount != null">
+        self_discount = #{selfDiscount,jdbcType=DECIMAL},
+      </if>
+      <if test="selfLowPower != null">
+        self_low_power = #{selfLowPower,jdbcType=DECIMAL},
+      </if>
+      <if test="selfLowElcprice != null">
+        self_low_elcprice = #{selfLowElcprice,jdbcType=DECIMAL},
+      </if>
+      <if test="selfLowDiscount != null">
+        self_low_discount = #{selfLowDiscount,jdbcType=DECIMAL},
+      </if>
+      <if test="sellPower != null">
+        sell_power = #{sellPower,jdbcType=DECIMAL},
+      </if>
+      <if test="totalPower != null">
+        total_power = #{totalPower,jdbcType=DECIMAL},
+      </if>
+      <if test="pPowerPrice != null">
+        p_power_price = #{pPowerPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="subsidyPrice != null">
+        subsidy_price = #{subsidyPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="monthSubsidyProfit != null">
+        month_subsidy_profit = #{monthSubsidyProfit,jdbcType=DECIMAL},
+      </if>
+      <if test="monthSubsidyPrice != null">
+        month_subsidy_price = #{monthSubsidyPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="planPower != null">
+        plan_power = #{planPower,jdbcType=DECIMAL},
+      </if>
+      <if test="planProfit != null">
+        plan_profit = #{planProfit,jdbcType=DECIMAL},
+      </if>
+      <if test="totolProfit != null">
+        totol_profit = #{totolProfit,jdbcType=DECIMAL},
+      </if>
+      <if test="totalSelfProfit != null">
+        total_self_profit = #{totalSelfProfit,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.goodpower.pvams.model.StationFinanceData">
+    update t_station_finance_data
+    set station_id = #{stationId,jdbcType=BIGINT},
+      year = #{year,jdbcType=INTEGER},
+      month = #{month,jdbcType=INTEGER},
+      self_peak_power = #{selfPeakPower,jdbcType=DECIMAL},
+      self_peak_elcprice = #{selfPeakElcprice,jdbcType=DECIMAL},
+      self_peak_discount = #{selfPeakDiscount,jdbcType=DECIMAL},
+      self_power = #{selfPower,jdbcType=DECIMAL},
+      self_elcprice = #{selfElcprice,jdbcType=DECIMAL},
+      self_discount = #{selfDiscount,jdbcType=DECIMAL},
+      self_low_power = #{selfLowPower,jdbcType=DECIMAL},
+      self_low_elcprice = #{selfLowElcprice,jdbcType=DECIMAL},
+      self_low_discount = #{selfLowDiscount,jdbcType=DECIMAL},
+      sell_power = #{sellPower,jdbcType=DECIMAL},
+      total_power = #{totalPower,jdbcType=DECIMAL},
+      p_power_price = #{pPowerPrice,jdbcType=DECIMAL},
+      subsidy_price = #{subsidyPrice,jdbcType=DECIMAL},
+      month_subsidy_profit = #{monthSubsidyProfit,jdbcType=DECIMAL},
+      month_subsidy_price = #{monthSubsidyPrice,jdbcType=DECIMAL},
+      plan_power = #{planPower,jdbcType=DECIMAL},
+      plan_profit = #{planProfit,jdbcType=DECIMAL},
+      totol_profit = #{totolProfit,jdbcType=DECIMAL},
+      total_self_profit = #{totalSelfProfit,jdbcType=DECIMAL}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <select id="getMonthDataStatReal" parameterType="java.util.Map" resultType="java.util.Map">
+    SELECT
+      total_power power,
+      totol_profit benefit,
+      month date
+    FROM
+        t_station_finance_data t
+    WHERE
+        station_id = #{stationId,jdbcType=BIGINT}
+        and year = #{year,jdbcType=INTEGER}
+  </select>
+
+  <select id="getYearDataStatReal" parameterType="java.util.Map" resultType="java.util.Map">
+    SELECT
+      sum(total_power) power,
+      sum(totol_profit) benefit,
+      year date
+    FROM
+        t_station_finance_data t
+    WHERE
+        station_id = #{stationId,jdbcType=BIGINT}
+    group by year
+  </select>
+
+  <select id="getMonthDataStatPlan" parameterType="java.util.Map" resultType="java.util.Map">
+    SELECT
+      plan_power power,
+      plan_profit benefit,
+      month date
+    FROM
+        t_station_finance_data t
+    WHERE
+        station_id = #{stationId,jdbcType=BIGINT}
+        and year = #{year,jdbcType=INTEGER}
+  </select>
+
+  <select id="getYearDataStatPlan" parameterType="java.util.Map" resultType="java.util.Map">
+    SELECT
+      sum(plan_power) power,
+      sum(plan_profit) benefit,
+      year date
+    FROM
+        t_station_finance_data t
+    WHERE
+        station_id = #{stationId,jdbcType=BIGINT}
+    group by year
+  </select>
+  
+</mapper>

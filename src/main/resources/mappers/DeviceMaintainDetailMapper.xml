@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goodpower.pvams.mapper.DeviceMaintainDetailMapper">
+  <resultMap id="BaseResultMap" type="com.goodpower.pvams.model.DeviceMaintainDetail">
+    <id column="detail_id" jdbcType="BIGINT" property="detailId" />
+    <id column="maintain_id" jdbcType="BIGINT" property="maintainId" />
+    <id column="maintain_week" jdbcType="INTEGER" property="maintainWeek" />
+    <result column="device_type" jdbcType="VARCHAR" property="deviceType" />
+    <result column="maintainer" jdbcType="VARCHAR" property="maintainer" />
+    <result column="maintain_time" jdbcType="TIMESTAMP" property="maintainTime" />
+    <result column="maintain_img" jdbcType="VARCHAR" property="maintainImg" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="flow" jdbcType="VARCHAR" property="flow" />
+    <result column="result" jdbcType="VARCHAR" property="result" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="confirm_user_id" jdbcType="BIGINT" property="confirmUserId" />
+    <result column="confirmer" jdbcType="VARCHAR" property="confirmer" />
+    <result column="confirm_time" jdbcType="TIMESTAMP" property="confirmTime" />
+    <result column="create_dttm" jdbcType="TIMESTAMP" property="createDttm" />
+    <result column="update_dttm" jdbcType="TIMESTAMP" property="updateDttm" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    detail_id,maintain_id, maintain_week, device_type, maintainer, maintain_time, maintain_img,
+    content, flow, result, status, confirm_user_id, confirmer, confirm_time,msg, create_dttm,
+    update_dttm
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="com.goodpower.pvams.model.DeviceMaintainDetailKey" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_device_maintain_detail
+    where maintain_id = #{maintainId,jdbcType=BIGINT}
+      and maintain_week = #{maintainWeek,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.goodpower.pvams.model.DeviceMaintainDetailKey">
+    delete from t_device_maintain_detail
+    where maintain_id = #{maintainId,jdbcType=BIGINT}
+      and maintain_week = #{maintainWeek,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.goodpower.pvams.model.DeviceMaintainDetail">
+    insert into t_device_maintain_detail (detail_id,maintain_id, maintain_week, device_type,
+      maintainer, maintain_time, maintain_img, 
+      content, flow, result, 
+      status, confirm_user_id, confirmer, 
+      confirm_time, create_dttm, update_dttm
+      )
+    values (#{detailId,jdbcType=BIGINT},#{maintainId,jdbcType=BIGINT}, #{maintainWeek,jdbcType=INTEGER}, #{deviceType,jdbcType=VARCHAR},
+      #{maintainer,jdbcType=VARCHAR}, #{maintainTime,jdbcType=TIMESTAMP}, #{maintainImg,jdbcType=VARCHAR}, 
+      #{content,jdbcType=VARCHAR}, #{flow,jdbcType=VARCHAR}, #{result,jdbcType=VARCHAR},
+      #{status,jdbcType=INTEGER}, #{confirmUserId,jdbcType=BIGINT}, #{confirmer,jdbcType=VARCHAR}, 
+      #{confirmTime,jdbcType=TIMESTAMP}, #{createDttm,jdbcType=TIMESTAMP}, #{updateDttm,jdbcType=TIMESTAMP}
+      ) ON DUPLICATE KEY UPDATE
+        update_dttm = #{updateDttm,jdbcType=TIMESTAMP}
+  </insert>
+  <insert id="insertSelective" parameterType="com.goodpower.pvams.model.DeviceMaintainDetail">
+    insert into t_device_maintain_detail
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="maintainId != null">
+        maintain_id,
+      </if>
+      <if test="maintainWeek != null">
+        maintain_week,
+      </if>
+      <if test="deviceType != null">
+        device_type,
+      </if>
+      <if test="maintainer != null">
+        maintainer,
+      </if>
+      <if test="maintainTime != null">
+        maintain_time,
+      </if>
+      <if test="maintainImg != null">
+        maintain_img,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+      <if test="flow != null">
+        flow,
+      </if>
+      <if test="result != null">
+        result,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="confirmUserId != null">
+        confirm_user_id,
+      </if>
+      <if test="confirmer != null">
+        confirmer,
+      </if>
+      <if test="confirmTime != null">
+        confirm_time,
+      </if>
+      <if test="createDttm != null">
+        create_dttm,
+      </if>
+      <if test="updateDttm != null">
+        update_dttm,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="maintainId != null">
+        #{maintainId,jdbcType=BIGINT},
+      </if>
+      <if test="maintainWeek != null">
+        #{maintainWeek,jdbcType=INTEGER},
+      </if>
+      <if test="deviceType != null">
+        #{deviceType,jdbcType=VARCHAR},
+      </if>
+      <if test="maintainer != null">
+        #{maintainer,jdbcType=VARCHAR},
+      </if>
+      <if test="maintainTime != null">
+        #{maintainTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="maintainImg != null">
+        #{maintainImg,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="flow != null">
+        #{flow,jdbcType=VARCHAR},
+      </if>
+      <if test="result != null">
+        #{result,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="confirmUserId != null">
+        #{confirmUserId,jdbcType=BIGINT},
+      </if>
+      <if test="confirmer != null">
+        #{confirmer,jdbcType=VARCHAR},
+      </if>
+      <if test="confirmTime != null">
+        #{confirmTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createDttm != null">
+        #{createDttm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDttm != null">
+        #{updateDttm,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.goodpower.pvams.model.DeviceMaintainDetail">
+    update t_device_maintain_detail
+    <set>
+      <if test="deviceType != null">
+        device_type = #{deviceType,jdbcType=VARCHAR},
+      </if>
+      <if test="maintainer != null">
+        maintainer = #{maintainer,jdbcType=VARCHAR},
+      </if>
+      <if test="maintainTime != null">
+        maintain_time = #{maintainTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="maintainImg != null">
+        maintain_img = #{maintainImg,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="flow != null">
+        flow = #{flow,jdbcType=VARCHAR},
+      </if>
+      <if test="result != null">
+        result = #{result,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="confirmUserId != null">
+        confirm_user_id = #{confirmUserId,jdbcType=BIGINT},
+      </if>
+      <if test="confirmer != null">
+        confirmer = #{confirmer,jdbcType=VARCHAR},
+      </if>
+      <if test="confirmTime != null">
+        confirm_time = #{confirmTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createDttm != null">
+        create_dttm = #{createDttm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDttm != null">
+        update_dttm = #{updateDttm,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where maintain_id = #{maintainId,jdbcType=BIGINT}
+      and maintain_week = #{maintainWeek,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.goodpower.pvams.model.DeviceMaintainDetail">
+    update t_device_maintain_detail
+    set device_type = #{deviceType,jdbcType=VARCHAR},
+      maintainer = #{maintainer,jdbcType=VARCHAR},
+      maintain_time = #{maintainTime,jdbcType=TIMESTAMP},
+      maintain_img = #{maintainImg,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      flow = #{flow,jdbcType=VARCHAR},
+      result = #{result,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      confirm_user_id = #{confirmUserId,jdbcType=BIGINT},
+      confirmer = #{confirmer,jdbcType=VARCHAR},
+      confirm_time = #{confirmTime,jdbcType=TIMESTAMP},
+      create_dttm = #{createDttm,jdbcType=TIMESTAMP},
+      update_dttm = #{updateDttm,jdbcType=TIMESTAMP}
+    where maintain_id = #{maintainId,jdbcType=BIGINT}
+      and maintain_week = #{maintainWeek,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectByField" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select
+        *
+    from
+        t_device_maintain_detail a
+      LEFT JOIN t_user b on a.confirm_user_id = b.user_id
+    where
+        1 = 1
+        <if test="maintainId != null">
+          and maintain_id = #{maintainId,jdbcType=BIGINT}
+        </if>
+        order by maintain_week
+  </select>
+
+  <delete id="deleteByFields" parameterType="java.util.Map">
+    delete
+    from
+        t_device_maintain_detail
+    where
+      1 = 1
+      <if test="maintainId != null">
+        and maintain_id = #{maintainId,jdbcType=BIGINT}
+      </if>
+      <if test="date != null">
+        and #{date,jdbcType=TIMESTAMP} > update_dttm
+      </if>
+  </delete>
+</mapper>

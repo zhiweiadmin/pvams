@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goodpower.pvams.mapper.TrainPlanMapper">
+  <resultMap id="BaseResultMap" type="com.goodpower.pvams.model.TrainPlan">
+    <id column="train_id" jdbcType="BIGINT" property="trainId" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="year" jdbcType="INTEGER" property="year" />
+    <result column="station_id" jdbcType="BIGINT" property="stationId" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="msg" jdbcType="VARCHAR" property="msg" />
+    <result column="creator" jdbcType="BIGINT" property="creator" />
+    <result column="updater" jdbcType="BIGINT" property="updater" />
+    <result column="create_dttm" jdbcType="TIMESTAMP" property="createDttm" />
+    <result column="update_dttm" jdbcType="TIMESTAMP" property="updateDttm" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    train_id, title, content,msg, creator, updater, create_dttm, update_dttm,year,station_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_train_plan
+    where train_id = #{trainId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_train_plan
+    where train_id = #{trainId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.goodpower.pvams.model.TrainPlan" useGeneratedKeys="true" keyProperty="trainId">
+    insert into t_train_plan (train_id, title, content, 
+      creator, updater, create_dttm, 
+      update_dttm,year,station_id,msg)
+    values (#{trainId,jdbcType=BIGINT}, #{title,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
+      #{creator,jdbcType=BIGINT}, #{updater,jdbcType=BIGINT}, #{createDttm,jdbcType=TIMESTAMP}, 
+      #{updateDttm,jdbcType=TIMESTAMP},#{year,jdbcType=INTEGER},#{stationId,jdbcType=BIGINT},#{msg,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.goodpower.pvams.model.TrainPlan">
+    insert into t_train_plan
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="trainId != null">
+        train_id,
+      </if>
+      <if test="year != null">
+        year,
+      </if>
+      <if test="stationId != null">
+        stationId,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+      <if test="creator != null">
+        creator,
+      </if>
+      <if test="updater != null">
+        updater,
+      </if>
+      <if test="createDttm != null">
+        create_dttm,
+      </if>
+      <if test="updateDttm != null">
+        update_dttm,
+      </if>
+      <if test="msg != null">
+        msg,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="trainId != null">
+        #{trainId,jdbcType=BIGINT},
+      </if>
+      <if test="year != null">
+        #{year,jdbcType=INTEGER},
+      </if>
+      <if test="stationId != null">
+        #{stationId,jdbcType=BIGINT},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null">
+        #{creator,jdbcType=BIGINT},
+      </if>
+      <if test="updater != null">
+        #{updater,jdbcType=BIGINT},
+      </if>
+      <if test="createDttm != null">
+        #{createDttm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDttm != null">
+        #{updateDttm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="msg != null">
+        #{msg,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.goodpower.pvams.model.TrainPlan">
+    update t_train_plan
+    <set>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="year != null">
+        year = #{year,jdbcType=INTEGER},
+      </if>
+      <if test="stationId != null">
+        station_id = #{stationId,jdbcType=INTEGER},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="msg != null">
+        msg = #{msg,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null">
+        creator = #{creator,jdbcType=BIGINT},
+      </if>
+      <if test="updater != null">
+        updater = #{updater,jdbcType=BIGINT},
+      </if>
+      <if test="createDttm != null">
+        create_dttm = #{createDttm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDttm != null">
+        update_dttm = #{updateDttm,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where train_id = #{trainId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.goodpower.pvams.model.TrainPlan">
+    update t_train_plan
+    set title = #{title,jdbcType=VARCHAR},
+      year = #{year,jdbcType=INTEGER},
+      station_id = #{stationId,jdbcType=INTEGER},
+      content = #{content,jdbcType=VARCHAR},
+      msg = #{msg,jdbcType=VARCHAR},
+      creator = #{creator,jdbcType=BIGINT},
+      updater = #{updater,jdbcType=BIGINT},
+      create_dttm = #{createDttm,jdbcType=TIMESTAMP},
+      update_dttm = #{updateDttm,jdbcType=TIMESTAMP}
+    where train_id = #{trainId,jdbcType=BIGINT}
+  </update>
+  <select id="selectByFields" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+            *
+        from
+            t_train_plan
+        where
+            1 = 1
+            <if test="stationId != null">
+                and station_id = #{stationId,jdbcType=BIGINT}
+            </if>
+            <if test="year != null">
+                and year = #{year,jdbcType=INTEGER}
+            </if>
+  </select>
+</mapper>

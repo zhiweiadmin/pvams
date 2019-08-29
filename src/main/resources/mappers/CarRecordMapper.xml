@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goodpower.pvams.mapper.CarRecordMapper">
+  <resultMap id="BaseResultMap" type="com.goodpower.pvams.model.CarRecord">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="station_id" jdbcType="BIGINT" property="stationId" />
+    <result column="car_num" jdbcType="VARCHAR" property="carNum" />
+    <result column="header" jdbcType="VARCHAR" property="header" />
+    <result column="brand" jdbcType="VARCHAR" property="brand" />
+    <result column="lend_status" jdbcType="INTEGER" property="lendStatus" />
+    <result column="param" jdbcType="VARCHAR" property="param" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="create_dttm" jdbcType="TIMESTAMP" property="createDttm" />
+    <result column="update_dttm" jdbcType="TIMESTAMP" property="updateDttm" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, station_id, car_num, header, brand, lend_status, param, status, create_dttm, 
+    update_dttm
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_car_record
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_car_record
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.goodpower.pvams.model.CarRecord">
+    insert into t_car_record (id, station_id, car_num, 
+      header, brand, lend_status, 
+      param, status, create_dttm, 
+      update_dttm)
+    values (#{id,jdbcType=BIGINT}, #{stationId,jdbcType=BIGINT}, #{carNum,jdbcType=VARCHAR}, 
+      #{header,jdbcType=VARCHAR}, #{brand,jdbcType=VARCHAR}, #{lendStatus,jdbcType=INTEGER}, 
+      #{param,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{createDttm,jdbcType=TIMESTAMP}, 
+      #{updateDttm,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.goodpower.pvams.model.CarRecord">
+    insert into t_car_record
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="stationId != null">
+        station_id,
+      </if>
+      <if test="carNum != null">
+        car_num,
+      </if>
+      <if test="header != null">
+        header,
+      </if>
+      <if test="brand != null">
+        brand,
+      </if>
+      <if test="lendStatus != null">
+        lend_status,
+      </if>
+      <if test="param != null">
+        param,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="createDttm != null">
+        create_dttm,
+      </if>
+      <if test="updateDttm != null">
+        update_dttm,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="stationId != null">
+        #{stationId,jdbcType=BIGINT},
+      </if>
+      <if test="carNum != null">
+        #{carNum,jdbcType=VARCHAR},
+      </if>
+      <if test="header != null">
+        #{header,jdbcType=VARCHAR},
+      </if>
+      <if test="brand != null">
+        #{brand,jdbcType=VARCHAR},
+      </if>
+      <if test="lendStatus != null">
+        #{lendStatus,jdbcType=INTEGER},
+      </if>
+      <if test="param != null">
+        #{param,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createDttm != null">
+        #{createDttm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDttm != null">
+        #{updateDttm,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.goodpower.pvams.model.CarRecord">
+    update t_car_record
+    <set>
+      <if test="stationId != null">
+        station_id = #{stationId,jdbcType=BIGINT},
+      </if>
+      <if test="carNum != null">
+        car_num = #{carNum,jdbcType=VARCHAR},
+      </if>
+      <if test="header != null">
+        header = #{header,jdbcType=VARCHAR},
+      </if>
+      <if test="brand != null">
+        brand = #{brand,jdbcType=VARCHAR},
+      </if>
+      <if test="lendStatus != null">
+        lend_status = #{lendStatus,jdbcType=INTEGER},
+      </if>
+      <if test="param != null">
+        param = #{param,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createDttm != null">
+        create_dttm = #{createDttm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDttm != null">
+        update_dttm = #{updateDttm,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.goodpower.pvams.model.CarRecord">
+    update t_car_record
+    set station_id = #{stationId,jdbcType=BIGINT},
+      car_num = #{carNum,jdbcType=VARCHAR},
+      header = #{header,jdbcType=VARCHAR},
+      brand = #{brand,jdbcType=VARCHAR},
+      lend_status = #{lendStatus,jdbcType=INTEGER},
+      param = #{param,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      create_dttm = #{createDttm,jdbcType=TIMESTAMP},
+      update_dttm = #{updateDttm,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByFields" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_car_record
+    where
+    1 = 1
+    <if test="stationId != null">
+      and station_Id = #{stationId,jdbcType=BIGINT}
+    </if>
+  </select>
+</mapper>

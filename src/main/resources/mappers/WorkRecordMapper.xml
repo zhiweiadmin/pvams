@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goodpower.pvams.mapper.WorkRecordMapper">
+  <resultMap id="BaseResultMap" type="com.goodpower.pvams.model.WorkRecord">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="station_id" jdbcType="BIGINT" property="stationId" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="year" jdbcType="INTEGER" property="year" />
+    <result column="quarter" jdbcType="INTEGER" property="quarter" />
+    <result column="month" jdbcType="INTEGER" property="month" />
+    <result column="week" jdbcType="INTEGER" property="week" />
+    <result column="day" jdbcType="TIMESTAMP" property="day" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="attach" jdbcType="VARCHAR" property="attach" />
+    <result column="record_desc" jdbcType="VARCHAR" property="recordDesc" />
+    <result column="create_dttm" jdbcType="TIMESTAMP" property="createDttm" />
+    <result column="update_dttm" jdbcType="TIMESTAMP" property="updateDttm" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, station_id, user_id, type, year, quarter, month, week, day, title, attach, record_desc, 
+    create_dttm, update_dttm
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_work_record
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_work_record
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.goodpower.pvams.model.WorkRecord">
+    insert into t_work_record (id, station_id, user_id, 
+      type, year, quarter, 
+      month, week, day, 
+      title, attach, record_desc, 
+      create_dttm, update_dttm)
+    values (#{id,jdbcType=BIGINT}, #{stationId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, 
+      #{type,jdbcType=INTEGER}, #{year,jdbcType=INTEGER}, #{quarter,jdbcType=INTEGER}, 
+      #{month,jdbcType=INTEGER}, #{week,jdbcType=INTEGER}, #{day,jdbcType=TIMESTAMP}, 
+      #{title,jdbcType=VARCHAR}, #{attach,jdbcType=VARCHAR}, #{recordDesc,jdbcType=VARCHAR}, 
+      #{createDttm,jdbcType=TIMESTAMP}, #{updateDttm,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.goodpower.pvams.model.WorkRecord">
+    insert into t_work_record
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="stationId != null">
+        station_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="year != null">
+        year,
+      </if>
+      <if test="quarter != null">
+        quarter,
+      </if>
+      <if test="month != null">
+        month,
+      </if>
+      <if test="week != null">
+        week,
+      </if>
+      <if test="day != null">
+        day,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="attach != null">
+        attach,
+      </if>
+      <if test="recordDesc != null">
+        record_desc,
+      </if>
+      <if test="createDttm != null">
+        create_dttm,
+      </if>
+      <if test="updateDttm != null">
+        update_dttm,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="stationId != null">
+        #{stationId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="year != null">
+        #{year,jdbcType=INTEGER},
+      </if>
+      <if test="quarter != null">
+        #{quarter,jdbcType=INTEGER},
+      </if>
+      <if test="month != null">
+        #{month,jdbcType=INTEGER},
+      </if>
+      <if test="week != null">
+        #{week,jdbcType=INTEGER},
+      </if>
+      <if test="day != null">
+        #{day,jdbcType=TIMESTAMP},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="attach != null">
+        #{attach,jdbcType=VARCHAR},
+      </if>
+      <if test="recordDesc != null">
+        #{recordDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="createDttm != null">
+        #{createDttm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDttm != null">
+        #{updateDttm,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.goodpower.pvams.model.WorkRecord">
+    update t_work_record
+    <set>
+      <if test="stationId != null">
+        station_id = #{stationId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="year != null">
+        year = #{year,jdbcType=INTEGER},
+      </if>
+      <if test="quarter != null">
+        quarter = #{quarter,jdbcType=INTEGER},
+      </if>
+      <if test="month != null">
+        month = #{month,jdbcType=INTEGER},
+      </if>
+      <if test="week != null">
+        week = #{week,jdbcType=INTEGER},
+      </if>
+      <if test="day != null">
+        day = #{day,jdbcType=TIMESTAMP},
+      </if>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="attach != null">
+        attach = #{attach,jdbcType=VARCHAR},
+      </if>
+      <if test="recordDesc != null">
+        record_desc = #{recordDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="createDttm != null">
+        create_dttm = #{createDttm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDttm != null">
+        update_dttm = #{updateDttm,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.goodpower.pvams.model.WorkRecord">
+    update t_work_record
+    set station_id = #{stationId,jdbcType=BIGINT},
+      user_id = #{userId,jdbcType=BIGINT},
+      type = #{type,jdbcType=INTEGER},
+      year = #{year,jdbcType=INTEGER},
+      quarter = #{quarter,jdbcType=INTEGER},
+      month = #{month,jdbcType=INTEGER},
+      week = #{week,jdbcType=INTEGER},
+      day = #{day,jdbcType=TIMESTAMP},
+      title = #{title,jdbcType=VARCHAR},
+      attach = #{attach,jdbcType=VARCHAR},
+      record_desc = #{recordDesc,jdbcType=VARCHAR},
+      create_dttm = #{createDttm,jdbcType=TIMESTAMP},
+      update_dttm = #{updateDttm,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByFields" parameterType="java.util.Map" resultMap="BaseResultMap">
+    SELECT
+	    *
+    FROM
+        t_work_record
+    WHERE
+        type = 1
+        AND day = #{day,jdbcType=TIMESTAMP}
+        AND user_id = #{userId,jdbcType=BIGINT}
+        AND station_id = #{stationId,jdbcType=BIGINT}
+    UNION all
+    SELECT
+        *
+    FROM
+        t_work_record
+    WHERE
+        type = 2
+        AND year = #{year,jdbcType=INTEGER}
+        and week = #{week,jdbcType=INTEGER}
+        AND user_id = #{userId,jdbcType=BIGINT}
+        AND station_id = #{stationId,jdbcType=BIGINT}
+    union all
+    SELECT
+        *
+    FROM
+        t_work_record
+    WHERE
+        type = 3
+        AND year = #{year,jdbcType=INTEGER}
+        and month = #{month,jdbcType=INTEGER}
+        AND user_id = #{userId,jdbcType=BIGINT}
+        AND station_id = #{stationId,jdbcType=BIGINT}
+    union all
+    SELECT
+        *
+    FROM
+        t_work_record
+    WHERE
+        type = 4
+        AND year = #{year,jdbcType=INTEGER}
+        and quarter = #{quarter,jdbcType=INTEGER}
+        AND user_id = #{userId,jdbcType=BIGINT}
+        AND station_id = #{stationId,jdbcType=BIGINT}
+    union all
+    SELECT
+        *
+    FROM
+        t_work_record
+    WHERE
+        type = 5
+        AND year = #{year,jdbcType=INTEGER}
+        AND user_id = #{userId,jdbcType=BIGINT}
+        AND station_id = #{stationId,jdbcType=BIGINT}
+
+  </select>
+</mapper>

@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goodpower.pvams.mapper.StationDeviceStatMapper">
+  <resultMap id="BaseResultMap" type="com.goodpower.pvams.model.StationDeviceStat">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="station_id" jdbcType="BIGINT" property="stationId" />
+    <result column="year" jdbcType="INTEGER" property="year" />
+    <result column="month" jdbcType="INTEGER" property="month" />
+    <result column="device_name" jdbcType="VARCHAR" property="deviceName" />
+    <result column="stat_type" jdbcType="INTEGER" property="statType" />
+    <result column="stat_val" jdbcType="DECIMAL" property="statVal" />
+    <result column="stat_date" jdbcType="DATE" property="statDate" />
+    <result column="create_dttm" jdbcType="TIMESTAMP" property="createDttm" />
+    <result column="update_dttm" jdbcType="TIMESTAMP" property="updateDttm" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, station_id, year, month, device_name, stat_type, stat_val, stat_date, create_dttm, 
+    update_dttm
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_station_device_stat
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_station_device_stat
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.goodpower.pvams.model.StationDeviceStat">
+    insert into t_station_device_stat (id, station_id, year, 
+      month, device_name, stat_type, 
+      stat_val, stat_date, create_dttm, 
+      update_dttm)
+    values (#{id,jdbcType=BIGINT}, #{stationId,jdbcType=BIGINT}, #{year,jdbcType=INTEGER}, 
+      #{month,jdbcType=INTEGER}, #{deviceName,jdbcType=VARCHAR}, #{statType,jdbcType=INTEGER}, 
+      #{statVal,jdbcType=DECIMAL}, #{statDate,jdbcType=DATE}, #{createDttm,jdbcType=TIMESTAMP}, 
+      #{updateDttm,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.goodpower.pvams.model.StationDeviceStat">
+    insert into t_station_device_stat
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="stationId != null">
+        station_id,
+      </if>
+      <if test="year != null">
+        year,
+      </if>
+      <if test="month != null">
+        month,
+      </if>
+      <if test="deviceName != null">
+        device_name,
+      </if>
+      <if test="statType != null">
+        stat_type,
+      </if>
+      <if test="statVal != null">
+        stat_val,
+      </if>
+      <if test="statDate != null">
+        stat_date,
+      </if>
+      <if test="createDttm != null">
+        create_dttm,
+      </if>
+      <if test="updateDttm != null">
+        update_dttm,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="stationId != null">
+        #{stationId,jdbcType=BIGINT},
+      </if>
+      <if test="year != null">
+        #{year,jdbcType=INTEGER},
+      </if>
+      <if test="month != null">
+        #{month,jdbcType=INTEGER},
+      </if>
+      <if test="deviceName != null">
+        #{deviceName,jdbcType=VARCHAR},
+      </if>
+      <if test="statType != null">
+        #{statType,jdbcType=INTEGER},
+      </if>
+      <if test="statVal != null">
+        #{statVal,jdbcType=DECIMAL},
+      </if>
+      <if test="statDate != null">
+        #{statDate,jdbcType=DATE},
+      </if>
+      <if test="createDttm != null">
+        #{createDttm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDttm != null">
+        #{updateDttm,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.goodpower.pvams.model.StationDeviceStat">
+    update t_station_device_stat
+    <set>
+      <if test="stationId != null">
+        station_id = #{stationId,jdbcType=BIGINT},
+      </if>
+      <if test="year != null">
+        year = #{year,jdbcType=INTEGER},
+      </if>
+      <if test="month != null">
+        month = #{month,jdbcType=INTEGER},
+      </if>
+      <if test="deviceName != null">
+        device_name = #{deviceName,jdbcType=VARCHAR},
+      </if>
+      <if test="statType != null">
+        stat_type = #{statType,jdbcType=INTEGER},
+      </if>
+      <if test="statVal != null">
+        stat_val = #{statVal,jdbcType=DECIMAL},
+      </if>
+      <if test="statDate != null">
+        stat_date = #{statDate,jdbcType=DATE},
+      </if>
+      <if test="createDttm != null">
+        create_dttm = #{createDttm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDttm != null">
+        update_dttm = #{updateDttm,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.goodpower.pvams.model.StationDeviceStat">
+    update t_station_device_stat
+    set station_id = #{stationId,jdbcType=BIGINT},
+      year = #{year,jdbcType=INTEGER},
+      month = #{month,jdbcType=INTEGER},
+      device_name = #{deviceName,jdbcType=VARCHAR},
+      stat_type = #{statType,jdbcType=INTEGER},
+      stat_val = #{statVal,jdbcType=DECIMAL},
+      stat_date = #{statDate,jdbcType=DATE},
+      create_dttm = #{createDttm,jdbcType=TIMESTAMP},
+      update_dttm = #{updateDttm,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <select id="queryMonthStat" parameterType="java.util.Map" resultType="java.util.Map">
+    SELECT
+        t.year,
+	    t.month,
+	    t.device_name deviceName,
+	    sum(t.stat_val) realPower,
+	    sum(t1.stat_val) realHour
+    FROM
+	    t_station_device_stat t
+        LEFT JOIN t_station_device_stat t1 ON
+        t.station_id = t1.station_id
+        and t.device_name = t1.device_name
+        AND t1.stat_date = t.stat_date
+        AND t.stat_type = 3
+        AND t1.stat_type = 6
+    WHERE
+        t.station_id = #{stationId,jdbcType=BIGINT}
+        and t.year = #{year,jdbcType=INTEGER}
+        and t.month = #{month,jdbcType=INTEGER}
+    group by
+        t.device_name,t.year,t.month
+      <if test="orderBy != null">
+          order by ${orderBy}
+      </if>
+      <if test="offset != null and limit != null">
+        limit ${offset},${limit}
+      </if>
+  </select>
+
+  <select id="queryMonthStatCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+    select count(1) from (
+    SELECT
+      t.year,
+	  t.month,
+	  t.device_name deviceName,
+	  sum(t.stat_val) realPower,
+	  sum(t1.stat_val) realHour
+    FROM
+    t_station_device_stat t
+    LEFT JOIN t_station_device_stat t1 ON
+    t.station_id = t1.station_id
+    and t.device_name = t1.device_name
+    AND t1.stat_date = t.stat_date
+    AND t.stat_type = 3
+    AND t1.stat_type = 6
+    WHERE
+    t.station_id = #{stationId,jdbcType=BIGINT}
+    and t.year = #{year,jdbcType=INTEGER}
+    and t.month = #{month,jdbcType=INTEGER}
+    group by
+    t.device_name,t.year,t.month ) a
+  </select>
+
+  <select id="queryYearStat" parameterType="java.util.Map" resultType="java.util.Map">
+    SELECT
+        t.year,
+        t.device_name deviceName,
+        sum(t.stat_val) realPower,
+        sum(t1.stat_val) realHour
+    FROM
+	    t_station_device_stat t
+    LEFT JOIN t_station_device_stat t1 ON
+        t.station_id = t1.station_id
+        and t.device_name = t1.device_name
+        AND t1.stat_date = t.stat_date
+        AND t.stat_type = 3
+        AND t1.stat_type = 6
+    WHERE
+        t.station_id = #{stationId,jdbcType=BIGINT}
+        and t.YEAR = #{year,jdbcType=INTEGER}
+    group by
+        t.device_name,t.year
+    <if test="orderBy != null">
+      order by ${orderBy}
+    </if>
+    <if test="offset != null and limit != null">
+      limit ${offset},${limit}
+    </if>
+  </select>
+
+  <select id="queryYearStatCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+    select count(1) from (
+    SELECT
+      t.year,
+      t.device_name deviceName,
+      sum(t.stat_val) realPower,
+      sum(t1.stat_val) realHour
+    FROM
+    t_station_device_stat t
+    LEFT JOIN t_station_device_stat t1 ON
+    t.station_id = t1.station_id
+    and t.device_name = t1.device_name
+    AND t1.stat_date = t.stat_date
+    AND t.stat_type = 3
+    AND t1.stat_type = 6
+    WHERE
+    t.station_id = #{stationId,jdbcType=BIGINT}
+    and t.YEAR = #{year,jdbcType=INTEGER}
+    group by
+    t.device_name,t.year ) a
+  </select>
+
+  <select id="getMonthDeviceStatDetail" parameterType="java.util.Map" resultType="java.util.Map">
+    select * from (select
+        device_name,
+        stat_val,
+        stat_date
+    from
+        t_station_device_stat
+    where
+        1 = 1
+        and station_id = #{stationId,jdbcType=BIGINT}
+        and year = #{year,jdbcType=INTEGER}
+        and month = #{month,jdbcType=INTEGER}
+        and stat_type = #{statType,jdbcType=INTEGER}
+    order by stat_date ) t
+    <if test="offset != null and limit != null">
+      limit #{offset,jdbcType=INTEGER},#{limit,jdbcType=INTEGER}
+    </if>
+  </select>
+
+  <select id="getYearDeviceStatDetail" parameterType="java.util.Map" resultType="java.util.Map">
+    select * from (
+      select
+          device_name,
+          month,
+          sum(stat_val) sumVal
+      from
+          t_station_device_stat
+      where
+          1 = 1
+          and station_id = #{stationId,jdbcType=BIGINT}
+          and stat_type = #{statType,jdbcType=INTEGER}
+          and year = #{year,jdbcType=INTEGER}
+      group by device_name,year,month
+    ) t
+      <if test="offset != null and limit != null">
+          limit #{offset,jdbcType=INTEGER},#{limit,jdbcType=INTEGER}
+      </if>
+
+
+  </select>
+
+</mapper>

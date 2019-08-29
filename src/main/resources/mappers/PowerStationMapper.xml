@@ -1,0 +1,536 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goodpower.pvams.mapper.PowerStationMapper">
+  <resultMap id="BaseResultMap" type="com.goodpower.pvams.model.PowerStation">
+    <id column="station_id" jdbcType="BIGINT" property="stationId" />
+    <result column="company_id" jdbcType="BIGINT" property="companyId" />
+    <result column="station_name" jdbcType="VARCHAR" property="stationName" />
+    <result column="scale" jdbcType="VARCHAR" property="scale" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="station_type" jdbcType="VARCHAR" property="stationType" />
+    <result column="installed_capacity" jdbcType="VARCHAR" property="installedCapacity" />
+    <result column="grid_capacity" jdbcType="VARCHAR" property="gridCapacity" />
+    <result column="installed_power" jdbcType="VARCHAR" property="installedPower" />
+    <result column="grid_time" jdbcType="VARCHAR" property="gridTime" />
+    <result column="grid_num" jdbcType="BIGINT" property="gridNum" />
+    <result column="project_angle" jdbcType="VARCHAR" property="projectAngle" />
+    <result column="array_space" jdbcType="VARCHAR" property="arraySpace" />
+    <result column="grid_power_level" jdbcType="VARCHAR" property="gridPowerLevel" />
+    <result column="line_length" jdbcType="VARCHAR" property="lineLength" />
+    <result column="road_type" jdbcType="VARCHAR" property="roadType" />
+    <result column="is_close_framarea" jdbcType="VARCHAR" property="isCloseFramarea" />
+    <result column="is_corral" jdbcType="VARCHAR" property="isCorral" />
+    <result column="is_outsiders_plant" jdbcType="VARCHAR" property="isOutsidersPlant" />
+    <result column="is_outsiders_ancestor" jdbcType="VARCHAR" property="isOutsidersAncestor" />
+    <result column="bottom_land_distance" jdbcType="VARCHAR" property="bottomLandDistance" />
+    <result column="pond_num" jdbcType="VARCHAR" property="pondNum" />
+    <result column="pond_avg_depth" jdbcType="VARCHAR" property="pondAvgDepth" />
+    <result column="float_type" jdbcType="VARCHAR" property="floatType" />
+    <result column="fixed_type" jdbcType="VARCHAR" property="fixedType" />
+    <result column="bottom_water_distance" jdbcType="VARCHAR" property="bottomWaterDistance" />
+    <result column="is_aquatic" jdbcType="VARCHAR" property="isAquatic" />
+    <result column="is_animal" jdbcType="VARCHAR" property="isAnimal" />
+    <result column="roof_type" jdbcType="VARCHAR" property="roofType" />
+    <result column="is_daylight" jdbcType="VARCHAR" property="isDaylight" />
+    <result column="up_condition" jdbcType="VARCHAR" property="upCondition" />
+    <result column="roof_num" jdbcType="VARCHAR" property="roofNum" />
+    <result column="distribution_point_num" jdbcType="VARCHAR" property="distributionPointNum" />
+    <result column="clear_water_source" jdbcType="VARCHAR" property="clearWaterSource" />
+    <result column="clear_water_source_access" jdbcType="VARCHAR" property="clearWaterSourceAccess" />
+    <result column="create_dttm" jdbcType="TIMESTAMP" property="createDttm" />
+    <result column="update_dttm" jdbcType="TIMESTAMP" property="updateDttm" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    station_id, company_id, station_name, scale, address, station_type, installed_capacity, 
+    grid_capacity, installed_power, grid_time, project_angle, array_space, grid_power_level, 
+    line_length, road_type, is_close_framarea, is_corral, is_outsiders_plant, is_outsiders_ancestor, 
+    bottom_land_distance, pond_num, pond_avg_depth, float_type, fixed_type, bottom_water_distance, 
+    is_aquatic, is_animal, roof_type, is_daylight, up_condition, roof_num, distribution_point_num, 
+    clear_water_source, clear_water_source_access, create_dttm, update_dttm,grid_num
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_power_station
+    where station_id = #{stationId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_power_station
+    where station_id = #{stationId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.goodpower.pvams.model.PowerStation" useGeneratedKeys="true" keyProperty="stationId">
+    insert into t_power_station (station_id, company_id, station_name, 
+      scale, address, station_type, 
+      installed_capacity, grid_capacity, installed_power, 
+      grid_num,grid_time, project_angle, array_space,
+      grid_power_level, line_length, road_type, 
+      is_close_framarea, is_corral, is_outsiders_plant, 
+      is_outsiders_ancestor, bottom_land_distance, 
+      pond_num, pond_avg_depth, float_type, 
+      fixed_type, bottom_water_distance, is_aquatic, 
+      is_animal, roof_type, is_daylight, 
+      up_condition, roof_num, distribution_point_num, 
+      clear_water_source, clear_water_source_access, 
+      create_dttm, update_dttm)
+    values (#{stationId,jdbcType=BIGINT}, #{companyId,jdbcType=BIGINT}, #{stationName,jdbcType=VARCHAR}, 
+      #{scale,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{stationType,jdbcType=VARCHAR}, 
+      #{installedCapacity,jdbcType=VARCHAR}, #{gridCapacity,jdbcType=VARCHAR}, #{installedPower,jdbcType=VARCHAR}, 
+      #{gridNum,jdbcType=BIGINT},#{gridTime,jdbcType=VARCHAR}, #{projectAngle,jdbcType=VARCHAR}, #{arraySpace,jdbcType=VARCHAR},
+      #{gridPowerLevel,jdbcType=VARCHAR}, #{lineLength,jdbcType=VARCHAR}, #{roadType,jdbcType=VARCHAR}, 
+      #{isCloseFramarea,jdbcType=VARCHAR}, #{isCorral,jdbcType=VARCHAR}, #{isOutsidersPlant,jdbcType=VARCHAR}, 
+      #{isOutsidersAncestor,jdbcType=VARCHAR}, #{bottomLandDistance,jdbcType=VARCHAR}, 
+      #{pondNum,jdbcType=VARCHAR}, #{pondAvgDepth,jdbcType=VARCHAR}, #{floatType,jdbcType=VARCHAR}, 
+      #{fixedType,jdbcType=VARCHAR}, #{bottomWaterDistance,jdbcType=VARCHAR}, #{isAquatic,jdbcType=VARCHAR}, 
+      #{isAnimal,jdbcType=VARCHAR}, #{roofType,jdbcType=VARCHAR}, #{isDaylight,jdbcType=VARCHAR}, 
+      #{upCondition,jdbcType=VARCHAR}, #{roofNum,jdbcType=VARCHAR}, #{distributionPointNum,jdbcType=VARCHAR}, 
+      #{clearWaterSource,jdbcType=VARCHAR}, #{clearWaterSourceAccess,jdbcType=VARCHAR}, 
+      #{createDttm,jdbcType=TIMESTAMP}, #{updateDttm,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.goodpower.pvams.model.PowerStation" useGeneratedKeys="true" keyProperty="stationId">
+    insert into t_power_station
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="stationId != null">
+        station_id,
+      </if>
+      <if test="companyId != null">
+        company_id,
+      </if>
+      <if test="stationName != null">
+        station_name,
+      </if>
+      <if test="scale != null">
+        scale,
+      </if>
+      <if test="address != null">
+        address,
+      </if>
+      <if test="stationType != null">
+        station_type,
+      </if>
+      <if test="installedCapacity != null">
+        installed_capacity,
+      </if>
+      <if test="gridCapacity != null">
+        grid_capacity,
+      </if>
+      <if test="installedPower != null">
+        installed_power,
+      </if>
+      <if test="gridNum != null">
+        grid_num,
+      </if>
+      <if test="gridTime != null">
+        grid_time,
+      </if>
+      <if test="projectAngle != null">
+        project_angle,
+      </if>
+      <if test="arraySpace != null">
+        array_space,
+      </if>
+      <if test="gridPowerLevel != null">
+        grid_power_level,
+      </if>
+      <if test="lineLength != null">
+        line_length,
+      </if>
+      <if test="roadType != null">
+        road_type,
+      </if>
+      <if test="isCloseFramarea != null">
+        is_close_framarea,
+      </if>
+      <if test="isCorral != null">
+        is_corral,
+      </if>
+      <if test="isOutsidersPlant != null">
+        is_outsiders_plant,
+      </if>
+      <if test="isOutsidersAncestor != null">
+        is_outsiders_ancestor,
+      </if>
+      <if test="bottomLandDistance != null">
+        bottom_land_distance,
+      </if>
+      <if test="pondNum != null">
+        pond_num,
+      </if>
+      <if test="pondAvgDepth != null">
+        pond_avg_depth,
+      </if>
+      <if test="floatType != null">
+        float_type,
+      </if>
+      <if test="fixedType != null">
+        fixed_type,
+      </if>
+      <if test="bottomWaterDistance != null">
+        bottom_water_distance,
+      </if>
+      <if test="isAquatic != null">
+        is_aquatic,
+      </if>
+      <if test="isAnimal != null">
+        is_animal,
+      </if>
+      <if test="roofType != null">
+        roof_type,
+      </if>
+      <if test="isDaylight != null">
+        is_daylight,
+      </if>
+      <if test="upCondition != null">
+        up_condition,
+      </if>
+      <if test="roofNum != null">
+        roof_num,
+      </if>
+      <if test="distributionPointNum != null">
+        distribution_point_num,
+      </if>
+      <if test="clearWaterSource != null">
+        clear_water_source,
+      </if>
+      <if test="clearWaterSourceAccess != null">
+        clear_water_source_access,
+      </if>
+      <if test="createDttm != null">
+        create_dttm,
+      </if>
+      <if test="updateDttm != null">
+        update_dttm,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="stationId != null">
+        #{stationId,jdbcType=BIGINT},
+      </if>
+      <if test="companyId != null">
+        #{companyId,jdbcType=BIGINT},
+      </if>
+      <if test="stationName != null">
+        #{stationName,jdbcType=VARCHAR},
+      </if>
+      <if test="scale != null">
+        #{scale,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="stationType != null">
+        #{stationType,jdbcType=VARCHAR},
+      </if>
+      <if test="installedCapacity != null">
+        #{installedCapacity,jdbcType=VARCHAR},
+      </if>
+      <if test="gridCapacity != null">
+        #{gridCapacity,jdbcType=VARCHAR},
+      </if>
+      <if test="installedPower != null">
+        #{installedPower,jdbcType=VARCHAR},
+      </if>
+      <if test="gridNum != null">
+        #{gridNum,jdbcType=BIGINT},
+      </if>
+      <if test="gridTime != null">
+        #{gridTime,jdbcType=VARCHAR},
+      </if>
+      <if test="projectAngle != null">
+        #{projectAngle,jdbcType=VARCHAR},
+      </if>
+      <if test="arraySpace != null">
+        #{arraySpace,jdbcType=VARCHAR},
+      </if>
+      <if test="gridPowerLevel != null">
+        #{gridPowerLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="lineLength != null">
+        #{lineLength,jdbcType=VARCHAR},
+      </if>
+      <if test="roadType != null">
+        #{roadType,jdbcType=VARCHAR},
+      </if>
+      <if test="isCloseFramarea != null">
+        #{isCloseFramarea,jdbcType=VARCHAR},
+      </if>
+      <if test="isCorral != null">
+        #{isCorral,jdbcType=VARCHAR},
+      </if>
+      <if test="isOutsidersPlant != null">
+        #{isOutsidersPlant,jdbcType=VARCHAR},
+      </if>
+      <if test="isOutsidersAncestor != null">
+        #{isOutsidersAncestor,jdbcType=VARCHAR},
+      </if>
+      <if test="bottomLandDistance != null">
+        #{bottomLandDistance,jdbcType=VARCHAR},
+      </if>
+      <if test="pondNum != null">
+        #{pondNum,jdbcType=VARCHAR},
+      </if>
+      <if test="pondAvgDepth != null">
+        #{pondAvgDepth,jdbcType=VARCHAR},
+      </if>
+      <if test="floatType != null">
+        #{floatType,jdbcType=VARCHAR},
+      </if>
+      <if test="fixedType != null">
+        #{fixedType,jdbcType=VARCHAR},
+      </if>
+      <if test="bottomWaterDistance != null">
+        #{bottomWaterDistance,jdbcType=VARCHAR},
+      </if>
+      <if test="isAquatic != null">
+        #{isAquatic,jdbcType=VARCHAR},
+      </if>
+      <if test="isAnimal != null">
+        #{isAnimal,jdbcType=VARCHAR},
+      </if>
+      <if test="roofType != null">
+        #{roofType,jdbcType=VARCHAR},
+      </if>
+      <if test="isDaylight != null">
+        #{isDaylight,jdbcType=VARCHAR},
+      </if>
+      <if test="upCondition != null">
+        #{upCondition,jdbcType=VARCHAR},
+      </if>
+      <if test="roofNum != null">
+        #{roofNum,jdbcType=VARCHAR},
+      </if>
+      <if test="distributionPointNum != null">
+        #{distributionPointNum,jdbcType=VARCHAR},
+      </if>
+      <if test="clearWaterSource != null">
+        #{clearWaterSource,jdbcType=VARCHAR},
+      </if>
+      <if test="clearWaterSourceAccess != null">
+        #{clearWaterSourceAccess,jdbcType=VARCHAR},
+      </if>
+      <if test="createDttm != null">
+        #{createDttm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDttm != null">
+        #{updateDttm,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.goodpower.pvams.model.PowerStation">
+    update t_power_station
+    <set>
+      <if test="companyId != null">
+        company_id = #{companyId,jdbcType=BIGINT},
+      </if>
+      <if test="stationName != null">
+        station_name = #{stationName,jdbcType=VARCHAR},
+      </if>
+      <if test="scale != null">
+        scale = #{scale,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="stationType != null">
+        station_type = #{stationType,jdbcType=VARCHAR},
+      </if>
+      <if test="installedCapacity != null">
+        installed_capacity = #{installedCapacity,jdbcType=VARCHAR},
+      </if>
+      <if test="gridCapacity != null">
+        grid_capacity = #{gridCapacity,jdbcType=VARCHAR},
+      </if>
+      <if test="installedPower != null">
+        installed_power = #{installedPower,jdbcType=VARCHAR},
+      </if>
+      <if test="gridNum != null">
+        grid_num = #{gridNum,jdbcType=BIGINT},
+      </if>
+      <if test="gridTime != null">
+        grid_time = #{gridTime,jdbcType=VARCHAR},
+      </if>
+      <if test="projectAngle != null">
+        project_angle = #{projectAngle,jdbcType=VARCHAR},
+      </if>
+      <if test="arraySpace != null">
+        array_space = #{arraySpace,jdbcType=VARCHAR},
+      </if>
+      <if test="gridPowerLevel != null">
+        grid_power_level = #{gridPowerLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="lineLength != null">
+        line_length = #{lineLength,jdbcType=VARCHAR},
+      </if>
+      <if test="roadType != null">
+        road_type = #{roadType,jdbcType=VARCHAR},
+      </if>
+      <if test="isCloseFramarea != null">
+        is_close_framarea = #{isCloseFramarea,jdbcType=VARCHAR},
+      </if>
+      <if test="isCorral != null">
+        is_corral = #{isCorral,jdbcType=VARCHAR},
+      </if>
+      <if test="isOutsidersPlant != null">
+        is_outsiders_plant = #{isOutsidersPlant,jdbcType=VARCHAR},
+      </if>
+      <if test="isOutsidersAncestor != null">
+        is_outsiders_ancestor = #{isOutsidersAncestor,jdbcType=VARCHAR},
+      </if>
+      <if test="bottomLandDistance != null">
+        bottom_land_distance = #{bottomLandDistance,jdbcType=VARCHAR},
+      </if>
+      <if test="pondNum != null">
+        pond_num = #{pondNum,jdbcType=VARCHAR},
+      </if>
+      <if test="pondAvgDepth != null">
+        pond_avg_depth = #{pondAvgDepth,jdbcType=VARCHAR},
+      </if>
+      <if test="floatType != null">
+        float_type = #{floatType,jdbcType=VARCHAR},
+      </if>
+      <if test="fixedType != null">
+        fixed_type = #{fixedType,jdbcType=VARCHAR},
+      </if>
+      <if test="bottomWaterDistance != null">
+        bottom_water_distance = #{bottomWaterDistance,jdbcType=VARCHAR},
+      </if>
+      <if test="isAquatic != null">
+        is_aquatic = #{isAquatic,jdbcType=VARCHAR},
+      </if>
+      <if test="isAnimal != null">
+        is_animal = #{isAnimal,jdbcType=VARCHAR},
+      </if>
+      <if test="roofType != null">
+        roof_type = #{roofType,jdbcType=VARCHAR},
+      </if>
+      <if test="isDaylight != null">
+        is_daylight = #{isDaylight,jdbcType=VARCHAR},
+      </if>
+      <if test="upCondition != null">
+        up_condition = #{upCondition,jdbcType=VARCHAR},
+      </if>
+      <if test="roofNum != null">
+        roof_num = #{roofNum,jdbcType=VARCHAR},
+      </if>
+      <if test="distributionPointNum != null">
+        distribution_point_num = #{distributionPointNum,jdbcType=VARCHAR},
+      </if>
+      <if test="clearWaterSource != null">
+        clear_water_source = #{clearWaterSource,jdbcType=VARCHAR},
+      </if>
+      <if test="clearWaterSourceAccess != null">
+        clear_water_source_access = #{clearWaterSourceAccess,jdbcType=VARCHAR},
+      </if>
+      <if test="createDttm != null">
+        create_dttm = #{createDttm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDttm != null">
+        update_dttm = #{updateDttm,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where station_id = #{stationId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.goodpower.pvams.model.PowerStation">
+    update t_power_station
+    set company_id = #{companyId,jdbcType=BIGINT},
+      station_name = #{stationName,jdbcType=VARCHAR},
+      scale = #{scale,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      station_type = #{stationType,jdbcType=VARCHAR},
+      installed_capacity = #{installedCapacity,jdbcType=VARCHAR},
+      grid_capacity = #{gridCapacity,jdbcType=VARCHAR},
+      installed_power = #{installedPower,jdbcType=VARCHAR},
+      grid_num = #{gridNum,jdbcType=BIGINT},
+      grid_time = #{gridTime,jdbcType=VARCHAR},
+      project_angle = #{projectAngle,jdbcType=VARCHAR},
+      array_space = #{arraySpace,jdbcType=VARCHAR},
+      grid_power_level = #{gridPowerLevel,jdbcType=VARCHAR},
+      line_length = #{lineLength,jdbcType=VARCHAR},
+      road_type = #{roadType,jdbcType=VARCHAR},
+      is_close_framarea = #{isCloseFramarea,jdbcType=VARCHAR},
+      is_corral = #{isCorral,jdbcType=VARCHAR},
+      is_outsiders_plant = #{isOutsidersPlant,jdbcType=VARCHAR},
+      is_outsiders_ancestor = #{isOutsidersAncestor,jdbcType=VARCHAR},
+      bottom_land_distance = #{bottomLandDistance,jdbcType=VARCHAR},
+      pond_num = #{pondNum,jdbcType=VARCHAR},
+      pond_avg_depth = #{pondAvgDepth,jdbcType=VARCHAR},
+      float_type = #{floatType,jdbcType=VARCHAR},
+      fixed_type = #{fixedType,jdbcType=VARCHAR},
+      bottom_water_distance = #{bottomWaterDistance,jdbcType=VARCHAR},
+      is_aquatic = #{isAquatic,jdbcType=VARCHAR},
+      is_animal = #{isAnimal,jdbcType=VARCHAR},
+      roof_type = #{roofType,jdbcType=VARCHAR},
+      is_daylight = #{isDaylight,jdbcType=VARCHAR},
+      up_condition = #{upCondition,jdbcType=VARCHAR},
+      roof_num = #{roofNum,jdbcType=VARCHAR},
+      distribution_point_num = #{distributionPointNum,jdbcType=VARCHAR},
+      clear_water_source = #{clearWaterSource,jdbcType=VARCHAR},
+      clear_water_source_access = #{clearWaterSourceAccess,jdbcType=VARCHAR},
+      create_dttm = #{createDttm,jdbcType=TIMESTAMP},
+      update_dttm = #{updateDttm,jdbcType=TIMESTAMP}
+    where station_id = #{stationId,jdbcType=BIGINT}
+  </update>
+
+  <insert id="upsert" parameterType="com.goodpower.pvams.model.PowerStation" useGeneratedKeys="true" keyProperty="stationId">
+    insert into t_power_station (station_id, company_id, station_name,
+      scale, address, station_type,
+      installed_capacity, grid_capacity, installed_power,
+      grid_num,grid_time, project_angle, array_space,
+      grid_power_level, line_length, road_type,
+      is_close_framarea, is_corral, is_outsiders_plant,
+      is_outsiders_ancestor, bottom_land_distance,
+      pond_num, pond_avg_depth, float_type,
+      fixed_type, bottom_water_distance, is_aquatic,
+      is_animal, roof_type, is_daylight,
+      up_condition, roof_num, distribution_point_num,
+      clear_water_source, clear_water_source_access,
+      create_dttm, update_dttm)
+    values (#{stationId,jdbcType=BIGINT}, #{companyId,jdbcType=BIGINT}, #{stationName,jdbcType=VARCHAR},
+      #{scale,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{stationType,jdbcType=VARCHAR},
+      #{installedCapacity,jdbcType=VARCHAR}, #{gridCapacity,jdbcType=VARCHAR}, #{installedPower,jdbcType=VARCHAR},
+      #{gridNum,jdbcType=BIGINT},#{gridTime,jdbcType=VARCHAR}, #{projectAngle,jdbcType=VARCHAR}, #{arraySpace,jdbcType=VARCHAR},
+      #{gridPowerLevel,jdbcType=VARCHAR}, #{lineLength,jdbcType=VARCHAR}, #{roadType,jdbcType=VARCHAR},
+      #{isCloseFramarea,jdbcType=VARCHAR}, #{isCorral,jdbcType=VARCHAR}, #{isOutsidersPlant,jdbcType=VARCHAR},
+      #{isOutsidersAncestor,jdbcType=VARCHAR}, #{bottomLandDistance,jdbcType=VARCHAR},
+      #{pondNum,jdbcType=VARCHAR}, #{pondAvgDepth,jdbcType=VARCHAR}, #{floatType,jdbcType=VARCHAR},
+      #{fixedType,jdbcType=VARCHAR}, #{bottomWaterDistance,jdbcType=VARCHAR}, #{isAquatic,jdbcType=VARCHAR},
+      #{isAnimal,jdbcType=VARCHAR}, #{roofType,jdbcType=VARCHAR}, #{isDaylight,jdbcType=VARCHAR},
+      #{upCondition,jdbcType=VARCHAR}, #{roofNum,jdbcType=VARCHAR}, #{distributionPointNum,jdbcType=VARCHAR},
+      #{clearWaterSource,jdbcType=VARCHAR}, #{clearWaterSourceAccess,jdbcType=VARCHAR},
+      #{createDttm,jdbcType=TIMESTAMP}, #{updateDttm,jdbcType=TIMESTAMP})
+    ON DUPLICATE KEY UPDATE
+      station_name = #{stationName,jdbcType=VARCHAR},
+      scale = #{scale,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      installed_capacity = #{installedCapacity,jdbcType=VARCHAR},
+      grid_capacity = #{gridCapacity,jdbcType=VARCHAR},
+      installed_power = #{installedPower,jdbcType=VARCHAR},
+      grid_num = #{gridNum,jdbcType=BIGINT},
+      grid_time = #{gridTime,jdbcType=VARCHAR},
+      project_angle = #{projectAngle,jdbcType=VARCHAR},
+      array_space = #{arraySpace,jdbcType=VARCHAR},
+      grid_power_level = #{gridPowerLevel,jdbcType=VARCHAR},
+      line_length = #{lineLength,jdbcType=VARCHAR},
+      road_type = #{roadType,jdbcType=VARCHAR},
+      is_close_framarea = #{isCloseFramarea,jdbcType=VARCHAR},
+      is_corral = #{isCorral,jdbcType=VARCHAR},
+      is_outsiders_plant = #{isOutsidersPlant,jdbcType=VARCHAR},
+      is_outsiders_ancestor = #{isOutsidersAncestor,jdbcType=VARCHAR},
+      bottom_land_distance = #{bottomLandDistance,jdbcType=VARCHAR},
+      pond_num = #{pondNum,jdbcType=VARCHAR},
+      pond_avg_depth = #{pondAvgDepth,jdbcType=VARCHAR},
+      float_type = #{floatType,jdbcType=VARCHAR},
+      fixed_type = #{fixedType,jdbcType=VARCHAR},
+      bottom_water_distance = #{bottomWaterDistance,jdbcType=VARCHAR},
+      is_aquatic = #{isAquatic,jdbcType=VARCHAR},
+      is_animal = #{isAnimal,jdbcType=VARCHAR},
+      roof_type = #{roofType,jdbcType=VARCHAR},
+      is_daylight = #{isDaylight,jdbcType=VARCHAR},
+      up_condition = #{upCondition,jdbcType=VARCHAR},
+      roof_num = #{roofNum,jdbcType=VARCHAR},
+      distribution_point_num = #{distributionPointNum,jdbcType=VARCHAR},
+      clear_water_source = #{clearWaterSource,jdbcType=VARCHAR},
+      clear_water_source_access = #{clearWaterSourceAccess,jdbcType=VARCHAR},
+      update_dttm = now()
+  </insert>
+
+</mapper>

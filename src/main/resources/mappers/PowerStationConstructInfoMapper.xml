@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goodpower.pvams.mapper.PowerStationConstructInfoMapper">
+  <resultMap id="BaseResultMap" type="com.goodpower.pvams.model.PowerStationConstructInfo">
+    <id column="station_id" jdbcType="BIGINT" property="stationId" />
+    <result column="construct_company" jdbcType="VARCHAR" property="constructCompany" />
+    <result column="contact" jdbcType="VARCHAR" property="contact" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="company_address" jdbcType="VARCHAR" property="companyAddress" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    station_id, construct_company, contact, phone, company_address, remark
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_power_station_construct
+    where station_id = #{stationId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_power_station_construct
+    where station_id = #{stationId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.goodpower.pvams.model.PowerStationConstructInfo">
+    insert into t_power_station_construct (station_id, construct_company, contact, 
+      phone, company_address, remark
+      )
+    values (#{stationId,jdbcType=BIGINT}, #{constructCompany,jdbcType=VARCHAR}, #{contact,jdbcType=VARCHAR}, 
+      #{phone,jdbcType=VARCHAR}, #{companyAddress,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.goodpower.pvams.model.PowerStationConstructInfo">
+    insert into t_power_station_construct
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="stationId != null">
+        station_id,
+      </if>
+      <if test="constructCompany != null">
+        construct_company,
+      </if>
+      <if test="contact != null">
+        contact,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="companyAddress != null">
+        company_address,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="stationId != null">
+        #{stationId,jdbcType=BIGINT},
+      </if>
+      <if test="constructCompany != null">
+        #{constructCompany,jdbcType=VARCHAR},
+      </if>
+      <if test="contact != null">
+        #{contact,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="companyAddress != null">
+        #{companyAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.goodpower.pvams.model.PowerStationConstructInfo">
+    update t_power_station_construct
+    <set>
+      <if test="constructCompany != null">
+        construct_company = #{constructCompany,jdbcType=VARCHAR},
+      </if>
+      <if test="contact != null">
+        contact = #{contact,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="companyAddress != null">
+        company_address = #{companyAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where station_id = #{stationId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.goodpower.pvams.model.PowerStationConstructInfo">
+    update t_power_station_construct
+    set construct_company = #{constructCompany,jdbcType=VARCHAR},
+      contact = #{contact,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      company_address = #{companyAddress,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR}
+    where station_id = #{stationId,jdbcType=BIGINT}
+  </update>
+
+  <insert id="upsert" parameterType="com.goodpower.pvams.model.PowerStationConstructInfo">
+    insert into t_power_station_construct (station_id, construct_company, contact,
+      phone, company_address, remark
+      )
+    values (#{stationId,jdbcType=BIGINT}, #{constructCompany,jdbcType=VARCHAR}, #{contact,jdbcType=VARCHAR},
+      #{phone,jdbcType=VARCHAR}, #{companyAddress,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}
+      )
+    on duplicate key update
+      construct_company = #{constructCompany,jdbcType=VARCHAR},
+      contact = #{contact,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      company_address = #{companyAddress,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR}
+  </insert>
+
+</mapper>

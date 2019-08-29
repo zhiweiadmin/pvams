@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goodpower.pvams.mapper.PowerStationDeviceMapper">
+  <resultMap id="BaseResultMap" type="com.goodpower.pvams.model.PowerStationDevice">
+    <id column="device_id" jdbcType="BIGINT" property="deviceId" />
+    <result column="station_id" jdbcType="BIGINT" property="stationId" />
+    <result column="device_name" jdbcType="VARCHAR" property="deviceName" />
+    <result column="number" jdbcType="INTEGER" property="number" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="model" jdbcType="VARCHAR" property="model" />
+    <result column="supplier" jdbcType="VARCHAR" property="supplier" />
+    <result column="contact" jdbcType="VARCHAR" property="contact" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="warranty_start_date" jdbcType="VARCHAR" property="warrantyStartDate" />
+    <result column="warranty_end_date" jdbcType="VARCHAR" property="warrantyEndDate" />
+    <result column="stock_upper" jdbcType="VARCHAR" property="stockUpper" />
+    <result column="stock_lower" jdbcType="VARCHAR" property="stockLower" />
+    <result column="param" jdbcType="VARCHAR" property="param" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="create_dttm" jdbcType="TIMESTAMP" property="createDttm" />
+    <result column="update_dttm" jdbcType="TIMESTAMP" property="updateDttm" />
+    <result column="creator" jdbcType="VARCHAR" property="creator" />
+    <result column="updater" jdbcType="VARCHAR" property="updater" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    device_id, station_id, device_name, number, type, model, supplier, contact, phone, 
+    warranty_start_date, warranty_end_date, stock_upper, stock_lower, remark, create_dttm, 
+    update_dttm, creator, updater,param
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_power_station_device
+    where device_id = #{deviceId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_power_station_device
+    where device_id = #{deviceId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.goodpower.pvams.model.PowerStationDevice" useGeneratedKeys="true" keyProperty="deviceId">
+    insert into t_power_station_device (station_id, device_name,
+      number, type, model, 
+      supplier, contact, phone, 
+      warranty_start_date, warranty_end_date, stock_upper, 
+      stock_lower, remark, create_dttm, 
+      update_dttm, creator, updater,param
+      )
+    values ( #{stationId,jdbcType=BIGINT}, #{deviceName,jdbcType=VARCHAR},
+      #{number,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{model,jdbcType=VARCHAR}, 
+      #{supplier,jdbcType=VARCHAR}, #{contact,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+      #{warrantyStartDate,jdbcType=VARCHAR}, #{warrantyEndDate,jdbcType=VARCHAR}, #{stockUpper,jdbcType=VARCHAR},
+      #{stockLower,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{createDttm,jdbcType=TIMESTAMP}, 
+      #{updateDttm,jdbcType=TIMESTAMP}, #{creator,jdbcType=VARCHAR}, #{updater,jdbcType=VARCHAR},
+      #{param,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.goodpower.pvams.model.PowerStationDevice">
+    insert into t_power_station_device
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="deviceId != null">
+        device_id,
+      </if>
+      <if test="stationId != null">
+        station_id,
+      </if>
+      <if test="deviceName != null">
+        device_name,
+      </if>
+      <if test="number != null">
+        number,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="model != null">
+        model,
+      </if>
+      <if test="supplier != null">
+        supplier,
+      </if>
+      <if test="contact != null">
+        contact,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="warrantyStartDate != null">
+        warranty_start_date,
+      </if>
+      <if test="warrantyEndDate != null">
+        warranty_end_date,
+      </if>
+      <if test="stockUpper != null">
+        stock_upper,
+      </if>
+      <if test="stockLower != null">
+        stock_lower,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="createDttm != null">
+        create_dttm,
+      </if>
+      <if test="updateDttm != null">
+        update_dttm,
+      </if>
+      <if test="creator != null">
+        creator,
+      </if>
+      <if test="updater != null">
+        updater,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="deviceId != null">
+        #{deviceId,jdbcType=BIGINT},
+      </if>
+      <if test="stationId != null">
+        #{stationId,jdbcType=BIGINT},
+      </if>
+      <if test="deviceName != null">
+        #{deviceName,jdbcType=VARCHAR},
+      </if>
+      <if test="number != null">
+        #{number,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="model != null">
+        #{model,jdbcType=VARCHAR},
+      </if>
+      <if test="supplier != null">
+        #{supplier,jdbcType=VARCHAR},
+      </if>
+      <if test="contact != null">
+        #{contact,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="warrantyStartDate != null">
+        #{warrantyStartDate,jdbcType=VARCHAR},
+      </if>
+      <if test="warrantyEndDate != null">
+        #{warrantyEndDate,jdbcType=VARCHAR},
+      </if>
+      <if test="stockUpper != null">
+        #{stockUpper,jdbcType=VARCHAR},
+      </if>
+      <if test="stockLower != null">
+        #{stockLower,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createDttm != null">
+        #{createDttm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDttm != null">
+        #{updateDttm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creator != null">
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="updater != null">
+        #{updater,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.goodpower.pvams.model.PowerStationDevice">
+    update t_power_station_device
+    <set>
+      <if test="stationId != null">
+        station_id = #{stationId,jdbcType=BIGINT},
+      </if>
+      <if test="deviceName != null">
+        device_name = #{deviceName,jdbcType=VARCHAR},
+      </if>
+      <if test="number != null">
+        number = #{number,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="model != null">
+        model = #{model,jdbcType=VARCHAR},
+      </if>
+      <if test="supplier != null">
+        supplier = #{supplier,jdbcType=VARCHAR},
+      </if>
+      <if test="contact != null">
+        contact = #{contact,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="warrantyStartDate != null">
+        warranty_start_date = #{warrantyStartDate,jdbcType=VARCHAR},
+      </if>
+      <if test="warrantyEndDate != null">
+        warranty_end_date = #{warrantyEndDate,jdbcType=VARCHAR},
+      </if>
+      <if test="stockUpper != null">
+        stock_upper = #{stockUpper,jdbcType=VARCHAR},
+      </if>
+      <if test="stockLower != null">
+        stock_lower = #{stockLower,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createDttm != null">
+        create_dttm = #{createDttm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creator != null">
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="updater != null">
+        updater = #{updater,jdbcType=VARCHAR},
+      </if>
+      <if test="param != null">
+        param = #{param,jdbcType=VARCHAR},
+      </if>
+      update_dttm = now()
+    </set>
+    where device_id = #{deviceId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.goodpower.pvams.model.PowerStationDevice">
+    update t_power_station_device
+    set station_id = #{stationId,jdbcType=BIGINT},
+      device_name = #{deviceName,jdbcType=VARCHAR},
+      number = #{number,jdbcType=INTEGER},
+      type = #{type,jdbcType=VARCHAR},
+      model = #{model,jdbcType=VARCHAR},
+      supplier = #{supplier,jdbcType=VARCHAR},
+      contact = #{contact,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      warranty_start_date = #{warrantyStartDate,jdbcType=VARCHAR},
+      warranty_end_date = #{warrantyEndDate,jdbcType=VARCHAR},
+      stock_upper = #{stockUpper,jdbcType=VARCHAR},
+      stock_lower = #{stockLower,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      create_dttm = #{createDttm,jdbcType=TIMESTAMP},
+      update_dttm = #{updateDttm,jdbcType=TIMESTAMP},
+      creator = #{creator,jdbcType=VARCHAR},
+      updater = #{updater,jdbcType=VARCHAR}
+    where device_id = #{deviceId,jdbcType=BIGINT}
+  </update>
+
+  <select id="selectByField" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_power_station_device
+    where
+        1 = 1
+        <if test="stationId != null">
+          and station_id = #{stationId,jdbcType=BIGINT}
+        </if>
+        <if test="index != null and limit != null">
+          limit #{index,jdbcType=INTEGER},#{limit,jdbcType=INTEGER}
+        </if>
+  </select>
+
+  <select id="getStationDeviceCount" parameterType="java.util.Map" resultType="java.lang.Long">
+    select
+      count(1)
+    from
+        t_power_station_device
+    where
+      1 = 1
+      <if test="stationId != null">
+        and station_id = #{stationId,jdbcType=BIGINT}
+      </if>
+  </select>
+
+</mapper>

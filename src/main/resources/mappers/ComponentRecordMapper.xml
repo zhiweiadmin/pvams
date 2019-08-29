@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goodpower.pvams.mapper.ComponentRecordMapper">
+  <resultMap id="BaseResultMap" type="com.goodpower.pvams.model.ComponentRecord">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="station_id" jdbcType="BIGINT" property="stationId" />
+    <result column="component_id" jdbcType="BIGINT" property="componentId" />
+    <result column="action" jdbcType="INTEGER" property="action" />
+    <result column="num" jdbcType="INTEGER" property="num" />
+    <result column="submit_date" jdbcType="TIMESTAMP" property="submitDate" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="approve_user_id" jdbcType="BIGINT" property="approveUserId" />
+    <result column="approve_date" jdbcType="TIMESTAMP" property="approveDate" />
+    <result column="create_dttm" jdbcType="TIMESTAMP" property="createDttm" />
+    <result column="update_dttm" jdbcType="TIMESTAMP" property="updateDttm" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, user_id, station_id, component_id, action, submit_date, status, approve_user_id, 
+    approve_date, create_dttm, update_dttm,num
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_component_record
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_component_record
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.goodpower.pvams.model.ComponentRecord">
+    insert into t_component_record (id, user_id, station_id, 
+      component_id, action,num, submit_date,
+      status, approve_user_id, approve_date, 
+      create_dttm, update_dttm)
+    values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{stationId,jdbcType=BIGINT}, 
+      #{componentId,jdbcType=BIGINT}, #{action,jdbcType=INTEGER},#{num,jdbcType=INTEGER}, #{submitDate,jdbcType=TIMESTAMP},
+      #{status,jdbcType=INTEGER}, #{approveUserId,jdbcType=BIGINT}, #{approveDate,jdbcType=TIMESTAMP}, 
+      #{createDttm,jdbcType=TIMESTAMP}, #{updateDttm,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.goodpower.pvams.model.ComponentRecord">
+    insert into t_component_record
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="stationId != null">
+        station_id,
+      </if>
+      <if test="componentId != null">
+        component_id,
+      </if>
+      <if test="action != null">
+        action,
+      </if>
+      <if test="num != null">
+        num,
+      </if>
+      <if test="submitDate != null">
+        submit_date,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="approveUserId != null">
+        approve_user_id,
+      </if>
+      <if test="approveDate != null">
+        approve_date,
+      </if>
+      <if test="createDttm != null">
+        create_dttm,
+      </if>
+      <if test="updateDttm != null">
+        update_dttm,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="stationId != null">
+        #{stationId,jdbcType=BIGINT},
+      </if>
+      <if test="componentId != null">
+        #{componentId,jdbcType=BIGINT},
+      </if>
+      <if test="action != null">
+        #{action,jdbcType=INTEGER},
+      </if>
+      <if test="num != null">
+        #{num,jdbcType=INTEGER},
+      </if>
+      <if test="submitDate != null">
+        #{submitDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="approveUserId != null">
+        #{approveUserId,jdbcType=BIGINT},
+      </if>
+      <if test="approveDate != null">
+        #{approveDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createDttm != null">
+        #{createDttm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDttm != null">
+        #{updateDttm,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.goodpower.pvams.model.ComponentRecord">
+    update t_component_record
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="stationId != null">
+        station_id = #{stationId,jdbcType=BIGINT},
+      </if>
+      <if test="componentId != null">
+        component_id = #{componentId,jdbcType=BIGINT},
+      </if>
+      <if test="action != null">
+        action = #{action,jdbcType=INTEGER},
+      </if>
+      <if test="num != null">
+        num = #{num,jdbcType=INTEGER},
+      </if>
+      <if test="submitDate != null">
+        submit_date = #{submitDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="approveUserId != null">
+        approve_user_id = #{approveUserId,jdbcType=BIGINT},
+      </if>
+      <if test="approveDate != null">
+        approve_date = #{approveDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createDttm != null">
+        create_dttm = #{createDttm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDttm != null">
+        update_dttm = #{updateDttm,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.goodpower.pvams.model.ComponentRecord">
+    update t_component_record
+    set user_id = #{userId,jdbcType=BIGINT},
+      station_id = #{stationId,jdbcType=BIGINT},
+      component_id = #{componentId,jdbcType=BIGINT},
+      action = #{action,jdbcType=INTEGER},
+      num = #{num,jdbcType=INTEGER},
+      submit_date = #{submitDate,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=INTEGER},
+      approve_user_id = #{approveUserId,jdbcType=BIGINT},
+      approve_date = #{approveDate,jdbcType=TIMESTAMP},
+      create_dttm = #{createDttm,jdbcType=TIMESTAMP},
+      update_dttm = #{updateDttm,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByFields" parameterType="java.util.Map" resultType="java.util.Map">
+    select * from (
+    select
+      id,
+      component_id componentId,
+      a.user_id userId,
+      submit_date submitDate,
+      approve_user_id approveUserId,
+      status,
+      action,
+      a.num,
+      approve_date approveDate,
+      b.realname applyer,
+      c.realname approver
+    from
+    t_component_record a
+    LEFT JOIN t_user b on a.user_id = b.user_id
+    LEFT JOIN t_user c ON a.approve_user_id = c.user_id
+    where
+    1 = 1
+    <if test="componentId != null">
+      and component_id = #{componentId,jdbcType=BIGINT}
+    </if>
+    ) t
+    <if test="offset != null and limit != null">
+      limit #{offset,jdbcType=INTEGER},#{limit,jdbcType=INTEGER}
+    </if>
+  </select>
+  <select id="getCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+    select
+      count(1)
+    from
+      t_component_record a
+      LEFT JOIN t_user b on a.user_id = b.user_id
+      LEFT JOIN t_user c ON a.approve_user_id = c.user_id
+    where
+      1 = 1
+      <if test="componentId != null">
+        and component_id = #{componentId,jdbcType=BIGINT}
+      </if>
+  </select>
+</mapper>

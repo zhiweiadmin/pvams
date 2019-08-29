@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goodpower.pvams.mapper.TrainPlanDetailMapper">
+  <resultMap id="BaseResultMap" type="com.goodpower.pvams.model.TrainPlanDetail">
+    <id column="train_detail_id" jdbcType="BIGINT" property="trainDetailId" />
+    <result column="train_id" jdbcType="BIGINT" property="trainId" />
+    <result column="train_week" jdbcType="INTEGER" property="trainWeek" />
+    <result column="trainer" jdbcType="VARCHAR" property="trainer" />
+    <result column="train_time" jdbcType="TIMESTAMP" property="trainTime" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="flow" jdbcType="VARCHAR" property="flow" />
+    <result column="result" jdbcType="VARCHAR" property="result" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="submit_user_id" jdbcType="BIGINT" property="submitUserId" />
+    <result column="confirm_user_id" jdbcType="BIGINT" property="confirmUserId" />
+    <result column="confirm_time" jdbcType="TIMESTAMP" property="confirmTime" />
+    <result column="create_dttm" jdbcType="TIMESTAMP" property="createDttm" />
+    <result column="update_dttm" jdbcType="TIMESTAMP" property="updateDttm" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    train_detail_id, train_id, train_week, trainer, train_time, content, flow, result, 
+    status, submit_user_id, confirm_user_id, confirm_time, create_dttm, update_dttm
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_train_plan_detail
+    where train_detail_id = #{trainDetailId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_train_plan_detail
+    where train_detail_id = #{trainDetailId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.goodpower.pvams.model.TrainPlanDetail">
+    insert into t_train_plan_detail (train_detail_id, train_id, train_week, 
+      trainer, train_time, content, 
+      flow, result, status, 
+      submit_user_id, confirm_user_id, confirm_time, 
+      create_dttm, update_dttm)
+    values (#{trainDetailId,jdbcType=BIGINT}, #{trainId,jdbcType=BIGINT}, #{trainWeek,jdbcType=INTEGER}, 
+      #{trainer,jdbcType=VARCHAR}, #{trainTime,jdbcType=TIMESTAMP}, #{content,jdbcType=VARCHAR}, 
+      #{flow,jdbcType=VARCHAR}, #{result,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+      #{submitUserId,jdbcType=BIGINT}, #{confirmUserId,jdbcType=BIGINT}, #{confirmTime,jdbcType=TIMESTAMP}, 
+      #{createDttm,jdbcType=TIMESTAMP}, #{updateDttm,jdbcType=TIMESTAMP})
+    ON DUPLICATE KEY UPDATE
+        update_dttm = #{updateDttm,jdbcType=TIMESTAMP}
+  </insert>
+  <insert id="insertSelective" parameterType="com.goodpower.pvams.model.TrainPlanDetail">
+    insert into t_train_plan_detail
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="trainDetailId != null">
+        train_detail_id,
+      </if>
+      <if test="trainId != null">
+        train_id,
+      </if>
+      <if test="trainWeek != null">
+        train_week,
+      </if>
+      <if test="trainer != null">
+        trainer,
+      </if>
+      <if test="trainTime != null">
+        train_time,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+      <if test="flow != null">
+        flow,
+      </if>
+      <if test="result != null">
+        result,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="submitUserId != null">
+        submit_user_id,
+      </if>
+      <if test="confirmUserId != null">
+        confirm_user_id,
+      </if>
+      <if test="confirmTime != null">
+        confirm_time,
+      </if>
+      <if test="createDttm != null">
+        create_dttm,
+      </if>
+      <if test="updateDttm != null">
+        update_dttm,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="trainDetailId != null">
+        #{trainDetailId,jdbcType=BIGINT},
+      </if>
+      <if test="trainId != null">
+        #{trainId,jdbcType=BIGINT},
+      </if>
+      <if test="trainWeek != null">
+        #{trainWeek,jdbcType=INTEGER},
+      </if>
+      <if test="trainer != null">
+        #{trainer,jdbcType=VARCHAR},
+      </if>
+      <if test="trainTime != null">
+        #{trainTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="flow != null">
+        #{flow,jdbcType=VARCHAR},
+      </if>
+      <if test="result != null">
+        #{result,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="submitUserId != null">
+        #{submitUserId,jdbcType=BIGINT},
+      </if>
+      <if test="confirmUserId != null">
+        #{confirmUserId,jdbcType=BIGINT},
+      </if>
+      <if test="confirmTime != null">
+        #{confirmTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createDttm != null">
+        #{createDttm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDttm != null">
+        #{updateDttm,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+    ON DUPLICATE KEY UPDATE
+    update_dttm = #{updateDttm,jdbcType=TIMESTAMP}
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.goodpower.pvams.model.TrainPlanDetail">
+    update t_train_plan_detail
+    <set>
+      <if test="trainId != null">
+        train_id = #{trainId,jdbcType=BIGINT},
+      </if>
+      <if test="trainWeek != null">
+        train_week = #{trainWeek,jdbcType=INTEGER},
+      </if>
+      <if test="trainer != null">
+        trainer = #{trainer,jdbcType=VARCHAR},
+      </if>
+      <if test="trainTime != null">
+        train_time = #{trainTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="flow != null">
+        flow = #{flow,jdbcType=VARCHAR},
+      </if>
+      <if test="result != null">
+        result = #{result,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="submitUserId != null">
+        submit_user_id = #{submitUserId,jdbcType=BIGINT},
+      </if>
+      <if test="confirmUserId != null">
+        confirm_user_id = #{confirmUserId,jdbcType=BIGINT},
+      </if>
+      <if test="confirmTime != null">
+        confirm_time = #{confirmTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createDttm != null">
+        create_dttm = #{createDttm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDttm != null">
+        update_dttm = #{updateDttm,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where train_detail_id = #{trainDetailId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.goodpower.pvams.model.TrainPlanDetail">
+    update t_train_plan_detail
+    set train_id = #{trainId,jdbcType=BIGINT},
+      train_week = #{trainWeek,jdbcType=INTEGER},
+      trainer = #{trainer,jdbcType=VARCHAR},
+      train_time = #{trainTime,jdbcType=TIMESTAMP},
+      content = #{content,jdbcType=VARCHAR},
+      flow = #{flow,jdbcType=VARCHAR},
+      result = #{result,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      submit_user_id = #{submitUserId,jdbcType=BIGINT},
+      confirm_user_id = #{confirmUserId,jdbcType=BIGINT},
+      confirm_time = #{confirmTime,jdbcType=TIMESTAMP},
+      create_dttm = #{createDttm,jdbcType=TIMESTAMP},
+      update_dttm = #{updateDttm,jdbcType=TIMESTAMP}
+    where train_detail_id = #{trainDetailId,jdbcType=BIGINT}
+  </update>
+  <select id="selectByFields" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select
+        *
+    from
+        t_train_plan_detail
+    where
+    1 = 1
+    <if test="trainId != null">
+      and train_id = #{trainId,jdbcType=BIGINT}
+    </if>
+  </select>
+  <delete id="deleteByFields" parameterType="java.util.Map">
+    delete
+    from
+    t_train_plan_detail
+    where
+    1 = 1
+    <if test="trainId != null">
+      and train_id = #{trainId,jdbcType=BIGINT}
+    </if>
+    <if test="date != null">
+      and #{date,jdbcType=TIMESTAMP} > update_dttm
+    </if>
+  </delete>
+</mapper>

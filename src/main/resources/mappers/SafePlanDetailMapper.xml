@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goodpower.pvams.mapper.SafePlanDetailMapper">
+  <resultMap id="BaseResultMap" type="com.goodpower.pvams.model.SafePlanDetail">
+    <id column="safe_detail_id" jdbcType="BIGINT" property="safeDetailId" />
+    <result column="safe_id" jdbcType="BIGINT" property="safeId" />
+    <result column="safe_week" jdbcType="INTEGER" property="safeWeek" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="flow" jdbcType="VARCHAR" property="flow" />
+    <result column="result" jdbcType="VARCHAR" property="result" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="submit_user_id" jdbcType="BIGINT" property="submitUserId" />
+    <result column="submit_time" jdbcType="TIMESTAMP" property="submitTime" />
+    <result column="confirm_user_id" jdbcType="BIGINT" property="confirmUserId" />
+    <result column="confirm_time" jdbcType="TIMESTAMP" property="confirmTime" />
+    <result column="create_dttm" jdbcType="TIMESTAMP" property="createDttm" />
+    <result column="update_dttm" jdbcType="TIMESTAMP" property="updateDttm" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    safe_detail_id, safe_id, safe_week, content, flow, result, status, submit_user_id, 
+    submit_time, confirm_user_id, confirm_time, create_dttm, update_dttm
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_safe_plan_detail
+    where safe_detail_id = #{safeDetailId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_safe_plan_detail
+    where safe_detail_id = #{safeDetailId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.goodpower.pvams.model.SafePlanDetail">
+    insert into t_safe_plan_detail (safe_detail_id, safe_id, safe_week, 
+      content, flow, result, 
+      status, submit_user_id, submit_time, 
+      confirm_user_id, confirm_time, create_dttm, 
+      update_dttm)
+    values (#{safeDetailId,jdbcType=BIGINT}, #{safeId,jdbcType=BIGINT}, #{safeWeek,jdbcType=INTEGER}, 
+      #{content,jdbcType=VARCHAR}, #{flow,jdbcType=VARCHAR}, #{result,jdbcType=VARCHAR}, 
+      #{status,jdbcType=INTEGER}, #{submitUserId,jdbcType=BIGINT}, #{submitTime,jdbcType=TIMESTAMP}, 
+      #{confirmUserId,jdbcType=BIGINT}, #{confirmTime,jdbcType=TIMESTAMP}, #{createDttm,jdbcType=TIMESTAMP}, 
+      #{updateDttm,jdbcType=TIMESTAMP})
+    ON DUPLICATE KEY UPDATE
+        update_dttm = #{updateDttm,jdbcType=TIMESTAMP}
+  </insert>
+  <insert id="insertSelective" parameterType="com.goodpower.pvams.model.SafePlanDetail">
+    insert into t_safe_plan_detail
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="safeDetailId != null">
+        safe_detail_id,
+      </if>
+      <if test="safeId != null">
+        safe_id,
+      </if>
+      <if test="safeWeek != null">
+        safe_week,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+      <if test="flow != null">
+        flow,
+      </if>
+      <if test="result != null">
+        result,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="submitUserId != null">
+        submit_user_id,
+      </if>
+      <if test="submitTime != null">
+        submit_time,
+      </if>
+      <if test="confirmUserId != null">
+        confirm_user_id,
+      </if>
+      <if test="confirmTime != null">
+        confirm_time,
+      </if>
+      <if test="createDttm != null">
+        create_dttm,
+      </if>
+      <if test="updateDttm != null">
+        update_dttm,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="safeDetailId != null">
+        #{safeDetailId,jdbcType=BIGINT},
+      </if>
+      <if test="safeId != null">
+        #{safeId,jdbcType=BIGINT},
+      </if>
+      <if test="safeWeek != null">
+        #{safeWeek,jdbcType=INTEGER},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="flow != null">
+        #{flow,jdbcType=VARCHAR},
+      </if>
+      <if test="result != null">
+        #{result,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="submitUserId != null">
+        #{submitUserId,jdbcType=BIGINT},
+      </if>
+      <if test="submitTime != null">
+        #{submitTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="confirmUserId != null">
+        #{confirmUserId,jdbcType=BIGINT},
+      </if>
+      <if test="confirmTime != null">
+        #{confirmTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createDttm != null">
+        #{createDttm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDttm != null">
+        #{updateDttm,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+    ON DUPLICATE KEY UPDATE
+        update_dttm = #{updateDttm,jdbcType=TIMESTAMP}
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.goodpower.pvams.model.SafePlanDetail">
+    update t_safe_plan_detail
+    <set>
+      <if test="safeId != null">
+        safe_id = #{safeId,jdbcType=BIGINT},
+      </if>
+      <if test="safeWeek != null">
+        safe_week = #{safeWeek,jdbcType=INTEGER},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="flow != null">
+        flow = #{flow,jdbcType=VARCHAR},
+      </if>
+      <if test="result != null">
+        result = #{result,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="submitUserId != null">
+        submit_user_id = #{submitUserId,jdbcType=BIGINT},
+      </if>
+      <if test="submitTime != null">
+        submit_time = #{submitTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="confirmUserId != null">
+        confirm_user_id = #{confirmUserId,jdbcType=BIGINT},
+      </if>
+      <if test="confirmTime != null">
+        confirm_time = #{confirmTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createDttm != null">
+        create_dttm = #{createDttm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDttm != null">
+        update_dttm = #{updateDttm,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where safe_detail_id = #{safeDetailId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.goodpower.pvams.model.SafePlanDetail">
+    update t_safe_plan_detail
+    set safe_id = #{safeId,jdbcType=BIGINT},
+      safe_week = #{safeWeek,jdbcType=INTEGER},
+      content = #{content,jdbcType=VARCHAR},
+      flow = #{flow,jdbcType=VARCHAR},
+      result = #{result,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      submit_user_id = #{submitUserId,jdbcType=BIGINT},
+      submit_time = #{submitTime,jdbcType=TIMESTAMP},
+      confirm_user_id = #{confirmUserId,jdbcType=BIGINT},
+      confirm_time = #{confirmTime,jdbcType=TIMESTAMP},
+      create_dttm = #{createDttm,jdbcType=TIMESTAMP},
+      update_dttm = #{updateDttm,jdbcType=TIMESTAMP}
+    where safe_detail_id = #{safeDetailId,jdbcType=BIGINT}
+  </update>
+  <select id="selectByFields" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select
+    *
+    from
+    t_safe_plan_detail
+    where
+    1 = 1
+    <if test="safeId != null">
+      and safe_id = #{safeId,jdbcType=BIGINT}
+    </if>
+  </select>
+  <delete id="deleteByFields" parameterType="java.util.Map">
+    delete
+    from
+    t_safe_plan_detail
+    where
+    1 = 1
+    <if test="safeId != null">
+      and safe_id = #{safeId,jdbcType=BIGINT}
+    </if>
+    <if test="date != null">
+      and #{date,jdbcType=TIMESTAMP} > update_dttm
+    </if>
+  </delete>
+</mapper>

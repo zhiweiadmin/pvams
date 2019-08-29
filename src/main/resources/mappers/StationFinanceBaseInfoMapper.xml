@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goodpower.pvams.mapper.StationFinanceBaseInfoMapper">
+  <resultMap id="BaseResultMap" type="com.goodpower.pvams.model.StationFinanceBaseInfo">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="station_id" jdbcType="BIGINT" property="stationId" />
+    <result column="total_cost" jdbcType="DECIMAL" property="totalCost" />
+    <result column="loan_cost" jdbcType="DECIMAL" property="loanCost" />
+    <result column="run_cost" jdbcType="DECIMAL" property="runCost" />
+    <result column="loan_type" jdbcType="INTEGER" property="loanType" />
+    <result column="loan_year" jdbcType="INTEGER" property="loanYear" />
+    <result column="first_repayment_date" jdbcType="TIMESTAMP" property="firstRepaymentDate" />
+    <result column="loan_rate" jdbcType="DECIMAL" property="loanRate" />
+    <result column="create_dttm" jdbcType="TIMESTAMP" property="createDttm" />
+    <result column="update_dttm" jdbcType="TIMESTAMP" property="updateDttm" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, station_id, total_cost, loan_cost, run_cost, loan_type, loan_year, first_repayment_date, 
+    loan_rate, create_dttm, update_dttm
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_station_finance_base_info
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_station_finance_base_info
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.goodpower.pvams.model.StationFinanceBaseInfo">
+    insert into t_station_finance_base_info (id, station_id, total_cost, 
+      loan_cost, run_cost, loan_type, 
+      loan_year, first_repayment_date, loan_rate, 
+      create_dttm, update_dttm)
+    values (#{id,jdbcType=BIGINT}, #{stationId,jdbcType=BIGINT}, #{totalCost,jdbcType=DECIMAL}, 
+      #{loanCost,jdbcType=DECIMAL}, #{runCost,jdbcType=DECIMAL}, #{loanType,jdbcType=INTEGER}, 
+      #{loanYear,jdbcType=INTEGER}, #{firstRepaymentDate,jdbcType=TIMESTAMP}, #{loanRate,jdbcType=DECIMAL}, 
+      #{createDttm,jdbcType=TIMESTAMP}, #{updateDttm,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.goodpower.pvams.model.StationFinanceBaseInfo">
+    insert into t_station_finance_base_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="stationId != null">
+        station_id,
+      </if>
+      <if test="totalCost != null">
+        total_cost,
+      </if>
+      <if test="loanCost != null">
+        loan_cost,
+      </if>
+      <if test="runCost != null">
+        run_cost,
+      </if>
+      <if test="loanType != null">
+        loan_type,
+      </if>
+      <if test="loanYear != null">
+        loan_year,
+      </if>
+      <if test="firstRepaymentDate != null">
+        first_repayment_date,
+      </if>
+      <if test="loanRate != null">
+        loan_rate,
+      </if>
+      <if test="createDttm != null">
+        create_dttm,
+      </if>
+      <if test="updateDttm != null">
+        update_dttm,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="stationId != null">
+        #{stationId,jdbcType=BIGINT},
+      </if>
+      <if test="totalCost != null">
+        #{totalCost,jdbcType=DECIMAL},
+      </if>
+      <if test="loanCost != null">
+        #{loanCost,jdbcType=DECIMAL},
+      </if>
+      <if test="runCost != null">
+        #{runCost,jdbcType=DECIMAL},
+      </if>
+      <if test="loanType != null">
+        #{loanType,jdbcType=INTEGER},
+      </if>
+      <if test="loanYear != null">
+        #{loanYear,jdbcType=INTEGER},
+      </if>
+      <if test="firstRepaymentDate != null">
+        #{firstRepaymentDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="loanRate != null">
+        #{loanRate,jdbcType=DECIMAL},
+      </if>
+      <if test="createDttm != null">
+        #{createDttm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDttm != null">
+        #{updateDttm,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.goodpower.pvams.model.StationFinanceBaseInfo">
+    update t_station_finance_base_info
+    <set>
+      <if test="stationId != null">
+        station_id = #{stationId,jdbcType=BIGINT},
+      </if>
+      <if test="totalCost != null">
+        total_cost = #{totalCost,jdbcType=DECIMAL},
+      </if>
+      <if test="loanCost != null">
+        loan_cost = #{loanCost,jdbcType=DECIMAL},
+      </if>
+      <if test="runCost != null">
+        run_cost = #{runCost,jdbcType=DECIMAL},
+      </if>
+      <if test="loanType != null">
+        loan_type = #{loanType,jdbcType=INTEGER},
+      </if>
+      <if test="loanYear != null">
+        loan_year = #{loanYear,jdbcType=INTEGER},
+      </if>
+      <if test="firstRepaymentDate != null">
+        first_repayment_date = #{firstRepaymentDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="loanRate != null">
+        loan_rate = #{loanRate,jdbcType=DECIMAL},
+      </if>
+      <if test="createDttm != null">
+        create_dttm = #{createDttm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDttm != null">
+        update_dttm = #{updateDttm,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.goodpower.pvams.model.StationFinanceBaseInfo">
+    update t_station_finance_base_info
+    set station_id = #{stationId,jdbcType=BIGINT},
+      total_cost = #{totalCost,jdbcType=DECIMAL},
+      loan_cost = #{loanCost,jdbcType=DECIMAL},
+      run_cost = #{runCost,jdbcType=DECIMAL},
+      loan_type = #{loanType,jdbcType=INTEGER},
+      loan_year = #{loanYear,jdbcType=INTEGER},
+      first_repayment_date = #{firstRepaymentDate,jdbcType=TIMESTAMP},
+      loan_rate = #{loanRate,jdbcType=DECIMAL},
+      create_dttm = #{createDttm,jdbcType=TIMESTAMP},
+      update_dttm = #{updateDttm,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <select id="selectByStationId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select * from t_station_finance_base_info where station_id = #{stationId,jdbcType=BIGINT}
+  </select>
+
+</mapper>

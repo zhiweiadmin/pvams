@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goodpower.pvams.mapper.CountyMapper">
+  <resultMap id="BaseResultMap" type="com.goodpower.pvams.model.County">
+    <id column="county_id" jdbcType="BIGINT" property="countyId" />
+    <result column="city_id" jdbcType="BIGINT" property="cityId" />
+    <result column="county_name" jdbcType="CHAR" property="countyName" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    county_id, city_id, county_name
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_county
+    where county_id = #{countyId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_county
+    where county_id = #{countyId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.goodpower.pvams.model.County">
+    insert into t_county (county_id, city_id, county_name
+      )
+    values (#{countyId,jdbcType=BIGINT}, #{cityId,jdbcType=BIGINT}, #{countyName,jdbcType=CHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.goodpower.pvams.model.County">
+    insert into t_county
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="countyId != null">
+        county_id,
+      </if>
+      <if test="cityId != null">
+        city_id,
+      </if>
+      <if test="countyName != null">
+        county_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="countyId != null">
+        #{countyId,jdbcType=BIGINT},
+      </if>
+      <if test="cityId != null">
+        #{cityId,jdbcType=BIGINT},
+      </if>
+      <if test="countyName != null">
+        #{countyName,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.goodpower.pvams.model.County">
+    update t_county
+    <set>
+      <if test="cityId != null">
+        city_id = #{cityId,jdbcType=BIGINT},
+      </if>
+      <if test="countyName != null">
+        county_name = #{countyName,jdbcType=CHAR},
+      </if>
+    </set>
+    where county_id = #{countyId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.goodpower.pvams.model.County">
+    update t_county
+    set city_id = #{cityId,jdbcType=BIGINT},
+      county_name = #{countyName,jdbcType=CHAR}
+    where county_id = #{countyId,jdbcType=BIGINT}
+  </update>
+  <select id="selectByFields" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select * from  t_county
+    where
+        1 = 1
+    <if test="cityId != null">
+      and city_id = #{cityId,jdbcType=BIGINT}
+    </if>
+  </select>
+</mapper>

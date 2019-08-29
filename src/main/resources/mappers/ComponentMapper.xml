@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goodpower.pvams.mapper.ComponentMapper">
+  <resultMap id="BaseResultMap" type="com.goodpower.pvams.model.Component">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="station_id" jdbcType="BIGINT" property="stationId" />
+    <result column="version" jdbcType="BIGINT" property="version" />
+    <result column="component_name" jdbcType="VARCHAR" property="componentName" />
+    <result column="num" jdbcType="INTEGER" property="num" />
+    <result column="brand" jdbcType="VARCHAR" property="brand" />
+    <result column="stock_up" jdbcType="INTEGER" property="stockUp" />
+    <result column="stock_lower" jdbcType="INTEGER" property="stockLower" />
+    <result column="param" jdbcType="VARCHAR" property="param" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="create_dttm" jdbcType="TIMESTAMP" property="createDttm" />
+    <result column="update_dttm" jdbcType="TIMESTAMP" property="updateDttm" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, station_id, component_name, num, brand, stock_up, stock_lower, param, status, 
+    create_dttm, update_dttm,version
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_component
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_component
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.goodpower.pvams.model.Component">
+    insert into t_component (id, station_id, component_name, 
+      num, brand, stock_up, 
+      stock_lower, param, status, 
+      create_dttm, update_dttm,version)
+    values (#{id,jdbcType=BIGINT}, #{stationId,jdbcType=BIGINT}, #{componentName,jdbcType=VARCHAR}, 
+      #{num,jdbcType=INTEGER}, #{brand,jdbcType=VARCHAR}, #{stockUp,jdbcType=INTEGER}, 
+      #{stockLower,jdbcType=INTEGER}, #{param,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
+      #{createDttm,jdbcType=TIMESTAMP}, #{updateDttm,jdbcType=TIMESTAMP},#{version,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.goodpower.pvams.model.Component">
+    insert into t_component
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="stationId != null">
+        station_id,
+      </if>
+      <if test="version != null">
+        version,
+      </if>
+      <if test="componentName != null">
+        component_name,
+      </if>
+      <if test="num != null">
+        num,
+      </if>
+      <if test="brand != null">
+        brand,
+      </if>
+      <if test="stockUp != null">
+        stock_up,
+      </if>
+      <if test="stockLower != null">
+        stock_lower,
+      </if>
+      <if test="param != null">
+        param,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="createDttm != null">
+        create_dttm,
+      </if>
+      <if test="updateDttm != null">
+        update_dttm,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="stationId != null">
+        #{stationId,jdbcType=BIGINT},
+      </if>
+      <if test="version != null">
+        #{version,jdbcType=BIGINT},
+      </if>
+      <if test="componentName != null">
+        #{componentName,jdbcType=VARCHAR},
+      </if>
+      <if test="num != null">
+        #{num,jdbcType=INTEGER},
+      </if>
+      <if test="brand != null">
+        #{brand,jdbcType=VARCHAR},
+      </if>
+      <if test="stockUp != null">
+        #{stockUp,jdbcType=INTEGER},
+      </if>
+      <if test="stockLower != null">
+        #{stockLower,jdbcType=INTEGER},
+      </if>
+      <if test="param != null">
+        #{param,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createDttm != null">
+        #{createDttm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDttm != null">
+        #{updateDttm,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.goodpower.pvams.model.Component">
+    update t_component
+    <set>
+      <if test="stationId != null">
+        station_id = #{stationId,jdbcType=BIGINT},
+      </if>
+      <if test="version != null">
+        version = #{version,jdbcType=BIGINT},
+      </if>
+      <if test="componentName != null">
+        component_name = #{componentName,jdbcType=VARCHAR},
+      </if>
+      <if test="num != null">
+        num = #{num,jdbcType=INTEGER},
+      </if>
+      <if test="brand != null">
+        brand = #{brand,jdbcType=VARCHAR},
+      </if>
+      <if test="stockUp != null">
+        stock_up = #{stockUp,jdbcType=INTEGER},
+      </if>
+      <if test="stockLower != null">
+        stock_lower = #{stockLower,jdbcType=INTEGER},
+      </if>
+      <if test="param != null">
+        param = #{param,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createDttm != null">
+        create_dttm = #{createDttm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDttm != null">
+        update_dttm = #{updateDttm,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.goodpower.pvams.model.Component">
+    update t_component
+    set station_id = #{stationId,jdbcType=BIGINT},
+      component_name = #{componentName,jdbcType=VARCHAR},
+      num = #{num,jdbcType=INTEGER},
+      brand = #{brand,jdbcType=VARCHAR},
+      stock_up = #{stockUp,jdbcType=INTEGER},
+      stock_lower = #{stockLower,jdbcType=INTEGER},
+      param = #{param,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      create_dttm = #{createDttm,jdbcType=TIMESTAMP},
+      update_dttm = #{updateDttm,jdbcType=TIMESTAMP},
+      version = #{stationId,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByFields" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select
+        <include refid="Base_Column_List" />
+    from
+        t_component
+    where
+      1 = 1
+      <if test="stationId != null">
+        and station_Id = #{stationId,jdbcType=BIGINT}
+      </if>
+      <if test="offset != null and limit != null">
+        limit #{offset,jdbcType=INTEGER},#{limit,jdbcType=INTEGER}
+      </if>
+  </select>
+  <update id="updateByVersion" parameterType="java.util.Map">
+    update
+        t_component
+    set
+        <if test="number != null">
+            num = num + (#{number,jdbcType=INTEGER}),
+        </if>
+        <if test="ver != null">
+            version = #{ver,jdbcType=BIGINT},
+        </if>
+        update_dttm = now()
+    where
+        1 = 1
+        <if test="ver != null">
+            and id = #{id,jdbcType=BIGINT}
+        </if>
+        <if test="ver != null">
+           and #{ver,jdbcType=BIGINT} > version
+        </if>
+  </update>
+
+  <select id="selectByField" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_component
+    where
+    1 = 1
+    <if test="stationId != null">
+      and station_id = #{stationId,jdbcType=BIGINT}
+    </if>
+    <if test="index != null and limit != null">
+      limit #{index,jdbcType=INTEGER},#{limit,jdbcType=INTEGER}
+    </if>
+  </select>
+
+</mapper>

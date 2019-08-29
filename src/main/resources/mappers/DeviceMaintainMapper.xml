@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goodpower.pvams.mapper.DeviceMaintainMapper">
+  <resultMap id="BaseResultMap" type="com.goodpower.pvams.model.DeviceMaintain">
+    <id column="maintain_id" jdbcType="BIGINT" property="maintainId" />
+    <result column="station_id" jdbcType="BIGINT" property="stationId" />
+    <result column="year_val" jdbcType="VARCHAR" property="yearVal" />
+    <result column="ac_side" jdbcType="VARCHAR" property="acSide" />
+    <result column="secondary_equipment" jdbcType="VARCHAR" property="secondaryEquipment" />
+    <result column="dc_side" jdbcType="VARCHAR" property="dcSide" />
+    <result column="creator" jdbcType="VARCHAR" property="creator" />
+    <result column="updater" jdbcType="VARCHAR" property="updater" />
+    <result column="msg" jdbcType="VARCHAR" property="msg" />
+    <result column="create_dttm" jdbcType="TIMESTAMP" property="createDttm" />
+    <result column="update_dttm" jdbcType="TIMESTAMP" property="updateDttm" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    maintain_id, station_id, ac_side, secondary_equipment, dc_side, creator, updater, 
+    create_dttm, update_dttm,year_val,msg
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_device_maintain
+    where maintain_id = #{maintainId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_device_maintain
+    where maintain_id = #{maintainId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.goodpower.pvams.model.DeviceMaintain" useGeneratedKeys="true" keyProperty="maintainId">
+    insert into t_device_maintain (station_id,year_val, ac_side,
+      secondary_equipment, dc_side, creator, 
+      updater, create_dttm, update_dttm,msg
+      )
+    values (#{stationId,jdbcType=BIGINT},#{yearVal,jdbcType=VARCHAR}, #{acSide,jdbcType=VARCHAR},
+      #{secondaryEquipment,jdbcType=VARCHAR}, #{dcSide,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
+      #{updater,jdbcType=VARCHAR}, #{createDttm,jdbcType=TIMESTAMP}, #{updateDttm,jdbcType=TIMESTAMP},
+      #{msg,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.goodpower.pvams.model.DeviceMaintain">
+    insert into t_device_maintain
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="maintainId != null">
+        maintain_id,
+      </if>
+      <if test="stationId != null">
+        station_id,
+      </if>
+      <if test="year != null">
+        year_val,
+      </if>
+      <if test="acSide != null">
+        ac_side,
+      </if>
+      <if test="secondaryEquipment != null">
+        secondary_equipment,
+      </if>
+      <if test="dcSide != null">
+        dc_side,
+      </if>
+      <if test="creator != null">
+        creator,
+      </if>
+      <if test="updater != null">
+        updater,
+      </if>
+      <if test="createDttm != null">
+        create_dttm,
+      </if>
+      <if test="updateDttm != null">
+        update_dttm,
+      </if>
+      <if test="msg != null">
+        msg,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="maintainId != null">
+        #{maintainId,jdbcType=BIGINT},
+      </if>
+      <if test="stationId != null">
+        #{stationId,jdbcType=BIGINT},
+      </if>
+      <if test="year != null">
+        #{year,jdbcType=VARCHAR},
+      </if>
+      <if test="acSide != null">
+        #{acSide,jdbcType=VARCHAR},
+      </if>
+      <if test="secondaryEquipment != null">
+        #{secondaryEquipment,jdbcType=VARCHAR},
+      </if>
+      <if test="dcSide != null">
+        #{dcSide,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null">
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="updater != null">
+        #{updater,jdbcType=VARCHAR},
+      </if>
+      <if test="createDttm != null">
+        #{createDttm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDttm != null">
+        #{updateDttm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="msg != null">
+        #{msg,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.goodpower.pvams.model.DeviceMaintain">
+    update t_device_maintain
+    <set>
+      <if test="stationId != null">
+        station_id = #{stationId,jdbcType=BIGINT},
+      </if>
+      <if test="acSide != null">
+        ac_side = #{acSide,jdbcType=VARCHAR},
+      </if>
+      <if test="secondaryEquipment != null">
+        secondary_equipment = #{secondaryEquipment,jdbcType=VARCHAR},
+      </if>
+      <if test="dcSide != null">
+        dc_side = #{dcSide,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null">
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="updater != null">
+        updater = #{updater,jdbcType=VARCHAR},
+      </if>
+      <if test="msg != null">
+        msg = #{msg,jdbcType=VARCHAR},
+      </if>
+      <if test="createDttm != null">
+        create_dttm = #{createDttm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDttm != null">
+        update_dttm = #{updateDttm,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where maintain_id = #{maintainId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.goodpower.pvams.model.DeviceMaintain">
+    update t_device_maintain
+    set station_id = #{stationId,jdbcType=BIGINT},
+      ac_side = #{acSide,jdbcType=VARCHAR},
+      secondary_equipment = #{secondaryEquipment,jdbcType=VARCHAR},
+      dc_side = #{dcSide,jdbcType=VARCHAR},
+      creator = #{creator,jdbcType=VARCHAR},
+      updater = #{updater,jdbcType=VARCHAR},
+      msg = #{msg,jdbcType=VARCHAR},
+      create_dttm = #{createDttm,jdbcType=TIMESTAMP},
+      update_dttm = #{updateDttm,jdbcType=TIMESTAMP}
+    where maintain_id = #{maintainId,jdbcType=BIGINT}
+  </update>
+
+  <select id="getMaintainPlan" resultType="java.util.Map">
+        select
+            t1.*,t2.device_type,t2.maintain_week,
+            case t2.device_type
+              when 'A' then '直流测'
+              when 'B' then '二次设备'
+              when 'C' then '交流侧'
+              else null
+            end as maintain_type
+        from
+            t_device_maintain t1,t_device_maintain_detail t2
+        where
+            t1.maintain_id = t2.maintain_id
+            and t1.maintain_id = #{maintainId,jdbcType=BIGINT}
+            and t2.maintain_week = #{week,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectByField" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_device_maintain
+    where
+        1 = 1
+        <if test="stationId != null">
+          and station_id = #{stationId,jdbcType=BIGINT}
+        </if>
+        <if test="year != null">
+          and year_val = #{year,jdbcType=VARCHAR}
+        </if>
+  </select>
+
+</mapper>

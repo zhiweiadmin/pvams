@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goodpower.pvams.mapper.CarTravelRecordMapper">
+  <resultMap id="BaseResultMap" type="com.goodpower.pvams.model.CarTravelRecord">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="car_id" jdbcType="BIGINT" property="carId" />
+    <result column="submit_user_id" jdbcType="BIGINT" property="submitUserId" />
+    <result column="submit_time" jdbcType="TIMESTAMP" property="submitTime" />
+    <result column="confirm_user_id" jdbcType="BIGINT" property="confirmUserId" />
+    <result column="confirm_status" jdbcType="INTEGER" property="confirmStatus" />
+    <result column="action" jdbcType="INTEGER" property="action" />
+    <result column="confirm_time" jdbcType="TIMESTAMP" property="confirmTime" />
+    <result column="create_dttm" jdbcType="TIMESTAMP" property="createDttm" />
+    <result column="update_dttm" jdbcType="TIMESTAMP" property="updateDttm" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, car_id, submit_user_id, submit_time, confirm_user_id, confirm_status, confirm_time, 
+    create_dttm, update_dttm,action
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_car_travel_record
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_car_travel_record
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.goodpower.pvams.model.CarTravelRecord">
+    insert into t_car_travel_record (id, car_id, submit_user_id, 
+      submit_time, confirm_user_id, confirm_status, 
+      confirm_time, create_dttm, update_dttm,action
+      )
+    values (#{id,jdbcType=BIGINT}, #{carId,jdbcType=BIGINT}, #{submitUserId,jdbcType=BIGINT}, 
+      #{submitTime,jdbcType=TIMESTAMP}, #{confirmUserId,jdbcType=BIGINT}, #{confirmStatus,jdbcType=INTEGER}, 
+      #{confirmTime,jdbcType=TIMESTAMP}, #{createDttm,jdbcType=TIMESTAMP}, #{updateDttm,jdbcType=TIMESTAMP},
+      #{action,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.goodpower.pvams.model.CarTravelRecord">
+    insert into t_car_travel_record
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="carId != null">
+        car_id,
+      </if>
+      <if test="submitUserId != null">
+        submit_user_id,
+      </if>
+      <if test="submitTime != null">
+        submit_time,
+      </if>
+      <if test="confirmUserId != null">
+        confirm_user_id,
+      </if>
+      <if test="confirmStatus != null">
+        confirm_status,
+      </if>
+      <if test="action != null">
+        action,
+      </if>
+      <if test="confirmTime != null">
+        confirm_time,
+      </if>
+      <if test="createDttm != null">
+        create_dttm,
+      </if>
+      <if test="updateDttm != null">
+        update_dttm,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="carId != null">
+        #{carId,jdbcType=BIGINT},
+      </if>
+      <if test="submitUserId != null">
+        #{submitUserId,jdbcType=BIGINT},
+      </if>
+      <if test="submitTime != null">
+        #{submitTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="confirmUserId != null">
+        #{confirmUserId,jdbcType=BIGINT},
+      </if>
+      <if test="confirmStatus != null">
+        #{confirmStatus,jdbcType=INTEGER},
+      </if>
+      <if test="action != null">
+        #{action,jdbcType=INTEGER},
+      </if>
+      <if test="confirmTime != null">
+        #{confirmTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createDttm != null">
+        #{createDttm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDttm != null">
+        #{updateDttm,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.goodpower.pvams.model.CarTravelRecord">
+    update t_car_travel_record
+    <set>
+      <if test="carId != null">
+        car_id = #{carId,jdbcType=BIGINT},
+      </if>
+      <if test="submitUserId != null">
+        submit_user_id = #{submitUserId,jdbcType=BIGINT},
+      </if>
+      <if test="submitTime != null">
+        submit_time = #{submitTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="confirmUserId != null">
+        confirm_user_id = #{confirmUserId,jdbcType=BIGINT},
+      </if>
+      <if test="confirmStatus != null">
+        confirm_status = #{confirmStatus,jdbcType=INTEGER},
+      </if>
+      <if test="action != null">
+        action = #{action,jdbcType=INTEGER},
+      </if>
+      <if test="confirmTime != null">
+        confirm_time = #{confirmTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createDttm != null">
+        create_dttm = #{createDttm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDttm != null">
+        update_dttm = #{updateDttm,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.goodpower.pvams.model.CarTravelRecord">
+    update t_car_travel_record
+    set car_id = #{carId,jdbcType=BIGINT},
+      submit_user_id = #{submitUserId,jdbcType=BIGINT},
+      submit_time = #{submitTime,jdbcType=TIMESTAMP},
+      confirm_user_id = #{confirmUserId,jdbcType=BIGINT},
+      confirm_status = #{confirmStatus,jdbcType=INTEGER},
+      action = #{action,jdbcType=INTEGER},
+      confirm_time = #{confirmTime,jdbcType=TIMESTAMP},
+      create_dttm = #{createDttm,jdbcType=TIMESTAMP},
+      update_dttm = #{updateDttm,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByFields" parameterType="java.util.Map" resultType="java.util.Map">
+    select * from (
+    select
+    id,
+    car_id carId,
+    action,
+    submit_user_id submitUserId,
+    submit_time submitDate,
+    confirm_user_id confirmUserId,
+    confirm_status confirmStatus,
+    confirm_time approveDate,
+    b.realname applyer,
+    c.realname approver
+    from
+    t_car_travel_record a
+    LEFT JOIN t_user b on a.submit_user_id = b.user_id
+    LEFT JOIN t_user c ON a.confirm_user_id = c.user_id
+    where
+    1 = 1
+    <if test="carId != null">
+      and car_id = #{carId,jdbcType=BIGINT}
+    </if>
+    <if test="userId != null">
+      and submit_user_id = #{userId,jdbcType=BIGINT}
+    </if>
+    ) t
+    <if test="offset != null and limit != null">
+      limit #{offset,jdbcType=INTEGER},#{limit,jdbcType=INTEGER}
+    </if>
+  </select>
+  <select id="getCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+    select
+      count(1)
+    from
+    t_car_travel_record
+    where
+    1 = 1
+    <if test="carId != null">
+      and car_id = #{carId,jdbcType=BIGINT}
+    </if>
+    <if test="userId != null">
+      and submit_user_id = #{userId,jdbcType=BIGINT}
+    </if>
+  </select>
+</mapper>

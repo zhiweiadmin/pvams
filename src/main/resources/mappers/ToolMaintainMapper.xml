@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goodpower.pvams.mapper.ToolMaintainMapper">
+  <resultMap id="BaseResultMap" type="com.goodpower.pvams.model.ToolMaintain">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="station_id" jdbcType="BIGINT" property="stationId" />
+    <result column="tool" jdbcType="VARCHAR" property="tool" />
+    <result column="position" jdbcType="VARCHAR" property="position" />
+    <result column="num" jdbcType="INTEGER" property="num" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="check_time" jdbcType="TIMESTAMP" property="checkTime" />
+    <result column="next_check_time" jdbcType="TIMESTAMP" property="nextCheckTime" />
+    <result column="param" jdbcType="VARCHAR" property="param" />
+    <result column="check_status" jdbcType="INTEGER" property="checkStatus" />
+    <result column="check_plan" jdbcType="VARCHAR" property="checkPlan" />
+    <result column="create_dttm" jdbcType="TIMESTAMP" property="createDttm" />
+    <result column="update_dttm" jdbcType="TIMESTAMP" property="updateDttm" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, station_id, tool, position, num, type, check_time, next_check_time, param, check_status, 
+    check_plan, create_dttm, update_dttm
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_tool_maintain
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_tool_maintain
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.goodpower.pvams.model.ToolMaintain">
+    insert into t_tool_maintain (id, station_id, tool, 
+      position, num, type, 
+      check_time, next_check_time, param, 
+      check_status, check_plan, create_dttm, 
+      update_dttm)
+    values (#{id,jdbcType=BIGINT}, #{stationId,jdbcType=BIGINT}, #{tool,jdbcType=VARCHAR}, 
+      #{position,jdbcType=VARCHAR}, #{num,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR},
+      #{checkTime,jdbcType=TIMESTAMP}, #{nextCheckTime,jdbcType=TIMESTAMP}, #{param,jdbcType=VARCHAR}, 
+      #{checkStatus,jdbcType=INTEGER}, #{checkPlan,jdbcType=VARCHAR}, #{createDttm,jdbcType=TIMESTAMP}, 
+      #{updateDttm,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.goodpower.pvams.model.ToolMaintain">
+    insert into t_tool_maintain
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="stationId != null">
+        station_id,
+      </if>
+      <if test="tool != null">
+        tool,
+      </if>
+      <if test="position != null">
+        position,
+      </if>
+      <if test="num != null">
+        num,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="checkTime != null">
+        check_time,
+      </if>
+      <if test="nextCheckTime != null">
+        next_check_time,
+      </if>
+      <if test="param != null">
+        param,
+      </if>
+      <if test="checkStatus != null">
+        check_status,
+      </if>
+      <if test="checkPlan != null">
+        check_plan,
+      </if>
+      <if test="createDttm != null">
+        create_dttm,
+      </if>
+      <if test="updateDttm != null">
+        update_dttm,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="stationId != null">
+        #{stationId,jdbcType=BIGINT},
+      </if>
+      <if test="tool != null">
+        #{tool,jdbcType=VARCHAR},
+      </if>
+      <if test="position != null">
+        #{position,jdbcType=VARCHAR},
+      </if>
+      <if test="num != null">
+        #{num,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="checkTime != null">
+        #{checkTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="nextCheckTime != null">
+        #{nextCheckTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="param != null">
+        #{param,jdbcType=VARCHAR},
+      </if>
+      <if test="checkStatus != null">
+        #{checkStatus,jdbcType=INTEGER},
+      </if>
+      <if test="checkPlan != null">
+        #{checkPlan,jdbcType=VARCHAR},
+      </if>
+      <if test="createDttm != null">
+        #{createDttm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDttm != null">
+        #{updateDttm,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.goodpower.pvams.model.ToolMaintain">
+    update t_tool_maintain
+    <set>
+      <if test="stationId != null">
+        station_id = #{stationId,jdbcType=BIGINT},
+      </if>
+      <if test="tool != null">
+        tool = #{tool,jdbcType=VARCHAR},
+      </if>
+      <if test="position != null">
+        position = #{position,jdbcType=VARCHAR},
+      </if>
+      <if test="num != null">
+        num = #{num,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="checkTime != null">
+        check_time = #{checkTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="nextCheckTime != null">
+        next_check_time = #{nextCheckTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="param != null">
+        param = #{param,jdbcType=VARCHAR},
+      </if>
+      <if test="checkStatus != null">
+        check_status = #{checkStatus,jdbcType=INTEGER},
+      </if>
+      <if test="checkPlan != null">
+        check_plan = #{checkPlan,jdbcType=VARCHAR},
+      </if>
+      <if test="createDttm != null">
+        create_dttm = #{createDttm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDttm != null">
+        update_dttm = #{updateDttm,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.goodpower.pvams.model.ToolMaintain">
+    update t_tool_maintain
+    set station_id = #{stationId,jdbcType=BIGINT},
+      tool = #{tool,jdbcType=VARCHAR},
+      position = #{position,jdbcType=VARCHAR},
+      num = #{num,jdbcType=INTEGER},
+      type = #{type,jdbcType=VARCHAR},
+      check_time = #{checkTime,jdbcType=TIMESTAMP},
+      next_check_time = #{nextCheckTime,jdbcType=TIMESTAMP},
+      param = #{param,jdbcType=VARCHAR},
+      check_status = #{checkStatus,jdbcType=INTEGER},
+      check_plan = #{checkPlan,jdbcType=VARCHAR},
+      create_dttm = #{createDttm,jdbcType=TIMESTAMP},
+      update_dttm = #{updateDttm,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByFields" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_tool_maintain
+    where
+    1 = 1
+    <if test="stationId != null">
+      and station_Id = #{stationId,jdbcType=BIGINT}
+    </if>
+    <if test="offset != null and limit != null">
+      limit #{offset,jdbcType=INTEGER},#{limit,jdbcType=INTEGER}
+    </if>
+  </select>
+  <select id="getCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+    select
+        count(1)
+    from t_tool_maintain
+    where
+    1 = 1
+    <if test="stationId != null">
+      and station_Id = #{stationId,jdbcType=BIGINT}
+    </if>
+  </select>
+</mapper>

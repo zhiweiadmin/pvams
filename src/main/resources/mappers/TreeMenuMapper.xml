@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goodpower.pvams.mapper.TreeMenuMapper">
+  <resultMap id="BaseResultMap" type="com.goodpower.pvams.model.TreeMenu">
+    <result column="id" jdbcType="VARCHAR" property="id" />
+    <result column="show_name" jdbcType="VARCHAR" property="showName" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="p_id" jdbcType="VARCHAR" property="pId" />
+  </resultMap>
+  <insert id="insert" parameterType="com.goodpower.pvams.model.TreeMenu" useGeneratedKeys="true" keyProperty="id">
+    insert into t_menu (id, show_name, type, 
+      p_id)
+    values (#{id,jdbcType=VARCHAR}, #{showName,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, 
+      #{pId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.goodpower.pvams.model.TreeMenu">
+    insert into t_menu
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="showName != null">
+        show_name,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="pId != null">
+        p_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="showName != null">
+        #{showName,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="pId != null">
+        #{pId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>
