@@ -168,7 +168,7 @@ public class ToolMaintainController {
         //建立新的sheet对象（excel的表单）
         HSSFSheet sheet = wb.createSheet("备件列表");
         //设置单元格合并
-        sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 6));
+        sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 8));
         HSSFCellStyle boderStyle = wb.createCellStyle();
         boderStyle.setAlignment(HorizontalAlignment.CENTER);
         HSSFFont font = wb.createFont();
@@ -230,31 +230,31 @@ public class ToolMaintainController {
         HSSFCell cell2_0 = row2.createCell(0);
         cell2_0.setCellValue("工具编号");
         cell2_0.setCellStyle(boderStyle1);
-        HSSFCell cell2_1 = row2.createCell(0);
-        cell2_1.setCellValue("工具编号");
+        HSSFCell cell2_1 = row2.createCell(1);
+        cell2_1.setCellValue("工器具名称");
         cell2_1.setCellStyle(boderStyle1);
-        HSSFCell cell2_2 = row2.createCell(1);
+        HSSFCell cell2_2 = row2.createCell(2);
         cell2_2.setCellValue("位置");
         cell2_2.setCellStyle(boderStyle1);
-        HSSFCell cell2_3 = row2.createCell(2);
+        HSSFCell cell2_3 = row2.createCell(3);
         cell2_3.setCellValue("数量");
         cell2_3.setCellStyle(boderStyle1);
-        HSSFCell cell2_4 = row2.createCell(3);
+        HSSFCell cell2_4 = row2.createCell(4);
         cell2_4.setCellValue("类型");
         cell2_4.setCellStyle(boderStyle1);
-        HSSFCell cell2_5 = row2.createCell(4);
+        HSSFCell cell2_5 = row2.createCell(5);
         cell2_5.setCellValue("本次点检日期");
         cell2_5.setCellStyle(boderStyle1);
-        HSSFCell cell2_6 = row2.createCell(5);
+        HSSFCell cell2_6 = row2.createCell(6);
         cell2_6.setCellValue("参数");
         cell2_6.setCellStyle(boderStyle1);
-        HSSFCell cell2_7 = row2.createCell(6);
+        HSSFCell cell2_7 = row2.createCell(7);
         cell2_7.setCellValue("点检状态");
         cell2_7.setCellStyle(boderStyle1);
-        HSSFCell cell2_8 = row2.createCell(7);
+        HSSFCell cell2_8 = row2.createCell(8);
         cell2_8.setCellValue("点检校验计划");
         cell2_8.setCellStyle(boderStyle1);
-        HSSFCell cell2_9 = row2.createCell(8);
+        HSSFCell cell2_9 = row2.createCell(9);
         cell2_9.setCellValue("下次点检日期");
         cell2_9.setCellStyle(boderStyle1);
 
