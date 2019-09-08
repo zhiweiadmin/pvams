@@ -211,9 +211,21 @@
   </update>
   <select id="selectByFields" parameterType="java.util.Map" resultMap="BaseResultMap">
     select
-        *
+        a.id,
+        a.subject,
+        a.station_id,
+        a.present_user_id,
+        b.realname presenter,
+        a.type,
+        a.present_date,
+        a.start_date,
+        a.end_date,
+        a.info_detail,
+        a.status,
+        a.approve_user_id,
+        a.approver
     from
-        t_maintain_info
+        t_maintain_info a left join t_user b on a.present_user_id = b.user_id
     where
         1 = 1
         <if test="stationId != null">
@@ -234,9 +246,41 @@
         <if test="endDate != null">
           and #{endDate,jdbcType=TIMESTAMP} &gt; present_date
         </if>
+        <if test="name != null">
+          and b.realname = #{name,jdbcType=VARCHAR}
+        </if>
         <if test="offset != null and limit != null">
           limit #{offset,jdbcType=INTEGER},#{limit,jdbcType=INTEGER}
         </if>
+  </select>
+  <select id="getCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+    select
+      count(1)
+    from
+    t_maintain_info a left join t_user b on a.present_user_id = b.user_id
+    where
+    1 = 1
+    <if test="stationId != null">
+      and station_id = #{stationId,jdbcType=BIGINT}
+    </if>
+    <if test="presenter != null">
+      and presenter = #{presenter,jdbcType=VARCHAR}
+    </if>
+    <if test="type != null">
+      and type = #{type,jdbcType=INTEGER}
+    </if>
+    <if test="status != null">
+      and status = #{status,jdbcType=INTEGER}
+    </if>
+    <if test="startDate != null">
+      and present_date &gt;= #{startDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="endDate != null">
+      and #{endDate,jdbcType=TIMESTAMP} &gt; present_date
+    </if>
+    <if test="name != null">
+      and b.realname = #{name,jdbcType=VARCHAR}
+    </if>
   </select>
   <select id="getPresenter" parameterType="java.util.Map" resultType="java.util.Map">
     select

@@ -29,4 +29,6 @@ public interface ComponentMapper {
     List<Component> selectByField(Map<String,Object> param);
 
     void deleteByFields(Map<String,Object> map);
+
+    int getCount(Map<String,Object> param);
 }

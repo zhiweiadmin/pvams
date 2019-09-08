@@ -24,5 +24,7 @@ public interface MaintainInfoMapper {
 
     List<MaintainInfo> selectByFields(Map<String,Object> param);
 
+    int getCount(Map<String,Object> param);
+
     List<Map<String,Object>> getPresenter(Map<String,Object> param);
 }

@@ -64,7 +64,7 @@ public class ToolMaintainController {
             param.put("limit",pageSize);
             param.put("stationId",stationId);
 
-            JSONObject jsonObject =  toolMaintainService.selectByFields(param);
+            JSONObject jsonObject =  toolMaintainService.selectByFields(pageNo,pageSize,param);
             resultMap.setData(jsonObject).success().message("查询成功");
         }catch (Exception e){
             resultMap.fail().message(e.getMessage());

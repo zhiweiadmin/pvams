@@ -54,7 +54,7 @@ public class CarMaintainController {
             param.put("limit",pageSize);
             param.put("stationId",stationId);
 
-            JSONObject jsonObject =  carMaintainService.selectByFields(param);
+            JSONObject jsonObject =  carMaintainService.selectByFields(pageNo,pageSize,param);
             resultMap.setData(jsonObject).success().message("查询成功");
         }catch (Exception e){
             logger.error("请求失败",e);

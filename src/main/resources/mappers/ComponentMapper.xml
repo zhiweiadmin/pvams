@@ -186,6 +186,17 @@
         limit #{offset,jdbcType=INTEGER},#{limit,jdbcType=INTEGER}
       </if>
   </select>
+  <select id="getCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+    select
+      count(1)
+    from
+    t_component
+    where
+    1 = 1
+    <if test="stationId != null">
+      and station_Id = #{stationId,jdbcType=BIGINT}
+    </if>
+  </select>
   <update id="updateByVersion" parameterType="java.util.Map">
     update
         t_component

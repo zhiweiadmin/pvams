@@ -34,6 +34,10 @@ public class MaintainInfoService {
         return maintainInfoMapper.selectByFields(param);
     }
 
+    public int getCount(Map<String,Object> param){
+        return maintainInfoMapper.getCount(param);
+    }
+
     public void approve(Long id,Integer status){
         MaintainInfo info = new MaintainInfo();
         info.setId(id);

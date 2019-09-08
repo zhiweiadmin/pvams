@@ -8,6 +8,16 @@ public class Page {
 
     Long count;
 
+    public Page(){
+
+    }
+
+    public Page(int page, int pageSize, Long count){
+        this.page = page;
+        this.pageSize = pageSize;
+        this.count = count;
+    }
+
     public Integer getPage() {
         return page;
     }

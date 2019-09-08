@@ -1,12 +1,14 @@
 package com.goodpower.pvams.controller.power;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.goodpower.pvams.common.ResultMap;
 import com.goodpower.pvams.model.Component;
 import com.goodpower.pvams.model.PowerStation;
 import com.goodpower.pvams.service.PowerStatService;
 import com.goodpower.pvams.util.DateUtil;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.*;
@@ -23,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.math.BigDecimal;
 import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -109,14 +112,78 @@ public class PowerManageController {
             JSONObject quarter = powerStatService.getQuarterProgress(stationId);
             JSONObject year = powerStatService.getYearProgress(stationId);
 
+            double weekProgress = 0;
+            if(week != null){
+                weekProgress = week.getDouble("powerProgress");
+            }
+            double monthProgress = 0;
+            if(week != null){
+                monthProgress = month.getDouble("powerProgress");
+            }
+            double quarterProgress = 0;
+            if(week != null){
+                quarterProgress = quarter.getDouble("powerProgress");
+            }
+            double yearProgress = 0;
+            if(week != null){
+                yearProgress = year.getDouble("powerProgress");
+            }
+
+            List<Double> oweList = Lists.newArrayList();
+            List<Double> beyondList = Lists.newArrayList();
+            if(weekProgress < 100){
+                oweList.add(getDoubleVal(weekProgress-100));
+                beyondList.add(0d);
+            }else{
+                oweList.add(0d);
+                beyondList.add(getDoubleVal(weekProgress-100));
+            }
+
+            if(monthProgress < 100){
+                oweList.add(getDoubleVal(monthProgress-100));
+                beyondList.add(0d);
+            }else{
+                oweList.add(0d);
+                beyondList.add(getDoubleVal(monthProgress-100));
+            }
+
+            if(quarterProgress < 100){
+                oweList.add(getDoubleVal(quarterProgress-100));
+                beyondList.add(0d);
+            }else{
+                oweList.add(0d);
+                beyondList.add(getDoubleVal(quarterProgress-100));
+            }
+
+            if(yearProgress < 100){
+                oweList.add(getDoubleVal(yearProgress-100));
+                beyondList.add(0d);
+            }else{
+                oweList.add(0d);
+                beyondList.add(getDoubleVal(yearProgress-100));
+            }
+
+            JSONObject oweObject = new JSONObject();
+            oweObject.put("name","欠发");
+            oweObject.put("data",oweList);
+
+            JSONObject byondObject = new JSONObject();
+            byondObject.put("name","超发");
+            byondObject.put("data",beyondList);
+
+            JSONArray beyondArry = new JSONArray();
+            beyondArry.add(oweObject);
+            beyondArry.add(byondObject);
+
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("week",week);
             jsonObject.put("month",month);
             jsonObject.put("quarter",quarter);
             jsonObject.put("year",year);
+            jsonObject.put("beyond",beyondArry);
             resultMap.success().message("请求成功").setData(jsonObject);
         }catch (Exception e){
-            e.printStackTrace();
+            logger.error("progress error",e);
             resultMap.fail().message(e.getMessage());
         }
         return resultMap;
@@ -239,5 +306,9 @@ public class PowerManageController {
         }
     }
 
+    public double getDoubleVal(double d){
+        BigDecimal b = new BigDecimal(d);
+        return b.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+    }
 
 }

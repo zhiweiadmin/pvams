@@ -1,9 +1,12 @@
 package com.goodpower.pvams.controller.maintaininfo;
 
 import com.alibaba.fastjson.JSONObject;
+import com.goodpower.pvams.common.Page;
 import com.goodpower.pvams.common.ResultMap;
 import com.goodpower.pvams.model.MaintainInfo;
+import com.goodpower.pvams.model.User;
 import com.goodpower.pvams.service.MaintainInfoService;
+import com.goodpower.pvams.service.UserService;
 import com.goodpower.pvams.util.DateUtil;
 import com.google.common.collect.Maps;
 import org.apache.commons.lang3.StringUtils;
@@ -25,6 +28,9 @@ public class MaintainInfoController {
 
     @Autowired
     MaintainInfoService maintainInfoService;
+
+    @Autowired
+    UserService userService;
 
     @PostMapping("/add")
     public ResultMap add(@RequestBody MaintainInfo maintainInfo){
@@ -120,6 +126,15 @@ public class MaintainInfoController {
             if(request.getLong("presentUserId") != null){
                 param.put("presentUserId",request.getLong("presentUserId"));
             }
+
+            if(request.getLong("presentUserId") != null){
+                param.put("presentUserId",request.getLong("presentUserId"));
+            }
+
+            if(StringUtils.isNotBlank(request.getString("name"))){
+                param.put("name",request.getString("name"));
+            }
+
             if(StringUtils.isNotBlank(request.getString("startDate"))){
                 Date startDate = sdf.parse(request.getString("startDate"));
                 param.put("startDate",sdf.format(startDate));
@@ -149,8 +164,14 @@ public class MaintainInfoController {
             param.put("offset",(pageNo-1)*pageSize);
             param.put("limit",pageSize);
             List<MaintainInfo> infoList = maintainInfoService.selectByFields(param);
+            int count = maintainInfoService.getCount(param);
+            Page page = new Page();
+            page.setPageSize(pageSize);
+            page.setPage(pageNo);
+            page.setCount(Long.parseLong(count+""));
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("infoList",infoList);
+            jsonObject.put("page",page);
             resultMap.success().message("查询成功").setData(jsonObject);
         }catch (Exception e){
             logger.error("查询失败",e);

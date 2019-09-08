@@ -49,6 +49,10 @@ public class ComponentService {
         return componentMapper.selectByFields(param);
     }
 
+    public int getCount(Map<String,Object> param){
+        return componentMapper.getCount(param);
+    }
+
     public int getComponentNum(Long id){
         Component component = componentMapper.selectByPrimaryKey(id);
         if(component == null){

@@ -44,12 +44,13 @@ public class FireMaintainService {
         return fireMaintainMapper.selectByFields(param);
     }
 
-    public JSONObject selectByFields(Map<String,Object> param){
+    public JSONObject selectByFields(int pageNo,int pageSize,Map<String,Object> param){
         List<FireMaintain> resultList = fireMaintainMapper.selectByFields(param);
         int count = fireMaintainMapper.getCount(param);
+        Page page = new Page(pageNo,pageSize,Long.parseLong(count+""));
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("resultList",resultList);
-        jsonObject.put("count",count);
+        jsonObject.put("page",page);
         return jsonObject;
     }
 

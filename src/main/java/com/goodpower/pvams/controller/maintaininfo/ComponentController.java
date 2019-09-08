@@ -1,6 +1,7 @@
 package com.goodpower.pvams.controller.maintaininfo;
 
 import com.alibaba.fastjson.JSONObject;
+import com.goodpower.pvams.common.Page;
 import com.goodpower.pvams.common.ResultMap;
 import com.goodpower.pvams.mapper.PowerStationMapper;
 import com.goodpower.pvams.model.Component;
@@ -110,8 +111,11 @@ public class ComponentController {
             param.put("limit",pageSize);
             param.put("stationId",stationId);
             List<Component> resultList =  componentService.selectByFields(param);
+            int count = componentService.getCount(param);
+            Page page = new Page(pageNo,pageSize,Long.parseLong(count+""));
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("resultList",resultList);
+            jsonObject.put("page",page);
             resultMap.setData(jsonObject).success().message("查询成功");
         }catch (Exception e){
             logger.error("查询失败",e);

@@ -50,7 +50,7 @@ public class FireMaintainController {
             param.put("limit",pageSize);
             param.put("stationId",stationId);
 
-            JSONObject jsonObject =  fireMaintainService.selectByFields(param);
+            JSONObject jsonObject =  fireMaintainService.selectByFields(pageNo,pageSize,param);
             resultMap.setData(jsonObject).success().message("查询成功");
         }catch (Exception e){
             resultMap.fail().message(e.getMessage());

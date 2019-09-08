@@ -1,6 +1,7 @@
 package com.goodpower.pvams.service;
 
 import com.alibaba.fastjson.JSONObject;
+import com.goodpower.pvams.common.Page;
 import com.goodpower.pvams.mapper.ToolCheckRecordMapper;
 import com.goodpower.pvams.mapper.ToolMaintainMapper;
 import com.goodpower.pvams.model.FireMaintain;
@@ -49,12 +50,13 @@ public class ToolMaintainService {
         return toolMaintainMapper.selectByFields(param);
     }
 
-    public JSONObject selectByFields(Map<String,Object> param){
+    public JSONObject selectByFields(int pageNo,int pageSize,Map<String,Object> param){
         List<ToolMaintain> resultList = toolMaintainMapper.selectByFields(param);
         int count = toolMaintainMapper.getCount(param);
+        Page page = new Page(pageNo,pageSize,Long.parseLong(count+""));
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("resultList",resultList);
-        jsonObject.put("count",count);
+        jsonObject.put("page",page);
         return jsonObject;
     }
 
