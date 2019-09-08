@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goodpower.pvams.mapper.StationPolicyMapper">
+  <resultMap id="BaseResultMap" type="com.goodpower.pvams.model.StationPolicy">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="policy_name" jdbcType="VARCHAR" property="policyName" />
+    <result column="policy_fee" jdbcType="DECIMAL" property="policyFee" />
+    <result column="policy_start_date" jdbcType="TIMESTAMP" property="policyStartDate" />
+    <result column="policy_end_date" jdbcType="TIMESTAMP" property="policyEndDate" />
+    <result column="create_dttm" jdbcType="TIMESTAMP" property="createDttm" />
+    <result column="update_dttm" jdbcType="TIMESTAMP" property="updateDttm" />
+    <result column="station_id" jdbcType="BIGINT" property="stationId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, policy_name, policy_fee, policy_start_date, policy_end_date, create_dttm, update_dttm, 
+    station_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_station_policy
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_station_policy
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.goodpower.pvams.model.StationPolicy">
+    insert into t_station_policy (id, policy_name, policy_fee, 
+      policy_start_date, policy_end_date, create_dttm, 
+      update_dttm, station_id)
+    values (#{id,jdbcType=BIGINT}, #{policyName,jdbcType=VARCHAR}, #{policyFee,jdbcType=DECIMAL}, 
+      #{policyStartDate,jdbcType=TIMESTAMP}, #{policyEndDate,jdbcType=TIMESTAMP}, #{createDttm,jdbcType=TIMESTAMP}, 
+      #{updateDttm,jdbcType=TIMESTAMP}, #{stationId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.goodpower.pvams.model.StationPolicy">
+    insert into t_station_policy
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="policyName != null">
+        policy_name,
+      </if>
+      <if test="policyFee != null">
+        policy_fee,
+      </if>
+      <if test="policyStartDate != null">
+        policy_start_date,
+      </if>
+      <if test="policyEndDate != null">
+        policy_end_date,
+      </if>
+      <if test="createDttm != null">
+        create_dttm,
+      </if>
+      <if test="updateDttm != null">
+        update_dttm,
+      </if>
+      <if test="stationId != null">
+        station_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="policyName != null">
+        #{policyName,jdbcType=VARCHAR},
+      </if>
+      <if test="policyFee != null">
+        #{policyFee,jdbcType=DECIMAL},
+      </if>
+      <if test="policyStartDate != null">
+        #{policyStartDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="policyEndDate != null">
+        #{policyEndDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createDttm != null">
+        #{createDttm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDttm != null">
+        #{updateDttm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="stationId != null">
+        #{stationId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.goodpower.pvams.model.StationPolicy">
+    update t_station_policy
+    <set>
+      <if test="policyName != null">
+        policy_name = #{policyName,jdbcType=VARCHAR},
+      </if>
+      <if test="policyFee != null">
+        policy_fee = #{policyFee,jdbcType=DECIMAL},
+      </if>
+      <if test="policyStartDate != null">
+        policy_start_date = #{policyStartDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="policyEndDate != null">
+        policy_end_date = #{policyEndDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createDttm != null">
+        create_dttm = #{createDttm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDttm != null">
+        update_dttm = #{updateDttm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="stationId != null">
+        station_id = #{stationId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.goodpower.pvams.model.StationPolicy">
+    update t_station_policy
+    set policy_name = #{policyName,jdbcType=VARCHAR},
+      policy_fee = #{policyFee,jdbcType=DECIMAL},
+      policy_start_date = #{policyStartDate,jdbcType=TIMESTAMP},
+      policy_end_date = #{policyEndDate,jdbcType=TIMESTAMP},
+      create_dttm = #{createDttm,jdbcType=TIMESTAMP},
+      update_dttm = #{updateDttm,jdbcType=TIMESTAMP},
+      station_id = #{stationId,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <select id="selectByFields" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select
+        <include refid="Base_Column_List" />
+    from t_station_policy
+    where
+        1 = 1
+        <if test="stationId != null">
+          and station_id = #{stationId,jdbcType=BIGINT}
+        </if>
+  </select>
+
+</mapper>
