@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
+import java.text.ParseException;
 import java.util.List;
 
 @RestController
@@ -106,8 +107,20 @@ public class StationController {
     public ResultMap uploadStationFile(@PathVariable Long stationId,@RequestParam("file") MultipartFile file) {
         String fileOriginalName = file.getOriginalFilename();
         String path = null;
+        ResultMap resultMap = new ResultMap();
+        if(stationId == null){
+            return resultMap.fail().message("请先选择电站!");
+        }
         try{
-            path = FileHandleUtil.upload(file.getInputStream(),file.getOriginalFilename());
+            if(stationId == null){
+                return resultMap.success().setData(new JSONObject());
+            }
+            String fileName = file.getOriginalFilename();
+            if(StringUtils.isNotBlank(fileName) && fileName.endsWith("pdf")){
+                path = FileHandleUtil.upload(file.getInputStream(),file.getOriginalFilename());
+            }else{
+                return resultMap.warn().setData(path).message("文件类型错误,只能上传pdf文件!");
+            }
         }catch (Exception e){
             logger.error("上传图片失败",e);
         }
@@ -118,8 +131,9 @@ public class StationController {
             stationFile.setFileName(fileOriginalName);
             stationFile.setStationId(stationId);
             stationService.uploadStationFile(stationFile);
+        }else{
+            return resultMap.warn().setData(path).message("上传遇到了点小问题!");
         }
-        ResultMap resultMap = new ResultMap();
         resultMap.success().setData(path).message("上传成功");
         return resultMap;
     }
@@ -141,7 +155,11 @@ public class StationController {
     @PostMapping("/uploadAccessPointFile/{stationId}")
     public ResultMap uploadAccessPointFile(@PathVariable Long stationId, @RequestParam("file") MultipartFile file, HttpServletRequest request,HttpServletResponse response) {
         String path = null;
+        ResultMap resultMap = new ResultMap();
         try{
+            if(stationId == null){
+                return resultMap.fail().message("请先选择电站!");
+            }
             path = FileHandleUtil.upload(file.getInputStream(), file.getOriginalFilename());
         }catch (Exception e){
             logger.error("上传图片失败",e);
@@ -153,7 +171,6 @@ public class StationController {
             girdAccessFile.setStationId(stationId);
             stationService.uploadAccessImg(girdAccessFile);
         }
-        ResultMap resultMap = new ResultMap();
         resultMap.success().setData(path).message("上传成功");
         return resultMap;
     }
@@ -183,6 +200,9 @@ public class StationController {
     @GetMapping("/template/{stationId}")
     public ResultMap template(@PathVariable Long stationId,HttpServletResponse response) throws IOException {
         ResultMap resultMap = new ResultMap();
+        if(stationId == null){
+            return resultMap.fail().message("请先选择电站!");
+        }
         HSSFWorkbook wb = new HSSFWorkbook();
         PowerStation station = stationService.getStation(stationId);
         String name = "";
@@ -244,6 +264,9 @@ public class StationController {
     public ResultMap importExcelData(@PathVariable Long stationId,@RequestParam("file") MultipartFile file){
         ResultMap resultMap = new ResultMap();
         try{
+            if(stationId == null){
+                return resultMap.fail().message("请先选择电站!");
+            }
             String fileName = file.getOriginalFilename();
             if(StringUtils.isNotBlank(fileName)){
                 Workbook workbook;
@@ -260,8 +283,13 @@ public class StationController {
                 }
             }
         }catch (Exception e){
-            e.printStackTrace();
-            resultMap.success().message("导入失败");
+            if(e instanceof ParseException){
+                logger.error("导入电站信息失败,转换错误",e);
+                return resultMap.fail().message("导入失败,请检查文件格式是否正确!");
+            }else{
+                logger.error("导入电站信息失败",e);
+                return resultMap.fail().message("导入失败!");
+            }
         }
         return resultMap;
     }

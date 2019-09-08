@@ -49,6 +49,15 @@ public class ComponentService {
         return componentMapper.selectByFields(param);
     }
 
+    public int getComponentNum(Long id){
+        Component component = componentMapper.selectByPrimaryKey(id);
+        if(component == null){
+            return 0;
+        }else{
+            return component.getNum() == null?0:component.getNum();
+        }
+    }
+
     public void addRecord(ComponentRecord record){
         recordMapper.insert(record);
     }
@@ -119,47 +128,43 @@ public class ComponentService {
     public void saveExcelData(Long stationId, Workbook workbook) throws ParseException {
         Sheet sheet = workbook.getSheetAt(0);
         int lastRowNum = sheet.getLastRowNum();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = sdf.parse(sdf.format(new Date()));
         if(lastRowNum > 1){
-            for(int i=2;i<=lastRowNum;i++){
-                try{
+                for(int i=2;i<=lastRowNum;i++) {
                     Row row = sheet.getRow(i);
-                    String id = excelService.getCellValue(row.getCell(0));
-                    String name = excelService.getCellValue(row.getCell(1));
-                    String num = excelService.getCellValue(row.getCell(2));
-                    String brand = excelService.getCellValue(row.getCell(3));
-                    String up = excelService.getCellValue(row.getCell(4));
-                    String low = excelService.getCellValue(row.getCell(5));
-                    String param = excelService.getCellValue(row.getCell(6));
+                    String name = excelService.getCellValue(row.getCell(0));
+                    String num = excelService.getCellValue(row.getCell(1));
+                    String brand = excelService.getCellValue(row.getCell(2));
+                    String up = excelService.getCellValue(row.getCell(3));
+                    String low = excelService.getCellValue(row.getCell(4));
+                    String param = excelService.getCellValue(row.getCell(5));
 
                     Component component = new Component();
                     component.setStationId(stationId);
                     component.setComponentName(name);
-                    if(StringUtils.isNotBlank(num)){
+                    if (StringUtils.isNotBlank(num)) {
                         component.setNum(Integer.parseInt(num));
                     }
                     component.setBrand(brand);
-                    if(StringUtils.isNotBlank(up)){
+                    if (StringUtils.isNotBlank(up)) {
                         component.setStockUp(Integer.parseInt(up));
                     }
-                    if(StringUtils.isNotBlank(low)){
+                    if (StringUtils.isNotBlank(low)) {
                         component.setStockLower(Integer.parseInt(low));
                     }
-                    if(StringUtils.isNotBlank(param)){
+                    if (StringUtils.isNotBlank(param)) {
                         component.setParam(param);
                     }
-
-                    if(StringUtils.isNotBlank(id)){
-                        //更新
-                        component.setId(Long.parseLong(id));
-                        componentMapper.updateByPrimaryKey(component);
-                    }else{
-                        component.setVersion(1L);
-                        componentMapper.insert(component);
-                    }
-                }catch (Exception e){
-                    logger.error("导入错误",e);
+                    component.setCreateDttm(date);
+                    component.setUpdateDttm(date);
+                    component.setVersion(1L);
+                    componentMapper.insert(component);
                 }
-            }
+                Map<String,Object> param = Maps.newHashMap();
+                param.put("stationId",stationId);
+                param.put("date",date);
+                componentMapper.deleteByFields(param);
         }
     }
 

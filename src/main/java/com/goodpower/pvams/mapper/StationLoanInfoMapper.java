@@ -22,5 +22,5 @@ public interface StationLoanInfoMapper {
 
     int updateByPrimaryKey(StationLoanInfo record);
 
-    List<StationLoanInfo> selectByFields(Map<String, Object> param);
+    List<StationLoanInfo> selectByFields(Map<String,Object> param);
 }

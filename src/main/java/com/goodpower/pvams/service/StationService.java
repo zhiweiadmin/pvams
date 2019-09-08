@@ -202,13 +202,13 @@ public class StationService {
     private void dealPositionInfo(Sheet sheet,Long stationId){
         PowerStationBase stationBase = new PowerStationBase();
         String stationName = getSheetValue(sheet,1,1);
-        String province = getSheetValue(sheet,3,1);
-        String city = getSheetValue(sheet,4,1);
-        String county = getSheetValue(sheet,5,1);
-        String town = getSheetValue(sheet,6,1);
-        String village = getSheetValue(sheet,7,1);
-        String longitude = getSheetValue(sheet,8,1);//经度
-        String latitude = getSheetValue(sheet,9,1);//维度
+        String province = getSheetValue(sheet,2,1);
+        String city = getSheetValue(sheet,3,1);
+        String county = getSheetValue(sheet,4,1);
+        String town = getSheetValue(sheet,5,1);
+        String village = getSheetValue(sheet,6,1);
+        String longitude = getSheetValue(sheet,7,1);//经度
+        String latitude = getSheetValue(sheet,8,1);//维度
 
         stationBase.setStationId(stationId);
         stationBase.setStationName(stationName);

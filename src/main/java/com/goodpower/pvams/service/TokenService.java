@@ -15,7 +15,7 @@ import java.util.Map;
 public class TokenService {
 
     //有效时间1个小时
-    private static final Long  EXPIRE_TIME = 20*60*1000L;
+    private static final Long  EXPIRE_TIME = 10*3600*1000L;
 
     public static final String TOKEN_SECRET = "goodpower_secret";
 

@@ -32,6 +32,8 @@ public class User implements Serializable {
 
     private String mail;
 
+    private String roleName;
+
     private Date createDttm;
 
     private Date updateDttm;
@@ -146,6 +148,12 @@ public class User implements Serializable {
         this.userType = userType;
     }
 
+    public String getRoleName() {
+        return roleName;
+    }
 
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
+    }
 
 }

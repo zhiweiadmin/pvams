@@ -142,9 +142,13 @@ public class PowerManageController {
                 }
             }
         }catch (Exception e){
-            logger.error("导入失败",e);
-            e.printStackTrace();
-            resultMap.success().message("导入失败");
+            if(e instanceof ParseException){
+                logger.error("导入信息失败,转换错误",e);
+                return resultMap.fail().message("导入失败,请检查文件格式是否正确!");
+            }else{
+                logger.error("导入信息失败",e);
+                return resultMap.fail().message("导入失败!");
+            }
         }
         return resultMap;
     }

@@ -100,7 +100,7 @@ public class DataController {
     }
 
     @GetMapping("/getDeviceStatDetail")
-    public ResultMap getDeviceStatDetail(Long stationId,Integer statType,Integer type,String val,Integer page,Integer pageSize){
+    public ResultMap getDeviceStatDetail(Long stationId,Integer statType,Integer type,String val,Integer pageNo,Integer pageSize){
         ResultMap result = new ResultMap();
         try{
             if(stationId== null){
@@ -112,18 +112,17 @@ public class DataController {
 
             int year = getYear(val);
             int month = getMonth(val);
-            if(page == null){
-                page = 1;
+            if(pageNo == null){
+                pageNo = 1;
             }
             if(pageSize == null){
                 pageSize = 20;
             }
-
             JSONObject jsonObject = new JSONObject();
             if(type == 0){
-                jsonObject = dataStatService.getMonthDeviceStatDetail(stationId,statType,year,month,page,pageSize);
+                jsonObject = dataStatService.getMonthDeviceStatDetail(stationId,statType,year,month,pageNo,pageSize);
             }else if(type == 1){
-                jsonObject = dataStatService.getYearDeviceStatDetail(stationId,statType,year,page,pageSize);
+                jsonObject = dataStatService.getYearDeviceStatDetail(stationId,statType,year,pageNo,pageSize);
             }
             return result.success().code(200).setData(jsonObject).message("查询成功");
         }catch (Exception e){
@@ -136,6 +135,9 @@ public class DataController {
     public ResultMap upload(@PathVariable Long stationId, @RequestParam("file") MultipartFile file){
         ResultMap resultMap = new ResultMap();
         try{
+            if(stationId == null){
+                return resultMap.fail().code(400).message("请先选择电站!");
+            }
             String fileName = file.getOriginalFilename();
             if(StringUtils.isNotBlank(fileName)){
                 Workbook workbook;
@@ -152,22 +154,26 @@ public class DataController {
                 }
             }
         }catch (Exception e){
-            logger.error("导入失败",e);
-            e.printStackTrace();
-            resultMap.success().message("导入失败");
+            if(e instanceof ParseException){
+                logger.error("导入信息失败,转换错误",e);
+                return resultMap.fail().message("导入失败,请检查文件格式是否正确!");
+            }else{
+                logger.error("导入信息失败",e);
+                return resultMap.fail().message("导入失败!");
+            }
         }
         return resultMap;
     }
 
     @GetMapping("/template/{stationId}")
     public ResultMap template(@PathVariable Long stationId,HttpServletResponse response) throws IOException {
-        ResultMap resultMap = new ResultMap();
-        //创建HSSFWorkbook对象(excel的文档对象)
         HSSFWorkbook wb = new HSSFWorkbook();
-        //输出Excel文件
         OutputStream output = response.getOutputStream();
+        dataStatService.createDevicePowerSheet(wb);
+        dataStatService.createDeviceHourSheet(wb);
+        dataStatService.createStatSheet(wb);
         response.reset();
-        String fileName = "模板"+".xls";
+        String fileName = "数据分析模板"+".xls";
         response.setContentType("application/msexcel;charset=UTF-8");
         response.setHeader("Content-Disposition", "attachment; fileName="+  fileName +";filename*=utf-8''"+ URLEncoder.encode(fileName,"UTF-8"));
         wb.write(output);
@@ -177,13 +183,13 @@ public class DataController {
 
     @GetMapping("/template")
     public ResultMap template2(HttpServletResponse response) throws IOException {
-        ResultMap resultMap = new ResultMap();
-        //创建HSSFWorkbook对象(excel的文档对象)
         HSSFWorkbook wb = new HSSFWorkbook();
-        //输出Excel文件
         OutputStream output = response.getOutputStream();
+        dataStatService.createDevicePowerSheet(wb);
+        dataStatService.createDeviceHourSheet(wb);
+        dataStatService.createStatSheet(wb);
         response.reset();
-        String fileName = "模板"+".xls";
+        String fileName = "数据分析模板"+".xls";
         response.setContentType("application/msexcel;charset=UTF-8");
         response.setHeader("Content-Disposition", "attachment; fileName="+  fileName +";filename*=utf-8''"+ URLEncoder.encode(fileName,"UTF-8"));
         wb.write(output);

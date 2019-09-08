@@ -25,4 +25,6 @@ public interface CarMaintainMapper {
     List<CarMaintain> selectByFields(Map<String,Object> map);
 
     int getCount(Map<String,Object> map);
+
+    void deleteByFields(Map<String,Object> map);
 }

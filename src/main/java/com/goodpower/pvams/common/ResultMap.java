@@ -27,6 +27,12 @@ public class ResultMap extends HashMap<String, Object> {
         return this;
     }
 
+    public ResultMap warn() {
+        this.put("ok", true);
+        this.put("code", 405);
+        return this;
+    }
+
     public ResultMap code(int code) {
         this.put("code", code);
         return this;

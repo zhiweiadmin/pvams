@@ -18,6 +18,8 @@ import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -33,6 +35,8 @@ import java.util.List;
 @RestController
 @RequestMapping("device")
 public class DeviceController {
+
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     DeviceService deviceService;
@@ -60,7 +64,13 @@ public class DeviceController {
                 }
             }
         }catch (Exception e){
-            resultMap.success().message("导入失败");
+            if(e instanceof ParseException){
+                logger.error("导入信息失败,转换错误",e);
+                return resultMap.fail().message("导入失败,请检查文件格式是否正确!");
+            }else{
+                logger.error("导入信息失败",e);
+                return resultMap.fail().message("导入失败!");
+            }
         }
         return resultMap;
     }
@@ -70,18 +80,18 @@ public class DeviceController {
     public ResultMap exportDevice(@PathVariable Long stationId,HttpServletResponse response) throws IOException {
         ResultMap resultMap = new ResultMap();
         if(stationId == null){
-            return resultMap.fail().message("文件格式错误").code(400);
+            return resultMap.fail().message("文件格式错误");
         }
         PowerStation powerStation = powerStationMapper.selectByPrimaryKey(stationId);
         if(powerStation == null){
-            return resultMap.fail().message("未找到该发电站数据").code(400);
+            return resultMap.fail().message("未找到该发电站数据");
         }
         //创建HSSFWorkbook对象(excel的文档对象)
         HSSFWorkbook wb = new HSSFWorkbook();
         //建立新的sheet对象（excel的表单）
         HSSFSheet sheet = wb.createSheet("设备列表");
         //设置单元格合并
-        sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 11));
+        sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 10));
         HSSFCellStyle boderStyle = wb.createCellStyle();
         boderStyle.setAlignment(HorizontalAlignment.CENTER);
         HSSFFont font = wb.createFont();
@@ -105,7 +115,11 @@ public class DeviceController {
         font2.setFontHeightInPoints((short)12);
         boderStyle2.setFont(font2);
 
-        int[] width = {256*10+184,256*30+184,256*10+184,256*15+184,256*10+184,256*30+184,256*20+184,256*20+184,256*30+184,256*30+184,256*30+184,256*30+184,256*30+184};
+        int[] width = {256*30+184,256*30+184,
+                256*30+184,256*30+184,256*30+184,
+                256*30+184,256*30+184,256*40+184,
+                256*40+184,256*30+184,256*30+184,
+                256*30+184,256*30+184};
         //设置宽度
         sheet.setColumnWidth(0,width[0]);
         sheet.setColumnWidth(1,width[1]);
@@ -118,7 +132,6 @@ public class DeviceController {
         sheet.setColumnWidth(8,width[8]);
         sheet.setColumnWidth(9,width[9]);
         sheet.setColumnWidth(10,width[10]);
-        sheet.setColumnWidth(11,width[11]);
 
         //在sheet里创建第一行，参数为行索引(excel的行)，可以是0～65535之间的任何一个
         HSSFRow row1 = sheet.createRow(0);
@@ -135,40 +148,37 @@ public class DeviceController {
         //在sheet里创建第二行
         HSSFRow row2 = sheet.createRow(1);
         //创建单元格并设置单元格内容
-        HSSFCell cell2_0 = row2.createCell(0);
-        cell2_0.setCellValue("设备编号");
-        cell2_0.setCellStyle(boderStyle1);
-        HSSFCell cell2_1 = row2.createCell(1);
+        HSSFCell cell2_1 = row2.createCell(0);
         cell2_1.setCellValue("设备名称");
         cell2_1.setCellStyle(boderStyle1);
-        HSSFCell cell2_2 = row2.createCell(2);
+        HSSFCell cell2_2 = row2.createCell(1);
         cell2_2.setCellValue("数量");
         cell2_2.setCellStyle(boderStyle1);
-        HSSFCell cell2_3 = row2.createCell(3);
+        HSSFCell cell2_3 = row2.createCell(2);
         cell2_3.setCellValue("类型");
         cell2_3.setCellStyle(boderStyle1);
-        HSSFCell cell2_4 = row2.createCell(4);
+        HSSFCell cell2_4 = row2.createCell(3);
         cell2_4.setCellValue("型号");
         cell2_4.setCellStyle(boderStyle1);
-        HSSFCell cell2_5 = row2.createCell(5);
+        HSSFCell cell2_5 = row2.createCell(4);
         cell2_5.setCellValue("供应商");
         cell2_5.setCellStyle(boderStyle1);
-        HSSFCell cell2_6 = row2.createCell(6);
+        HSSFCell cell2_6 = row2.createCell(5);
         cell2_6.setCellValue("联系人");
         cell2_6.setCellStyle(boderStyle1);
-        HSSFCell cell2_7 = row2.createCell(7);
+        HSSFCell cell2_7 = row2.createCell(6);
         cell2_7.setCellValue("联系方式");
         cell2_7.setCellStyle(boderStyle1);
-        HSSFCell cell2_8 = row2.createCell(8);
-        cell2_8.setCellValue("保修起始日期");
+        HSSFCell cell2_8 = row2.createCell(7);
+        cell2_8.setCellValue("保修起始日期(yyyy-MM-dd）");
         cell2_8.setCellStyle(boderStyle1);
-        HSSFCell cell2_9 = row2.createCell(9);
-        cell2_9.setCellValue("保修截止日期");
+        HSSFCell cell2_9 = row2.createCell(8);
+        cell2_9.setCellValue("保修截止日期(yyyy-MM-dd）");
         cell2_9.setCellStyle(boderStyle1);
-        HSSFCell cell2_10 = row2.createCell(10);
+        HSSFCell cell2_10 = row2.createCell(9);
         cell2_10.setCellValue("主要参数");
         cell2_10.setCellStyle(boderStyle1);
-        HSSFCell cell2_11 = row2.createCell(11);
+        HSSFCell cell2_11 = row2.createCell(10);
         cell2_11.setCellValue("备注");
         cell2_11.setCellStyle(boderStyle1);
 
@@ -178,63 +188,59 @@ public class DeviceController {
                 PowerStationDevice device = deviceList.get(i);
                 HSSFRow row = sheet.createRow(i+2);
                 row.setRowStyle(boderStyle2);
-                if(null != device.getDeviceId()){
-                    HSSFCell cell0 = row.createCell(0);
-                    cell0.setCellStyle(boderStyle2);
-                    cell0.setCellValue(device.getDeviceId());
-                }
                 if(StringUtils.isNotBlank(device.getDeviceName())){
-                    HSSFCell cell0 = row.createCell(1);
+                    HSSFCell cell0 = row.createCell(0);
                     cell0.setCellStyle(boderStyle2);
                     cell0.setCellValue(device.getDeviceName());
                 }
                 if(null != device.getNumber()){
-                    HSSFCell cell0 = row.createCell(2);
+                    HSSFCell cell0 = row.createCell(1);
                     cell0.setCellStyle(boderStyle2);
                     cell0.setCellValue(device.getNumber());
                 }
                 if(StringUtils.isNotBlank(device.getType())){
-                    HSSFCell cell0 = row.createCell(3);
+                    HSSFCell cell0 = row.createCell(2);
                     cell0.setCellStyle(boderStyle2);
                     cell0.setCellValue(device.getType());
                 }
                 if(StringUtils.isNotBlank(device.getModel())){
-                    HSSFCell cell0 = row.createCell(4);
+                    HSSFCell cell0 = row.createCell(3);
                     cell0.setCellStyle(boderStyle2);
                     cell0.setCellValue(device.getModel());
                 }
                 if(StringUtils.isNotBlank(device.getSupplier())){
-                    HSSFCell cell0 = row.createCell(5);
+                    HSSFCell cell0 = row.createCell(4);
                     cell0.setCellStyle(boderStyle2);
                     cell0.setCellValue(device.getSupplier());
                 }
                 if(StringUtils.isNotBlank(device.getContact())){
-                    HSSFCell cell0 = row.createCell(6);
+                    HSSFCell cell0 = row.createCell(5);
                     cell0.setCellStyle(boderStyle2);
                     cell0.setCellValue(device.getContact());
                 }
                 if(StringUtils.isNotBlank(device.getPhone())){
-                    HSSFCell cell0 = row.createCell(7);
+                    HSSFCell cell0 = row.createCell(6);
                     cell0.setCellStyle(boderStyle2);
                     cell0.setCellValue(device.getPhone());
                 }
-                if(null != device.getWarrantyStartDate()){
-                    HSSFCell cell0 = row.createCell(8);
+                if(StringUtils.isNotBlank(device.getWarrantyStartDate())){
+                    HSSFCell cell0 = row.createCell(7);
                     cell0.setCellStyle(boderStyle2);
-                    cell0.setCellValue(device.getWarrantyStartDate());
+                    String date =  device.getWarrantyStartDate();
+                    cell0.setCellValue(date);
                 }
-                if(null != device.getWarrantyEndDate()){
-                    HSSFCell cell0 = row.createCell(9);
+                if(StringUtils.isNotBlank(device.getWarrantyEndDate())){
+                    HSSFCell cell0 = row.createCell(8);
                     cell0.setCellStyle(boderStyle2);
                     cell0.setCellValue(device.getWarrantyEndDate());
                 }
                 if(StringUtils.isNotBlank(device.getRemark())){
-                    HSSFCell cell0 = row.createCell(10);
+                    HSSFCell cell0 = row.createCell(9);
                     cell0.setCellStyle(boderStyle2);
                     cell0.setCellValue(device.getParam());
                 }
                 if(StringUtils.isNotBlank(device.getRemark())){
-                    HSSFCell cell0 = row.createCell(11);
+                    HSSFCell cell0 = row.createCell(10);
                     cell0.setCellStyle(boderStyle2);
                     cell0.setCellValue(device.getRemark());
                 }

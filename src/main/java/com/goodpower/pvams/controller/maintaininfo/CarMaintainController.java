@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URLEncoder;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.Map;
 
@@ -30,6 +31,10 @@ public class CarMaintainController {
 
     @Autowired
     CarMaintainService carMaintainService;
+
+    private static final Integer UN_CONFIRM = 0;
+
+    private static final Integer CONFIRM = 1;
 
     @GetMapping("/query")
     public ResultMap query(Long stationId,Integer pageNo,Integer pageSize){
@@ -70,7 +75,10 @@ public class CarMaintainController {
             }
             record.setSubmitTime(new Date());
             record.setCreateDttm(new Date());
+            record.setConfirmStatus(UN_CONFIRM);
+            //将汽车状态变更为未确认
             carMaintainService.addCarTravelRecord(record);
+            carMaintainService.updatCarConfirmStatus(record.getCarId(),UN_CONFIRM);
             resultMap.success().message("请求成功");
         }catch (Exception e){
             logger.error("请求失败",e);
@@ -118,7 +126,7 @@ public class CarMaintainController {
     public ResultMap export(@PathVariable Long stationId, HttpServletResponse response) throws IOException {
         ResultMap resultMap = new ResultMap();
         if(stationId == null){
-            return resultMap.fail().code(400).message("电站id不能为空");
+            return resultMap.fail().code(400).message("请先选择电站!");
         }
         HSSFWorkbook wb = new HSSFWorkbook();
         String name = "车辆信息";
@@ -137,6 +145,9 @@ public class CarMaintainController {
     public ResultMap upload(@PathVariable Long stationId,@RequestParam("file") MultipartFile file){
         ResultMap resultMap = new ResultMap();
         try{
+            if(stationId == null){
+                return resultMap.fail().code(400).message("请先选择电站!");
+            }
             String fileName = file.getOriginalFilename();
             if(StringUtils.isNotBlank(fileName)){
                 Workbook workbook;
@@ -153,8 +164,13 @@ public class CarMaintainController {
                 }
             }
         }catch (Exception e){
-            logger.error("导入失败",e);
-            resultMap.success().message("导入失败");
+            if(e instanceof ParseException){
+                logger.error("导入信息失败,转换错误",e);
+                return resultMap.fail().message("导入失败,请检查文件格式是否正确!");
+            }else{
+                logger.error("导入信息失败",e);
+                return resultMap.fail().message("导入失败!");
+            }
         }
         return resultMap;
     }

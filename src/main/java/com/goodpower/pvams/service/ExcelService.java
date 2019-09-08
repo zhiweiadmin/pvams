@@ -4,6 +4,7 @@ import org.apache.poi.ss.usermodel.*;
 import org.springframework.stereotype.Service;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -32,6 +33,9 @@ public class ExcelService {
     }
 
     public String getCellDate(Cell currentCell) {
+        if(currentCell == null){
+            return "";
+        }
         String currentCellValue = "";
         // 判断单元格数据是否是日期
         if ("yyyy/mm;@".equals(currentCell.getCellStyle().getDataFormatString())

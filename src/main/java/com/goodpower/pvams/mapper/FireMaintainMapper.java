@@ -26,4 +26,6 @@ public interface FireMaintainMapper {
 
     int getCount(Map<String,Object> map);
 
+    void deleteByFields(Map<String,Object> map);
+
 }

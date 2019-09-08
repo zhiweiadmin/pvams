@@ -22,11 +22,11 @@ public interface StationFinanceDataMapper {
 
     int updateByPrimaryKey(StationFinanceData record);
 
-    List<Map<String,Object>> getMonthDataStatReal(Map<String, Object> param);
+    List<Map<String,Object>> getMonthDataStatReal(Map<String,Object> param);
 
-    List<Map<String,Object>> getYearDataStatReal(Map<String, Object> param);
+    List<Map<String,Object>> getYearDataStatReal(Map<String,Object> param);
 
-    List<Map<String,Object>> getMonthDataStatPlan(Map<String, Object> param);
+    List<Map<String,Object>> getMonthDataStatPlan(Map<String,Object> param);
 
-    List<Map<String,Object>> getYearDataStatPlan(Map<String, Object> param);
+    List<Map<String,Object>> getYearDataStatPlan(Map<String,Object> param);
 }

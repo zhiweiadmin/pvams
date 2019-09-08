@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -55,6 +56,14 @@ public class CarMaintainService {
         carTravelRecordMapper.insert(travelRecord);
     }
 
+    public void updatCarConfirmStatus(Long carId,Integer confirmStatus){
+        CarMaintain carMaintain = new CarMaintain();
+        carMaintain.setConfirmStatus(confirmStatus);
+        carMaintain.setUpdateDttm(new Date());
+        carMaintain.setId(carId);
+        carMaintainMapper.updateByPrimaryKeySelective(carMaintain);
+    }
+
     public JSONObject queryCarTravelRecord(Map<String,Object> param){
         List<Map<String,Object>> resultList = carTravelRecordMapper.selectByFields(param);
         int count = carTravelRecordMapper.getCount(param);
@@ -68,7 +77,7 @@ public class CarMaintainService {
         //建立新的sheet对象（excel的表单）
         HSSFSheet sheet = wb.createSheet("车辆信息");
         //设置单元格合并
-        sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 4));
+        sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 3));
         HSSFCellStyle boderStyle = wb.createCellStyle();
         boderStyle.setAlignment(HorizontalAlignment.CENTER);
         HSSFFont font = wb.createFont();
@@ -92,13 +101,12 @@ public class CarMaintainService {
         font2.setFontHeightInPoints((short)12);
         boderStyle2.setFont(font2);
 
-        int[] width = {256*20+184, 256*20+184, 256*20+184, 256*20+184,256*40+184};
+        int[] width = {256*30+184, 256*30+184, 256*30+184, 256*30+184,256*30+184};
         //设置宽度
         sheet.setColumnWidth(0,width[0]);
         sheet.setColumnWidth(1,width[1]);
         sheet.setColumnWidth(2,width[2]);
         sheet.setColumnWidth(3,width[3]);
-        sheet.setColumnWidth(4,width[4]);
 
         HSSFRow row1 = sheet.createRow(0);
         HSSFCell cell = row1.createCell(0);
@@ -108,11 +116,10 @@ public class CarMaintainService {
         //在sheet里创建第二行
         HSSFRow row2 = sheet.createRow(1);
         //创建单元格并设置单元格内容
-        createRowCell(row2,0,"汽车编号",boderStyle2);
-        createRowCell(row2,1,"车牌号",boderStyle2);
-        createRowCell(row2,2,"负责人",boderStyle2);
-        createRowCell(row2,3,"品牌",boderStyle2);
-        createRowCell(row2,4,"参数",boderStyle2);
+        createRowCell(row2,0,"车牌号",boderStyle2);
+        createRowCell(row2,1,"负责人",boderStyle2);
+        createRowCell(row2,2,"品牌",boderStyle2);
+        createRowCell(row2,3,"参数",boderStyle2);
 
         List<CarMaintain> dataList = query(stationId);
         if(CollectionUtils.isNotEmpty(dataList)){
@@ -120,20 +127,17 @@ public class CarMaintainService {
                 CarMaintain carBean = dataList.get(i);
                 HSSFRow row = sheet.createRow(i+2);
                 row.setRowStyle(boderStyle2);
-                if(null != carBean.getId()){
-                    createRowCell(row,0,carBean.getId()+"",boderStyle2);
-                }
                 if(StringUtils.isNotBlank(carBean.getCarNum())){
-                    createRowCell(row,1,carBean.getCarNum()+"",boderStyle2);
+                    createRowCell(row,0,carBean.getCarNum()+"",boderStyle2);
                 }
                 if(StringUtils.isNotBlank(carBean.getHeader())){
-                    createRowCell(row,2,carBean.getHeader()+"",boderStyle2);
+                    createRowCell(row,1,carBean.getHeader()+"",boderStyle2);
                 }
                 if(StringUtils.isNotBlank(carBean.getBrand())){
-                    createRowCell(row,3,carBean.getBrand(),boderStyle2);
+                    createRowCell(row,2,carBean.getBrand(),boderStyle2);
                 }
                 if(StringUtils.isNotBlank(carBean.getParam())){
-                    createRowCell(row,4,carBean.getParam(),boderStyle2);
+                    createRowCell(row,3,carBean.getParam(),boderStyle2);
                 }
 
             }
@@ -148,49 +152,62 @@ public class CarMaintainService {
         cell.setCellValue(val);
     }
 
-    public void saveExcelData(Long stationId, Workbook workbook){
+    public void saveExcelData(Long stationId, Workbook workbook) throws ParseException {
         Sheet sheet = workbook.getSheetAt(0);
         DataFormatter formatter = new DataFormatter();
         int lastRowNum = sheet.getLastRowNum();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = sdf.parse(sdf.format(new Date()));
         if(lastRowNum > 1){
-            for(int i=2;i<=lastRowNum;i++){
-                try{
+                for(int i=2;i<=lastRowNum;i++){
                     Row row = sheet.getRow(i);
-                    String carId = formatter.formatCellValue(row.getCell(0));
-                    String carNum = formatter.formatCellValue(row.getCell(1));
-                    String header = formatter.formatCellValue(row.getCell(2));
-                    String brand = formatter.formatCellValue(row.getCell(3));
-                    String param = formatter.formatCellValue(row.getCell(4));
-
+                    String carNum = formatter.formatCellValue(row.getCell(0));
+                    String header = formatter.formatCellValue(row.getCell(1));
+                    String brand = formatter.formatCellValue(row.getCell(2));
+                    String param = formatter.formatCellValue(row.getCell(3));
                     CarMaintain carMaintain = new CarMaintain();
+                    carMaintain.setStatus(0);
+                    carMaintain.setConfirmStatus(1);
                     carMaintain.setCarNum(carNum);
                     carMaintain.setStationId(stationId);
                     carMaintain.setHeader(header);
                     carMaintain.setParam(param);
                     carMaintain.setBrand(brand);
-
-                    if(StringUtils.isNotBlank(carId)){
-                        //更新
-                        carMaintain.setId(Long.parseLong(carId));
-                        carMaintainMapper.updateByPrimaryKey(carMaintain);
-                    }else{
-                        carMaintainMapper.insert(carMaintain);
-                    }
-                }catch (Exception e){
-                    logger.error("车辆信息导入失败:",e);
+                    carMaintain.setCreateDttm(date);
+                    carMaintain.setUpdateDttm(date);
+                    carMaintainMapper.insert(carMaintain);
                 }
-            }
+                Map<String,Object> param = Maps.newHashMap();
+                param.put("stationId",stationId);
+                param.put("date",date);
+                carMaintainMapper.deleteByFields(param);
         }
     }
 
     public void confirm(Long userId,Long id,Integer confirmStatus){
-        CarTravelRecord record = new CarTravelRecord();
-        record.setId(id);
-        record.setConfirmUserId(userId);
-        record.setConfirmStatus(confirmStatus);
-        record.setUpdateDttm(new Date());
-        record.setConfirmTime(new Date());
-        carTravelRecordMapper.updateByPrimaryKeySelective(record);
+        CarTravelRecord carTravelRecord = carTravelRecordMapper.selectByPrimaryKey(id);
+        carTravelRecord.setConfirmUserId(userId);
+        carTravelRecord.setConfirmStatus(confirmStatus);
+        carTravelRecord.setUpdateDttm(new Date());
+        carTravelRecord.setConfirmTime(new Date());
+        carTravelRecordMapper.updateByPrimaryKeySelective(carTravelRecord);
+
+        Long carId = carTravelRecord.getCarId();
+        CarMaintain carMaintain = carMaintainMapper.selectByPrimaryKey(carId);
+        if(confirmStatus == 1){
+            Integer action = carTravelRecord.getAction();
+            if(action == 1){
+                //如果是借出  汽车的状态要变成1(外出)
+                carMaintain.setStatus(1);
+            }else{
+                //如果是归还确认  汽车的状态要变成0(在站)
+                carMaintain.setStatus(0);
+            }
+            carMaintain.setConfirmStatus(1);
+            carMaintain.setUpdateDttm(new Date());
+            carMaintainMapper.updateByPrimaryKeySelective(carMaintain);
+        }
+
     }
 
 }

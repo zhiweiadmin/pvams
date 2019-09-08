@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URLEncoder;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
@@ -143,9 +144,13 @@ public class ToolMaintainController {
                 }
             }
         }catch (Exception e){
-            logger.error("导入失败",e);
-            e.printStackTrace();
-            resultMap.success().message("导入失败");
+            if(e instanceof ParseException){
+                logger.error("导入信息失败,转换错误",e);
+                return resultMap.fail().message("导入失败,请检查文件格式是否正确!");
+            }else{
+                logger.error("导入信息失败",e);
+                return resultMap.fail().message("导入失败!");
+            }
         }
         return resultMap;
     }
@@ -157,11 +162,11 @@ public class ToolMaintainController {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         ResultMap resultMap = new ResultMap();
         if(stationId == null){
-            return resultMap.fail().message("文件格式错误").code(400);
+            return resultMap.fail().message("请先选择电站").code(400);
         }
         PowerStation powerStation = powerStationMapper.selectByPrimaryKey(stationId);
         if(powerStation == null){
-            return resultMap.fail().message("未找到该发电站数据").code(400);
+            return resultMap.fail().message("电站不存在").code(400);
         }
         //创建HSSFWorkbook对象(excel的文档对象)
         HSSFWorkbook wb = new HSSFWorkbook();
@@ -192,16 +197,15 @@ public class ToolMaintainController {
         font2.setFontHeightInPoints((short)12);
         boderStyle2.setFont(font2);
 
-        int[] width = {256*18+184,
-                256*18+184,
-                256*18+184,
-                256*18+184,
-                256*25+184,
-                256*40+184,
-                256*18+184,
+        int[] width = {256*30+184,
                 256*30+184,
-                256*25+184,
-                256*25+184};
+                256*30+184,
+                256*30+184,
+                256*50+184,
+                256*30+184,
+                256*30+184,
+                256*30+184,
+                256*50+184};
         //设置宽度
         sheet.setColumnWidth(0,width[0]);
         sheet.setColumnWidth(1,width[1]);
@@ -212,7 +216,6 @@ public class ToolMaintainController {
         sheet.setColumnWidth(6,width[6]);
         sheet.setColumnWidth(7,width[7]);
         sheet.setColumnWidth(8,width[8]);
-        sheet.setColumnWidth(9,width[9]);
 
         //在sheet里创建第一行，参数为行索引(excel的行)，可以是0～65535之间的任何一个
         HSSFRow row1 = sheet.createRow(0);
@@ -220,7 +223,7 @@ public class ToolMaintainController {
         HSSFCell cell = row1.createCell(0);
         //设置单元格内容
         if(powerStation != null && StringUtils.isNotBlank(powerStation.getStationName())){
-            cell.setCellValue(powerStation.getStationName()+"工器具列表");
+            cell.setCellValue("工器具列表");
         }else{
             cell.setCellValue("工器具列表");
         }
@@ -229,35 +232,32 @@ public class ToolMaintainController {
         //在sheet里创建第二行
         HSSFRow row2 = sheet.createRow(1);
         //创建单元格并设置单元格内容
-        HSSFCell cell2_0 = row2.createCell(0);
-        cell2_0.setCellValue("工具编号");
-        cell2_0.setCellStyle(boderStyle1);
-        HSSFCell cell2_1 = row2.createCell(1);
+        HSSFCell cell2_1 = row2.createCell(0);
         cell2_1.setCellValue("工器具名称");
         cell2_1.setCellStyle(boderStyle1);
-        HSSFCell cell2_2 = row2.createCell(2);
+        HSSFCell cell2_2 = row2.createCell(1);
         cell2_2.setCellValue("位置");
         cell2_2.setCellStyle(boderStyle1);
-        HSSFCell cell2_3 = row2.createCell(3);
+        HSSFCell cell2_3 = row2.createCell(2);
         cell2_3.setCellValue("数量");
         cell2_3.setCellStyle(boderStyle1);
-        HSSFCell cell2_4 = row2.createCell(4);
+        HSSFCell cell2_4 = row2.createCell(3);
         cell2_4.setCellValue("类型");
         cell2_4.setCellStyle(boderStyle1);
-        HSSFCell cell2_5 = row2.createCell(5);
-        cell2_5.setCellValue("本次点检日期");
+        HSSFCell cell2_5 = row2.createCell(4);
+        cell2_5.setCellValue("本次点检日期(文本格式 2010-01-01 12:00:00)");
         cell2_5.setCellStyle(boderStyle1);
-        HSSFCell cell2_6 = row2.createCell(6);
+        HSSFCell cell2_6 = row2.createCell(5);
         cell2_6.setCellValue("参数");
         cell2_6.setCellStyle(boderStyle1);
-        HSSFCell cell2_7 = row2.createCell(7);
+        HSSFCell cell2_7 = row2.createCell(6);
         cell2_7.setCellValue("点检状态");
         cell2_7.setCellStyle(boderStyle1);
-        HSSFCell cell2_8 = row2.createCell(8);
+        HSSFCell cell2_8 = row2.createCell(7);
         cell2_8.setCellValue("点检校验计划");
         cell2_8.setCellStyle(boderStyle1);
-        HSSFCell cell2_9 = row2.createCell(9);
-        cell2_9.setCellValue("下次点检日期");
+        HSSFCell cell2_9 = row2.createCell(8);
+        cell2_9.setCellValue("下次点检日期(文本格式 2010-01-01 12:00:00)");
         cell2_9.setCellStyle(boderStyle1);
 
         List<ToolMaintain> toolList = toolMaintainService.query(stationId);
@@ -266,53 +266,48 @@ public class ToolMaintainController {
                 ToolMaintain bean = toolList.get(i);
                 HSSFRow row = sheet.createRow(i+2);
                 row.setRowStyle(boderStyle2);
-                if(null != bean.getId()){
-                    HSSFCell cell0 = row.createCell(0);
-                    cell0.setCellStyle(boderStyle2);
-                    cell0.setCellValue(bean.getId());
-                }
                 if(StringUtils.isNotBlank(bean.getTool())){
-                    HSSFCell cell0 = row.createCell(1);
+                    HSSFCell cell0 = row.createCell(0);
                     cell0.setCellStyle(boderStyle2);
                     cell0.setCellValue(bean.getTool());
                 }
                 if(StringUtils.isNotBlank(bean.getPosition())){
-                    HSSFCell cell0 = row.createCell(2);
+                    HSSFCell cell0 = row.createCell(1);
                     cell0.setCellStyle(boderStyle2);
                     cell0.setCellValue(bean.getPosition());
                 }
                 if(bean.getNum() != null){
-                    HSSFCell cell0 = row.createCell(3);
+                    HSSFCell cell0 = row.createCell(2);
                     cell0.setCellStyle(boderStyle2);
                     cell0.setCellValue(bean.getNum());
                 }
                 if(StringUtils.isNotBlank(bean.getType())){
-                    HSSFCell cell0 = row.createCell(4);
+                    HSSFCell cell0 = row.createCell(3);
                     cell0.setCellStyle(boderStyle2);
                     cell0.setCellValue(bean.getType());
                 }
                 if(bean.getCheckTime() != null){
-                    HSSFCell cell0 = row.createCell(5);
+                    HSSFCell cell0 = row.createCell(4);
                     cell0.setCellStyle(boderStyle2);
                     cell0.setCellValue(sdf.format(bean.getCheckTime()));
                 }
                 if(StringUtils.isNotBlank(bean.getParam())){
-                    HSSFCell cell0 = row.createCell(6);
+                    HSSFCell cell0 = row.createCell(5);
                     cell0.setCellStyle(boderStyle2);
                     cell0.setCellValue(bean.getParam());
                 }
                 if(bean.getCheckStatus() != null){
-                    HSSFCell cell0 = row.createCell(7);
+                    HSSFCell cell0 = row.createCell(6);
                     cell0.setCellStyle(boderStyle2);
                     cell0.setCellValue(bean.getCheckStatus());
                 }
                 if(StringUtils.isNotBlank(bean.getCheckPlan())){
-                    HSSFCell cell0 = row.createCell(8);
+                    HSSFCell cell0 = row.createCell(7);
                     cell0.setCellStyle(boderStyle2);
                     cell0.setCellValue(bean.getCheckPlan());
                 }
                 if(bean.getNextCheckTime() != null){
-                    HSSFCell cell0 = row.createCell(9);
+                    HSSFCell cell0 = row.createCell(8);
                     cell0.setCellStyle(boderStyle2);
                     cell0.setCellValue(sdf.format(bean.getNextCheckTime()));
                 }

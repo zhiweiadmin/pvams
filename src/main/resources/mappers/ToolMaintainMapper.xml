@@ -208,4 +208,14 @@
       and station_Id = #{stationId,jdbcType=BIGINT}
     </if>
   </select>
+
+  <delete id="deleteByFields" parameterType="java.util.Map">
+    delete
+    from
+        t_tool_maintain
+    where
+        station_Id = #{stationId,jdbcType=BIGINT}
+        and #{date,jdbcType=TIMESTAMP} > create_dttm
+  </delete>
+
 </mapper>

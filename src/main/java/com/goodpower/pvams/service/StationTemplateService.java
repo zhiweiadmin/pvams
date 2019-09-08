@@ -36,7 +36,7 @@ public class StationTemplateService {
         font2.setFontHeightInPoints((short)12);
         boderStyle2.setFont(font2);
 
-        int[] width = {256*25+184,256*25+184};
+        int[] width = {256*40+184,256*40+184};
         //设置宽度
         sheet.setColumnWidth(0,width[0]);
         sheet.setColumnWidth(1,width[1]);
@@ -64,8 +64,8 @@ public class StationTemplateService {
         createRowCell(sheet.createRow(12),boderStyle1,"是否有外来人员祭祖");
         createRowCell(sheet.createRow(13),boderStyle1,"组件底端距地面距离");
         createRowCell(sheet.createRow(14),boderStyle1,"分布点数量");
-        createRowCell(sheet.createRow(15),boderStyle1,"周初始");
-        createRowCell(sheet.createRow(16),boderStyle1,"月初始");
+        createRowCell(sheet.createRow(15),boderStyle1,"周初始(请输入数字1-7)(请输入数字1-7)");
+        createRowCell(sheet.createRow(16),boderStyle1,"月初始(请输入数字1-31)(请输入数字1-30)");
 
     }
 
@@ -102,7 +102,7 @@ public class StationTemplateService {
         font2.setFontHeightInPoints((short)12);
         boderStyle2.setFont(font2);
 
-        int[] width = {256*25+184,256*25+184};
+        int[] width = {256*40+184,256*40+184};
         //设置宽度
         sheet.setColumnWidth(0,width[0]);
         sheet.setColumnWidth(1,width[1]);
@@ -132,8 +132,8 @@ public class StationTemplateService {
         createRowCell(sheet.createRow(14),boderStyle1,"组件底端距地面距离");
         createRowCell(sheet.createRow(15),boderStyle1,"是否有动物养殖");
         createRowCell(sheet.createRow(16),boderStyle1,"清洗水源");
-        createRowCell(sheet.createRow(17),boderStyle1,"周初始");
-        createRowCell(sheet.createRow(18),boderStyle1,"月初始");
+        createRowCell(sheet.createRow(17),boderStyle1,"周初始(请输入数字1-7)(请输入数字1-7)");
+        createRowCell(sheet.createRow(18),boderStyle1,"月初始(请输入数字1-31)");
     }
 
     public void createFishStationTmp(HSSFWorkbook wb){
@@ -163,7 +163,7 @@ public class StationTemplateService {
         font2.setFontHeightInPoints((short)12);
         boderStyle2.setFont(font2);
 
-        int[] width = {256*25+184,256*25+184};
+        int[] width = {256*40+184,256*40+184};
         //设置宽度
         sheet.setColumnWidth(0,width[0]);
         sheet.setColumnWidth(1,width[1]);
@@ -191,8 +191,8 @@ public class StationTemplateService {
         createRowCell(sheet.createRow(12),boderStyle1,"组件底端距水面距离");
         createRowCell(sheet.createRow(13),boderStyle1,"是否有水产养殖");
         createRowCell(sheet.createRow(14),boderStyle1,"清洗水源");
-        createRowCell(sheet.createRow(15),boderStyle1,"周初始");
-        createRowCell(sheet.createRow(16),boderStyle1,"月初始");
+        createRowCell(sheet.createRow(15),boderStyle1,"周初始(请输入数字1-7)(请输入数字1-7)");
+        createRowCell(sheet.createRow(16),boderStyle1,"月初始(请输入数字1-31)");
     }
 
     public void createFloatStationTmp(HSSFWorkbook wb){
@@ -222,7 +222,7 @@ public class StationTemplateService {
         font2.setFontHeightInPoints((short)12);
         boderStyle2.setFont(font2);
 
-        int[] width = {256*25+184,256*25+184};
+        int[] width = {256*40+184,256*40+184};
         //设置宽度
         sheet.setColumnWidth(0,width[0]);
         sheet.setColumnWidth(1,width[1]);
@@ -252,8 +252,8 @@ public class StationTemplateService {
         createRowCell(sheet.createRow(14),boderStyle1,"组件底端距水面距离");
         createRowCell(sheet.createRow(15),boderStyle1,"是否有水产养殖");
         createRowCell(sheet.createRow(16),boderStyle1,"清洗水源");
-        createRowCell(sheet.createRow(17),boderStyle1,"周初始");
-        createRowCell(sheet.createRow(18),boderStyle1,"月初始");
+        createRowCell(sheet.createRow(17),boderStyle1,"周初始(请输入数字1-7)(请输入数字1-7)");
+        createRowCell(sheet.createRow(18),boderStyle1,"月初始(请输入数字1-31)");
     }
 
     public void createDistributedStationTmp(HSSFWorkbook wb){
@@ -283,7 +283,7 @@ public class StationTemplateService {
         font2.setFontHeightInPoints((short)12);
         boderStyle2.setFont(font2);
 
-        int[] width = {256*25+184,256*25+184};
+        int[] width = {256*40+184,256*40+184};
         //设置宽度
         sheet.setColumnWidth(0,width[0]);
         sheet.setColumnWidth(1,width[1]);
@@ -310,8 +310,8 @@ public class StationTemplateService {
         createRowCell(sheet.createRow(11),boderStyle1,"屋顶数量");
         createRowCell(sheet.createRow(12),boderStyle1,"分布点数量");
         createRowCell(sheet.createRow(13),boderStyle1,"清洗水源接入");
-        createRowCell(sheet.createRow(14),boderStyle1,"周初始");
-        createRowCell(sheet.createRow(15),boderStyle1,"月初始");
+        createRowCell(sheet.createRow(14),boderStyle1,"周初始(请输入数字1-7)");
+        createRowCell(sheet.createRow(15),boderStyle1,"月初始(请输入数字1-31)");
     }
 
 
@@ -342,7 +342,7 @@ public class StationTemplateService {
         font2.setFontHeightInPoints((short)12);
         boderStyle2.setFont(font2);
 
-        int[] width = {256*25+184,256*25+184};
+        int[] width = {256*40+184,256*40+184};
         //设置宽度
         sheet.setColumnWidth(0,width[0]);
         sheet.setColumnWidth(1,width[1]);
@@ -370,8 +370,8 @@ public class StationTemplateService {
         createRowCell(sheet.createRow(12),boderStyle1,"是否有外来人员祭祖");
         createRowCell(sheet.createRow(13),boderStyle1,"组件底端距地面距离");
         createRowCell(sheet.createRow(14),boderStyle1,"分布点数量");
-        createRowCell(sheet.createRow(15),boderStyle1,"周初始");
-        createRowCell(sheet.createRow(16),boderStyle1,"月初始");
+        createRowCell(sheet.createRow(15),boderStyle1,"周初始(请输入数字1-7)");
+        createRowCell(sheet.createRow(16),boderStyle1,"月初始(请输入数字1-31)");
     }
 
     public void createUserDistributedStationTmp(HSSFWorkbook wb){
@@ -401,7 +401,7 @@ public class StationTemplateService {
         font2.setFontHeightInPoints((short)12);
         boderStyle2.setFont(font2);
 
-        int[] width = {256*25+184,256*25+184};
+        int[] width = {256*40+184,256*40+184};
         //设置宽度
         sheet.setColumnWidth(0,width[0]);
         sheet.setColumnWidth(1,width[1]);
@@ -426,8 +426,8 @@ public class StationTemplateService {
         createRowCell(sheet.createRow(9),boderStyle1,"屋顶数量");
         createRowCell(sheet.createRow(10),boderStyle1,"分布点数量");
         createRowCell(sheet.createRow(11),boderStyle1,"清洗水源接入");
-        createRowCell(sheet.createRow(12),boderStyle1,"周初始");
-        createRowCell(sheet.createRow(13),boderStyle1,"月初始");
+        createRowCell(sheet.createRow(12),boderStyle1,"周初始(请输入数字1-7)");
+        createRowCell(sheet.createRow(13),boderStyle1,"月初始(请输入数字1-31)");
     }
 
     public void createBuildSheet(HSSFWorkbook wb){
@@ -457,7 +457,7 @@ public class StationTemplateService {
         font2.setFontHeightInPoints((short)12);
         boderStyle2.setFont(font2);
 
-        int[] width = {256*25+184,256*25+184};
+        int[] width = {256*40+184,256*40+184};
         //设置宽度
         sheet.setColumnWidth(0,width[0]);
         sheet.setColumnWidth(1,width[1]);
@@ -505,7 +505,7 @@ public class StationTemplateService {
         font2.setFontHeightInPoints((short)12);
         boderStyle2.setFont(font2);
 
-        int[] width = {256*25+184,256*25+184};
+        int[] width = {256*40+184,256*40+184};
         //设置宽度
         sheet.setColumnWidth(0,width[0]);
         sheet.setColumnWidth(1,width[1]);
@@ -553,7 +553,7 @@ public class StationTemplateService {
         font2.setFontHeightInPoints((short)12);
         boderStyle2.setFont(font2);
 
-        int[] width = {256*25+184,256*25+184};
+        int[] width = {256*40+184,256*40+184};
         //设置宽度
         sheet.setColumnWidth(0,width[0]);
         sheet.setColumnWidth(1,width[1]);
@@ -601,7 +601,7 @@ public class StationTemplateService {
         font2.setFontHeightInPoints((short)12);
         boderStyle2.setFont(font2);
 
-        int[] width = {256*25+184,256*25+184};
+        int[] width = {256*40+184,256*40+184};
         sheet.setColumnWidth(0,width[0]);
         sheet.setColumnWidth(1,width[1]);
 
@@ -643,7 +643,7 @@ public class StationTemplateService {
         font2.setFontHeightInPoints((short)12);
         boderStyle2.setFont(font2);
 
-        int[] width = {256*25+184,256*25+184};
+        int[] width = {256*40+184,256*40+184};
         sheet.setColumnWidth(0,width[0]);
         sheet.setColumnWidth(1,width[1]);
 
@@ -653,16 +653,13 @@ public class StationTemplateService {
         cell.setCellStyle(boderStyle);
 
         createRowCell(sheet.createRow(1),boderStyle1,"电站名称");
-        createRowCell(sheet.createRow(2),boderStyle1,"电站编号");
-        createRowCell(sheet.createRow(3),boderStyle1,"省");
-        createRowCell(sheet.createRow(4),boderStyle1,"市");
-        createRowCell(sheet.createRow(5),boderStyle1,"区");
-        createRowCell(sheet.createRow(6),boderStyle1,"乡");
-        createRowCell(sheet.createRow(7),boderStyle1,"村");
-        createRowCell(sheet.createRow(8),boderStyle1,"电站经度");
-        createRowCell(sheet.createRow(9),boderStyle1,"电站纬度");
+        createRowCell(sheet.createRow(2),boderStyle1,"省");
+        createRowCell(sheet.createRow(3),boderStyle1,"市");
+        createRowCell(sheet.createRow(4),boderStyle1,"区");
+        createRowCell(sheet.createRow(5),boderStyle1,"乡");
+        createRowCell(sheet.createRow(6),boderStyle1,"村");
+        createRowCell(sheet.createRow(7),boderStyle1,"电站经度");
+        createRowCell(sheet.createRow(8),boderStyle1,"电站纬度");
     }
-
-
 
 }

@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -36,7 +37,6 @@ public class UserController {
         ResultMap resultMap = new ResultMap();
         try{
             if(userId == null){
-
                 resultMap.fail().message("userId不能为空");
             }
             User user =  userService.findUserById(userId);
@@ -114,6 +114,17 @@ public class UserController {
         }
     }
 
+    static Map<Integer,String> roleMap = Maps.newHashMap();
+    static {
+        roleMap.put(1,"超级管理员");
+        roleMap.put(2,"企业管理员");
+        roleMap.put(3,"企业运维人员");
+        roleMap.put(4,"企业普通用户");
+        roleMap.put(5,"电站管理员");
+        roleMap.put(6,"电站运维人员");
+        roleMap.put(7,"电站普通用户");
+    }
+
     @GetMapping("/query")
     public ResultMap query(@RequestParam Integer userType,
                            @RequestParam Long unitId,
@@ -127,6 +138,9 @@ public class UserController {
             param.put("userType",userType);
             param.put("unitId",unitId);
             List<User> userList = userService.find(param);
+            for(User user : userList){
+                user.setRoleName(roleMap.get(user.getRole()));
+            }
             Integer count = userService.getCount(param);
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("userList",userList);
@@ -188,6 +202,32 @@ public class UserController {
             return true;
         }
         return false;
+    }
+
+    @GetMapping("/getRole")
+    public ResultMap getRole(HttpServletRequest request,Integer type, Integer userType){
+        ResultMap result = new ResultMap();
+        try{
+            String token = request.getHeader("Token");
+            String userName = JWTUtil.getUsername(token);
+            User user = userService.findUserByUsername(userName);
+            if(user == null){
+                return result.fail().message("未找到该用户信息");
+            }
+            List<Map<String,Object>> dataList = userService.getAddRole(user.getRole(),userType);
+            if(dataList == null ||dataList.isEmpty()){
+                Map<String,Object> map = Maps.newHashMap();
+                map.put("role",user.getRole());
+                map.put("name",roleMap.get(user.getRole()));
+                dataList.add(map);
+            }
+            JSONObject resultList = new JSONObject();
+            resultList.put("resultList",dataList);
+            return result.setData(resultList).success().message("查询成功");
+        }catch (Exception e){
+            logger.error("查询角色失败",e);
+            return result.fail().message("查询角色失败");
+        }
     }
 
 }

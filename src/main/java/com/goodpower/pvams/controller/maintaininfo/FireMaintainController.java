@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URLEncoder;
+import java.text.ParseException;
 import java.util.Map;
 
 @RestController
@@ -101,7 +102,7 @@ public class FireMaintainController {
             param.put("offset",(pageNo-1)*pageSize);
             param.put("limit",pageSize);
             param.put("fireId",fireId);
-            JSONObject jsonObject= fireMaintainService.queryFireRecord(param);
+            JSONObject jsonObject= fireMaintainService.queryFireRecord(pageNo,pageSize,param);
             resultMap.success().message("请求成功").setData(jsonObject);
         }catch (Exception e){
             logger.error("请求失败",e);
@@ -150,7 +151,13 @@ public class FireMaintainController {
                 }
             }
         }catch (Exception e){
-            resultMap.success().message("导入失败");
+            if(e instanceof ParseException){
+                logger.error("导入信息失败,转换错误",e);
+                return resultMap.fail().message("导入失败,请检查文件格式是否正确!");
+            }else{
+                logger.error("导入信息失败",e);
+                return resultMap.fail().message("导入失败!");
+            }
         }
         return resultMap;
     }

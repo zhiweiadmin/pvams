@@ -30,6 +30,8 @@ public class WorkRecord implements Serializable {
 
     private String time;
 
+    private String realname;
+
     private Date createDttm;
 
     private Date updateDttm;
@@ -154,5 +156,13 @@ public class WorkRecord implements Serializable {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public String getRealname() {
+        return realname;
+    }
+
+    public void setRealname(String realname) {
+        this.realname = realname;
     }
 }

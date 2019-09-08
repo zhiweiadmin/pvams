@@ -2,6 +2,7 @@ package com.goodpower.pvams.service;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.goodpower.pvams.common.Page;
 import com.goodpower.pvams.mapper.StationDataStatMapper;
 import com.goodpower.pvams.mapper.StationDeviceStatMapper;
 import com.goodpower.pvams.model.StationDataStat;
@@ -9,6 +10,7 @@ import com.goodpower.pvams.model.StationDeviceStat;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -180,13 +182,13 @@ public class StationDataStatService {
      * @param statType
      * 获取每月设备统计详情
      */
-    public JSONObject getMonthDeviceStatDetail(Long stationId, Integer statType, int year, int month,int pageNum,int pageSize){
+    public JSONObject getMonthDeviceStatDetail(Long stationId, Integer statType, int year, int month,int pageNo,int pageSize){
         Map<String,Object> param = Maps.newHashMap();
         param.put("year",year);
         param.put("month",month);
         param.put("statType",statType);
         param.put("stationId",stationId);
-        int offset = (pageNum - 1)*pageSize;
+        int offset = (pageNo - 1)*pageSize;
         int limit = pageSize;
         List<Map<String,Object>> dataList =  deviceStatMapper.getMonthDeviceStatDetail(param);
         List<Object> deviceNameList = Lists.newArrayList();
@@ -247,7 +249,13 @@ public class StationDataStatService {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("dateLen",monthDays);
         jsonObject.put("resultData",resultList);
-        jsonObject.put("count",deviceNameList.size());
+        Page page = new Page();
+        page.setPage(pageNo);
+        page.setPageSize(pageSize);
+        if(deviceNameList != null){
+            page.setCount(Long.parseLong(deviceNameList.size()+""));
+        }
+        jsonObject.put("page",page);
         return jsonObject;
     }
 
@@ -727,6 +735,138 @@ public class StationDataStatService {
 
         powerList.add(powerObject);
         hourList.add(realObject);
+    }
+
+    public void createDevicePowerSheet(HSSFWorkbook wb){
+        HSSFSheet sheet = wb.createSheet("设备发电量");
+        HSSFCellStyle boderStyle = wb.createCellStyle();
+        boderStyle.setAlignment(HorizontalAlignment.CENTER);
+        HSSFFont font = wb.createFont();
+        font.setBold(false);
+        font.setFontName("宋体");
+        font.setFontHeightInPoints((short)13);
+        boderStyle.setFont(font);
+
+        HSSFCellStyle boderStyle1 = wb.createCellStyle();
+        boderStyle1.setAlignment(HorizontalAlignment.CENTER);
+        HSSFFont font1 = wb.createFont();
+        font1.setFontName("宋体");
+        font.setBold(false);
+        font1.setFontHeightInPoints((short)13);
+        boderStyle1.setFont(font1);
+
+        HSSFCellStyle boderStyle2 = wb.createCellStyle();
+        boderStyle2.setAlignment(HorizontalAlignment.CENTER);
+        HSSFFont font2 = wb.createFont();
+        font2.setFontName("宋体");
+        font2.setFontHeightInPoints((short)12);
+        boderStyle2.setFont(font2);
+
+        int[] width = {256*40+184};
+        sheet.setColumnWidth(0,width[0]);
+
+        HSSFRow row1 = sheet.createRow(0);
+        HSSFCell cell = row1.createCell(0);
+        cell.setCellValue("日期格式yyyy-MM-dd");
+        cell.setCellStyle(boderStyle);
+
+        HSSFRow row2 = sheet.createRow(1);
+        createRowCell(row2,0,boderStyle1,"日期/设备");
+    }
+
+    public void createDeviceHourSheet(HSSFWorkbook wb){
+        HSSFSheet sheet = wb.createSheet("等效小时数");
+        HSSFCellStyle boderStyle = wb.createCellStyle();
+        boderStyle.setAlignment(HorizontalAlignment.CENTER);
+        HSSFFont font = wb.createFont();
+        font.setBold(false);
+        font.setFontName("宋体");
+        font.setFontHeightInPoints((short)13);
+        boderStyle.setFont(font);
+
+        HSSFCellStyle boderStyle1 = wb.createCellStyle();
+        boderStyle1.setAlignment(HorizontalAlignment.CENTER);
+        HSSFFont font1 = wb.createFont();
+        font1.setFontName("宋体");
+        font.setBold(false);
+        font1.setFontHeightInPoints((short)13);
+        boderStyle1.setFont(font1);
+
+        HSSFCellStyle boderStyle2 = wb.createCellStyle();
+        boderStyle2.setAlignment(HorizontalAlignment.CENTER);
+        HSSFFont font2 = wb.createFont();
+        font2.setFontName("宋体");
+        font2.setFontHeightInPoints((short)12);
+        boderStyle2.setFont(font2);
+
+        int[] width = {256*40+184};
+        sheet.setColumnWidth(0,width[0]);
+
+        HSSFRow row1 = sheet.createRow(0);
+        HSSFCell cell = row1.createCell(0);
+        cell.setCellValue("日期格式yyyy-MM-dd");
+        cell.setCellStyle(boderStyle);
+
+        HSSFRow row2 = sheet.createRow(1);
+        createRowCell(row2,0,boderStyle1,"日期/设备");
+    }
+
+    public void createStatSheet(HSSFWorkbook wb){
+        HSSFSheet sheet = wb.createSheet("统计");
+        HSSFCellStyle boderStyle = wb.createCellStyle();
+        boderStyle.setAlignment(HorizontalAlignment.CENTER);
+        HSSFFont font = wb.createFont();
+        font.setBold(true);
+        font.setFontName("宋体");
+        font.setFontHeightInPoints((short)13);
+        boderStyle.setFont(font);
+
+        HSSFCellStyle boderStyle1 = wb.createCellStyle();
+        boderStyle1.setAlignment(HorizontalAlignment.CENTER);
+        HSSFFont font1 = wb.createFont();
+        font1.setFontName("宋体");
+        font.setBold(true);
+        font1.setFontHeightInPoints((short)13);
+        boderStyle1.setFont(font1);
+
+        HSSFCellStyle boderStyle2 = wb.createCellStyle();
+        boderStyle2.setAlignment(HorizontalAlignment.CENTER);
+        HSSFFont font2 = wb.createFont();
+        font2.setFontName("宋体");
+        font2.setFontHeightInPoints((short)12);
+        boderStyle2.setFont(font2);
+
+        int[] width = {256*30+184,256*30+184,256*30+184,256*35+184,256*30+184};
+        //设置宽度
+        sheet.setColumnWidth(0,width[0]);
+        sheet.setColumnWidth(1,width[1]);
+        sheet.setColumnWidth(2,width[2]);
+        sheet.setColumnWidth(3,width[3]);
+        sheet.setColumnWidth(4,width[4]);
+        //在sheet里创建第二行
+        HSSFRow row2 = sheet.createRow(0);
+        //创建单元格并设置单元格内容
+        HSSFCell cell2_0 = row2.createCell(0);
+        cell2_0.setCellValue("日期/设备");
+        cell2_0.setCellStyle(boderStyle1);
+        HSSFCell cell2_1 = row2.createCell(1);
+        cell2_1.setCellValue("温度℃");
+        cell2_1.setCellStyle(boderStyle1);
+        HSSFCell cell2_2 = row2.createCell(2);
+        cell2_2.setCellValue("AQI");
+        cell2_2.setCellStyle(boderStyle1);
+        HSSFCell cell2_3 = row2.createCell(3);
+        cell2_3.setCellValue("总福照量MJ/㎡");
+        cell2_3.setCellStyle(boderStyle1);
+        HSSFCell cell2_4 = row2.createCell(4);
+        cell2_4.setCellValue("总发电量Kw·h");
+        cell2_4.setCellStyle(boderStyle1);
+    }
+
+    private void createRowCell(HSSFRow row,int col,HSSFCellStyle style,String name){
+        HSSFCell cell = row.createCell(0);
+        cell.setCellValue(name);
+        cell.setCellStyle(style);
     }
 
 }

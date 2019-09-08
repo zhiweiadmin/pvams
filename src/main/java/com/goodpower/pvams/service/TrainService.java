@@ -10,6 +10,7 @@ import com.goodpower.pvams.model.*;
 import com.goodpower.pvams.util.DateUtil;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,6 +42,10 @@ public class TrainService {
 
     public void addTrainPlan(JSONObject jsonObject){
         String title = jsonObject.getString("title");
+        Integer year = jsonObject.getInteger("year");
+        if(year == null){
+            year = DateUtil.getCurYear();
+        }
         String content = jsonObject.getString("content");
         Long stationId = jsonObject.getLong("stationId");
         Long userId = jsonObject.getLong("userId");
@@ -54,7 +59,7 @@ public class TrainService {
         trainPlan.setUpdater(userId);
         trainPlan.setMsg(msg);
         Date date = new Date();
-        trainPlan.setYear(DateUtil.getCurYear());
+        trainPlan.setYear(year);
         trainPlan.setCreateDttm(date);
         trainPlan.setUpdateDttm(date);
         trainPlanMapper.insert(trainPlan);
@@ -78,6 +83,10 @@ public class TrainService {
     public void updateTrainPlan(JSONObject jsonObject){
         String title = jsonObject.getString("title");
         String content = jsonObject.getString("content");
+        Integer year = jsonObject.getInteger("year");
+        if(year == null){
+            year = DateUtil.getCurYear();
+        }
         Long stationId = jsonObject.getLong("stationId");
         Long userId = jsonObject.getLong("userId");
         Long trainId = jsonObject.getLong("trainId");
@@ -92,7 +101,7 @@ public class TrainService {
         trainPlan.setUpdater(userId);
         trainPlan.setTrainId(trainId);
         Date date = new Date();
-        trainPlan.setYear(DateUtil.getCurYear());
+        trainPlan.setYear(year);
         trainPlan.setCreateDttm(date);
         trainPlan.setUpdateDttm(date);
         trainPlanMapper.updateByPrimaryKey(trainPlan);

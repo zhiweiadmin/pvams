@@ -5,9 +5,11 @@ package com.goodpower.pvams.service;
         import com.goodpower.pvams.mapper.StationFinanceBaseInfoMapper;
         import com.goodpower.pvams.mapper.StationFinanceDataMapper;
         import com.goodpower.pvams.mapper.StationLoanInfoMapper;
+        import com.goodpower.pvams.mapper.StationPolicyMapper;
         import com.goodpower.pvams.model.StationFinanceBaseInfo;
         import com.goodpower.pvams.model.StationFinanceData;
         import com.goodpower.pvams.model.StationLoanInfo;
+        import com.goodpower.pvams.model.StationPolicy;
         import com.goodpower.pvams.util.DateUtil;
         import com.google.common.collect.Lists;
         import com.google.common.collect.Maps;
@@ -99,11 +101,10 @@ public class FinanceService {
         }
     }
 
-    public void readFinanceProfitInfo(Long stationId,Sheet sheet){
+    public void readFinanceProfitInfo(Long stationId,Sheet sheet) throws ParseException {
         int lastRowNum = sheet.getLastRowNum();
         if(lastRowNum > 1){
             for(int i=2;i<=lastRowNum;i++){
-                try{
                     Row row = sheet.getRow(i);
                     String date = excelService.getCellDate(row.getCell(0));
                     String self_peak_power = excelService.getRowValue(row,1);
@@ -255,9 +256,6 @@ public class FinanceService {
                     stationFinanceData.setTotalSelfProfit(selfTotalProfit);
                     stationFinanceData.setTotolProfit(totolProfit);
                     financeDataMapper.insert(stationFinanceData);
-                }catch (Exception e){
-                    logger.error("error",e);
-                }
             }
         }
     }
@@ -375,7 +373,7 @@ public class FinanceService {
      */
     public void createTemplate(HSSFWorkbook wb){
         HSSFSheet sheet = wb.createSheet("基础信息");
-        sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 4));
+        sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 5));
         HSSFCellStyle boderStyle = wb.createCellStyle();
         boderStyle.setAlignment(HorizontalAlignment.CENTER);
         HSSFFont font = wb.createFont();
@@ -535,6 +533,15 @@ public class FinanceService {
         HSSFCell cell = row.createCell(col);
         cell.setCellValue(cellVal);
         cell.setCellStyle(cellStyle);
+    }
+
+    @Autowired
+    StationPolicyMapper stationPolicyMapper;
+
+    public List<StationPolicy> getPolicy(Long stationId){
+        Map<String,Object> param = Maps.newHashMap();
+        param.put("stationId",stationId);
+        return stationPolicyMapper.selectByFields(param);
     }
 
 }

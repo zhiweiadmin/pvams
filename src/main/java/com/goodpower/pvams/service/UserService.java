@@ -1,5 +1,6 @@
 package com.goodpower.pvams.service;
 
+import com.goodpower.pvams.mapper.RoleAddMapper;
 import com.goodpower.pvams.mapper.UserMapper;
 import com.goodpower.pvams.model.User;
 import com.google.common.collect.Lists;
@@ -69,6 +70,16 @@ public class UserService {
         Map<String,Object> param = Maps.newHashMap();
         param.put("username",username);
         return userMapper.selectByFields(param);
+    }
+
+    @Autowired
+    RoleAddMapper roleAddMapper;
+
+    public List<Map<String,Object>> getAddRole(Integer role,Integer userType){
+        Map<String,Object> param = Maps.newHashMap();
+        param.put("role",role);
+        param.put("userType",userType);
+        return roleAddMapper.selectByFields(param);
     }
 
 }

@@ -27,4 +27,6 @@ public interface ComponentMapper {
     int updateByVersion(Map<String,Object> param);
 
     List<Component> selectByField(Map<String,Object> param);
+
+    void deleteByFields(Map<String,Object> map);
 }

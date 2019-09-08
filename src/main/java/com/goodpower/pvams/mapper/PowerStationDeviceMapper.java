@@ -26,4 +26,6 @@ public interface PowerStationDeviceMapper {
 
     Long getStationDeviceCount(Map<String,Object> param);
 
+    void deleteByFields(Map<String,Object> map);
+
 }

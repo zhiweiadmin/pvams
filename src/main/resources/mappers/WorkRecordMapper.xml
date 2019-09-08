@@ -198,56 +198,61 @@
   </update>
   <select id="selectByFields" parameterType="java.util.Map" resultMap="BaseResultMap">
     SELECT
-	    *
+        t.*,
+        t1.realname
     FROM
-        t_work_record
+        t_work_record t left join t_user t1 on t.user_id = t1.user_id
     WHERE
         type = 1
         AND day = #{day,jdbcType=TIMESTAMP}
-        AND user_id = #{userId,jdbcType=BIGINT}
+        AND t.user_id = #{userId,jdbcType=BIGINT}
         AND station_id = #{stationId,jdbcType=BIGINT}
     UNION all
     SELECT
-        *
+        t.*,
+        t1.realname
     FROM
-        t_work_record
+        t_work_record t left join t_user t1 on t.user_id = t1.user_id
     WHERE
         type = 2
         AND year = #{year,jdbcType=INTEGER}
         and week = #{week,jdbcType=INTEGER}
-        AND user_id = #{userId,jdbcType=BIGINT}
+        AND t.user_id = #{userId,jdbcType=BIGINT}
         AND station_id = #{stationId,jdbcType=BIGINT}
     union all
     SELECT
-        *
+        t.*,
+        t1.realname
     FROM
-        t_work_record
+        t_work_record t left join t_user t1 on t.user_id = t1.user_id
     WHERE
         type = 3
         AND year = #{year,jdbcType=INTEGER}
         and month = #{month,jdbcType=INTEGER}
-        AND user_id = #{userId,jdbcType=BIGINT}
+        AND t.user_id = #{userId,jdbcType=BIGINT}
         AND station_id = #{stationId,jdbcType=BIGINT}
     union all
     SELECT
-        *
+        t.*,
+        t1.realname
     FROM
-        t_work_record
+        t_work_record t left join t_user t1 on t.user_id = t1.user_id
     WHERE
         type = 4
         AND year = #{year,jdbcType=INTEGER}
         and quarter = #{quarter,jdbcType=INTEGER}
-        AND user_id = #{userId,jdbcType=BIGINT}
+        AND t.user_id = #{userId,jdbcType=BIGINT}
         AND station_id = #{stationId,jdbcType=BIGINT}
     union all
     SELECT
-        *
+        t.*,
+        t1.realname
     FROM
-        t_work_record
+        t_work_record t left join t_user t1 on t.user_id = t1.user_id
     WHERE
         type = 5
         AND year = #{year,jdbcType=INTEGER}
-        AND user_id = #{userId,jdbcType=BIGINT}
+        AND t.user_id = #{userId,jdbcType=BIGINT}
         AND station_id = #{stationId,jdbcType=BIGINT}
 
   </select>

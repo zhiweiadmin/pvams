@@ -1,12 +1,18 @@
 package com.goodpower.pvams.controller.finance;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.goodpower.pvams.common.ResultMap;
 import com.goodpower.pvams.model.StationFinanceBaseInfo;
+import com.goodpower.pvams.model.StationPolicy;
 import com.goodpower.pvams.service.FinanceService;
 import com.goodpower.pvams.service.LoanProfitService;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URLEncoder;
+import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 
@@ -111,8 +118,39 @@ public class FinanceController {
         }
     }
 
-    @GetMapping("/import/{stationId}")
-    public ResultMap upload(@PathVariable Long stationId,HttpServletResponse response) throws IOException {
+    @PostMapping("/import/{stationId}")
+    public ResultMap upload(@PathVariable Long stationId, @RequestParam("file") MultipartFile file){
+        ResultMap resultMap = new ResultMap();
+        try{
+            String fileName = file.getOriginalFilename();
+            if(StringUtils.isNotBlank(fileName)){
+                Workbook workbook;
+                if (fileName.endsWith("xlsx")){
+                    workbook = new XSSFWorkbook(file.getInputStream());
+                    financeService.saveExcelData(stationId,workbook);
+                    resultMap.success().message("导入成功");
+                }else if(fileName.endsWith("xls")){
+                    workbook = new HSSFWorkbook(file.getInputStream());
+                    financeService.saveExcelData(stationId,workbook);
+                    resultMap.success().message("导入成功");
+                }else{
+                    resultMap.fail().message("文件格式错误").code(400);
+                }
+            }
+        }catch (Exception e){
+            if(e instanceof ParseException){
+                logger.error("导入信息失败,转换错误",e);
+                return resultMap.fail().message("导入失败,请检查文件格式是否正确!");
+            }else{
+                logger.error("导入信息失败",e);
+                return resultMap.fail().message("导入失败!");
+            }
+        }
+        return resultMap;
+    }
+
+    @GetMapping("/template/{stationId}")
+    public ResultMap template(@PathVariable Long stationId,HttpServletResponse response) throws IOException {
         HSSFWorkbook wb = new HSSFWorkbook();
         financeService.createTemplate(wb);
         financeService.createTemplate2(wb);
@@ -128,21 +166,13 @@ public class FinanceController {
         return null;
     }
 
-    @GetMapping("/template")
-    public ResultMap template(HttpServletResponse response) throws IOException {
-        HSSFWorkbook wb = new HSSFWorkbook();
-        financeService.createTemplate(wb);
-        financeService.createTemplate2(wb);
-        financeService.createTemplate3(wb);
-        //输出Excel文件
-        OutputStream output = response.getOutputStream();
-        response.reset();
-        String fileName = "财务模型模板.xls";
-        response.setContentType("application/msexcel;charset=UTF-8");
-        response.setHeader("Content-Disposition", "attachment; fileName="+  fileName +";filename*=utf-8''"+ URLEncoder.encode(fileName,"UTF-8"));
-        wb.write(output);
-        output.close();
-        return null;
+    @GetMapping("/getPolicy")
+    public ResultMap getPolicy(Long stationId,HttpServletResponse response){
+        ResultMap resultMap = new ResultMap();
+        List<StationPolicy> policyList = financeService.getPolicy(stationId);
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("resultData",policyList);
+        return resultMap.setData(jsonObject).success();
     }
 
 }

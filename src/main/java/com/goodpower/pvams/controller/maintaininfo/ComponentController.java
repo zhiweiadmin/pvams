@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URLEncoder;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -54,7 +55,6 @@ public class ComponentController {
             Long componentId = request.getLong("id");
             Integer action  = request.getInteger("action");//0 领取  1:入库
             Integer num = request.getInteger("num");
-
             if(userId == null){
                 return resultMap.fail().code(400).message("userId不能为空");
             }
@@ -64,6 +64,14 @@ public class ComponentController {
             if(componentId == null){
                 return resultMap.fail().code(400).message("备件id不能为空");
             }
+            //获取备件总数量
+            if(action == 0){
+                int totalNum = componentService.getComponentNum(componentId);
+                if(num > totalNum){
+                    return resultMap.fail().code(400).message("领取的数量超过备件总数量!");
+                }
+            }
+
             Date date = new Date();
             ComponentRecord componentRecord = new ComponentRecord();
             componentRecord.setUserId(userId);
@@ -155,6 +163,9 @@ public class ComponentController {
     public ResultMap upload(@PathVariable Long stationId,@RequestParam("file") MultipartFile file){
         ResultMap resultMap = new ResultMap();
         try{
+            if(stationId == null){
+                return resultMap.fail().message("请先选择电站").code(400);
+            }
             String fileName = file.getOriginalFilename();
             if(StringUtils.isNotBlank(fileName)){
                 Workbook workbook;
@@ -171,9 +182,13 @@ public class ComponentController {
                 }
             }
         }catch (Exception e){
-            logger.error("导入失败",e);
-            e.printStackTrace();
-            resultMap.success().message("导入失败");
+            if(e instanceof ParseException){
+                logger.error("导入信息失败,转换错误",e);
+                return resultMap.fail().message("导入失败,请检查文件格式是否正确!");
+            }else{
+                logger.error("导入信息失败",e);
+                return resultMap.fail().message("导入失败!");
+            }
         }
         return resultMap;
     }
@@ -184,7 +199,7 @@ public class ComponentController {
     public ResultMap exportDevice(@PathVariable Long stationId,HttpServletResponse response) throws IOException {
         ResultMap resultMap = new ResultMap();
         if(stationId == null){
-            return resultMap.fail().message("文件格式错误").code(400);
+            return resultMap.fail().message("请先选择电站").code(400);
         }
         PowerStation powerStation = powerStationMapper.selectByPrimaryKey(stationId);
         if(powerStation == null){
@@ -195,7 +210,7 @@ public class ComponentController {
         //建立新的sheet对象（excel的表单）
         HSSFSheet sheet = wb.createSheet("备件列表");
         //设置单元格合并
-        sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 6));
+        sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 5));
         HSSFCellStyle boderStyle = wb.createCellStyle();
         boderStyle.setAlignment(HorizontalAlignment.CENTER);
         HSSFFont font = wb.createFont();
@@ -219,7 +234,7 @@ public class ComponentController {
         font2.setFontHeightInPoints((short)12);
         boderStyle2.setFont(font2);
 
-        int[] width = {256*18+184,256*18+184,256*18+184,256*18+184,256*18+184,256*18+184,256*30+184};
+        int[] width = {256*30+184,256*30+184,256*30+184,256*30+184,256*30+184,256*30+184,256*50+184};
         //设置宽度
         sheet.setColumnWidth(0,width[0]);
         sheet.setColumnWidth(1,width[1]);
@@ -234,35 +249,28 @@ public class ComponentController {
         //创建单元格（excel的单元格，参数为列索引，可以是0～255之间的任何一个
         HSSFCell cell = row1.createCell(0);
         //设置单元格内容
-        if(powerStation != null && StringUtils.isNotBlank(powerStation.getStationName())){
-            cell.setCellValue(powerStation.getStationName()+"备件列表");
-        }else{
-            cell.setCellValue("备件列表");
-        }
+        cell.setCellValue("备件列表");
         cell.setCellStyle(boderStyle);
 
         //在sheet里创建第二行
         HSSFRow row2 = sheet.createRow(1);
         //创建单元格并设置单元格内容
-        HSSFCell cell2_0 = row2.createCell(0);
-        cell2_0.setCellValue("备件编号");
-        cell2_0.setCellStyle(boderStyle1);
-        HSSFCell cell2_1 = row2.createCell(1);
+        HSSFCell cell2_1 = row2.createCell(0);
         cell2_1.setCellValue("备件名称");
         cell2_1.setCellStyle(boderStyle1);
-        HSSFCell cell2_2 = row2.createCell(2);
+        HSSFCell cell2_2 = row2.createCell(1);
         cell2_2.setCellValue("备件数量");
         cell2_2.setCellStyle(boderStyle1);
-        HSSFCell cell2_3 = row2.createCell(3);
+        HSSFCell cell2_3 = row2.createCell(2);
         cell2_3.setCellValue("品牌");
         cell2_3.setCellStyle(boderStyle1);
-        HSSFCell cell2_4 = row2.createCell(4);
+        HSSFCell cell2_4 = row2.createCell(3);
         cell2_4.setCellValue("库存上限");
         cell2_4.setCellStyle(boderStyle1);
-        HSSFCell cell2_5 = row2.createCell(5);
+        HSSFCell cell2_5 = row2.createCell(4);
         cell2_5.setCellValue("库存下限");
         cell2_5.setCellStyle(boderStyle1);
-        HSSFCell cell2_6 = row2.createCell(6);
+        HSSFCell cell2_6 = row2.createCell(5);
         cell2_6.setCellValue("参数");
         cell2_6.setCellStyle(boderStyle1);
 
@@ -272,38 +280,33 @@ public class ComponentController {
                 Component bean = componentList.get(i);
                 HSSFRow row = sheet.createRow(i+2);
                 row.setRowStyle(boderStyle2);
-                if(null != bean.getId()){
-                    HSSFCell cell0 = row.createCell(0);
-                    cell0.setCellStyle(boderStyle2);
-                    cell0.setCellValue(bean.getId());
-                }
                 if(StringUtils.isNotBlank(bean.getComponentName())){
-                    HSSFCell cell0 = row.createCell(1);
+                    HSSFCell cell0 = row.createCell(0);
                     cell0.setCellStyle(boderStyle2);
                     cell0.setCellValue(bean.getComponentName());
                 }
                 if(bean.getNum() != null){
-                    HSSFCell cell0 = row.createCell(2);
+                    HSSFCell cell0 = row.createCell(1);
                     cell0.setCellStyle(boderStyle2);
                     cell0.setCellValue(bean.getNum());
                 }
                 if(StringUtils.isNotBlank(bean.getBrand())){
-                    HSSFCell cell0 = row.createCell(3);
+                    HSSFCell cell0 = row.createCell(2);
                     cell0.setCellStyle(boderStyle2);
                     cell0.setCellValue(bean.getBrand());
                 }
                 if(bean.getStockUp() != null){
-                    HSSFCell cell0 = row.createCell(4);
+                    HSSFCell cell0 = row.createCell(3);
                     cell0.setCellStyle(boderStyle2);
                     cell0.setCellValue(bean.getStockUp());
                 }
                 if(bean.getStockLower() != null){
-                    HSSFCell cell0 = row.createCell(5);
+                    HSSFCell cell0 = row.createCell(4);
                     cell0.setCellStyle(boderStyle2);
                     cell0.setCellValue(bean.getStockLower());
                 }
                 if(StringUtils.isNotBlank(bean.getParam())){
-                    HSSFCell cell0 = row.createCell(6);
+                    HSSFCell cell0 = row.createCell(5);
                     cell0.setCellStyle(boderStyle2);
                     cell0.setCellValue(bean.getParam());
                 }

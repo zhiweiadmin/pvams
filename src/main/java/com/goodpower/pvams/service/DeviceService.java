@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -22,27 +23,29 @@ public class DeviceService {
     @Autowired
     PowerStationDeviceMapper powerStationDeviceMapper;
 
-    public void saveExcelData(Long stationId,Workbook workbook){
+    @Autowired
+    ExcelService excelService;
+
+    public void saveExcelData(Long stationId,Workbook workbook) throws ParseException {
         Sheet sheet = workbook.getSheetAt(0);
         DataFormatter formatter = new DataFormatter();
         int lastRowNum = sheet.getLastRowNum();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = sdf.parse(sdf.format(new Date()));
         if(lastRowNum > 1){
             for(int i=2;i<=lastRowNum;i++){
-                try{
                     Row row = sheet.getRow(i);
-                    String deviceId = formatter.formatCellValue(row.getCell(0));
-                    String deviceName = formatter.formatCellValue(row.getCell(1));
-                    String number = formatter.formatCellValue(row.getCell(2));
-                    String type = formatter.formatCellValue(row.getCell(3));
-                    String model = formatter.formatCellValue(row.getCell(4));
-                    String supplier = formatter.formatCellValue(row.getCell(5));
-                    String contact = formatter.formatCellValue(row.getCell(6));
-                    String phone = formatter.formatCellValue(row.getCell(7));
-                    String warrantyStartDate = formatter.formatCellValue(row.getCell(8));
-                    String warrantyEndDate = formatter.formatCellValue(row.getCell(9));
-                    String param = formatter.formatCellValue(row.getCell(10));
-                    String remark = formatter.formatCellValue(row.getCell(11));
+                    String deviceName = formatter.formatCellValue(row.getCell(0));
+                    String number = formatter.formatCellValue(row.getCell(1));
+                    String type = formatter.formatCellValue(row.getCell(2));
+                    String model = formatter.formatCellValue(row.getCell(3));
+                    String supplier = formatter.formatCellValue(row.getCell(4));
+                    String contact = formatter.formatCellValue(row.getCell(5));
+                    String phone = formatter.formatCellValue(row.getCell(6));
+                    String warrantyStartDate = excelService.getRowValue(row,7);
+                    String warrantyEndDate = excelService.getRowValue(row,8);
+                    String param = formatter.formatCellValue(row.getCell(9));
+                    String remark = formatter.formatCellValue(row.getCell(10));
                     PowerStationDevice device = new PowerStationDevice();
                     device.setDeviceName(deviceName);
                     device.setNumber(Integer.parseInt(number));
@@ -56,17 +59,14 @@ public class DeviceService {
                     device.setStationId(stationId);
                     device.setWarrantyEndDate(warrantyEndDate);
                     device.setWarrantyStartDate(warrantyStartDate);
-                    if(StringUtils.isNotBlank(deviceId)){
-                        //更新
-                        device.setDeviceId(Long.parseLong(deviceId));
-                        powerStationDeviceMapper.updateByPrimaryKey(device);
-                    }else{
-                        powerStationDeviceMapper.insert(device);
-                    }
-                }catch (Exception e){
-                    continue;
-                }
+                    device.setCreateDttm(date);
+                    device.setUpdateDttm(date);
+                    powerStationDeviceMapper.insert(device);
             }
+            Map<String,Object> param = Maps.newHashMap();
+            param.put("stationId",stationId);
+            param.put("date",date);
+            powerStationDeviceMapper.deleteByFields(param);
         }
     }
 
