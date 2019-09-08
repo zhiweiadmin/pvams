@@ -17,7 +17,7 @@ public class DataControllerTest {
 
     @Test
     public void getMonthData(){
-        JSONObject jsonObject = dataStatService.getDeviceStat(1L,0,2019,8);
-        System.out.println(jsonObject.toJSONString());
+//        JSONObject jsonObject = dataStatService.getDeviceStat(1L,0,2019,8);
+//        System.out.println(jsonObject.toJSONString());
     }
 }

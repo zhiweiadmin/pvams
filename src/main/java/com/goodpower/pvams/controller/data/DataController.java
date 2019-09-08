@@ -47,18 +47,23 @@ public class DataController {
      * @param stationId
      * @param type 0：月  1:年
      * @param val
+     *
+     * num 中间显示多少个柱子
      * @return
      */
     @GetMapping("/getDeviceStat")
-    public ResultMap getDeviceStat(Long stationId,Integer type,String val){
+    public ResultMap getDeviceStat(Long stationId,Integer type,String val,Integer num){
         ResultMap result = new ResultMap();
         try{
             if(stationId== null){
-                return result.success().code(400).message("stationId不能为空");
+                return result.fail().message("stationId不能为空");
+            }
+            if(num < 0){
+                return result.fail().message("请输入正整数!");
             }
             int year = getYear(val);
             int month = getMonth(val);
-            JSONObject jsonObject = dataStatService.getDeviceStat(stationId,type,year,month);
+            JSONObject jsonObject = dataStatService.getDeviceStat(stationId,type,year,month,num);
             return result.success().code(200).setData(jsonObject).message("查询成功");
         }catch (Exception e){
             logger.error("查询失败",e);
@@ -78,7 +83,7 @@ public class DataController {
         ResultMap result = new ResultMap();
         try{
             if(stationId== null){
-                return result.success().code(400).message("stationId不能为空");
+                return result.fail().message("stationId不能为空");
             }
             if(val == null){
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
@@ -104,7 +109,7 @@ public class DataController {
         ResultMap result = new ResultMap();
         try{
             if(stationId== null){
-                return result.success().code(400).message("stationId不能为空");
+                return result.fail().message("stationId不能为空");
             }
             if(statType == null){
                 statType = 3;
@@ -136,7 +141,7 @@ public class DataController {
         ResultMap resultMap = new ResultMap();
         try{
             if(stationId == null){
-                return resultMap.fail().code(400).message("请先选择电站!");
+                return resultMap.fail().message("请先选择电站!");
             }
             String fileName = file.getOriginalFilename();
             if(StringUtils.isNotBlank(fileName)){

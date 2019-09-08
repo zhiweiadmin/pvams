@@ -38,7 +38,7 @@ public class DataStatServiceTest {
 
     @Test
     public void getDeviceStat(){
-        ResultMap result = dataController.getDeviceStat(1L,0,null);
+        ResultMap result = dataController.getDeviceStat(1L,0,null,10);
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("datas",result);
         System.out.println(jsonObject.toJSONString());

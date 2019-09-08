@@ -7,7 +7,7 @@
 
     <properties resource="application.properties" />
 
-    <classPathEntry location="E:\jar\mysql-connector-java-8.0.15.jar" />
+    <classPathEntry location="E:\jar\mysql-connector-java-5.1.47.jar" />
 
     <context id="MysqlTables" targetRuntime="MyBatis3">
 
@@ -47,7 +47,7 @@
             <property name="en" value=""/>
         </javaClientGenerator>
 
-        <table schema="pvamstest" tableName="t_station_loan_profit" domainObjectName="LoanProfit"
+        <table schema="pvams" tableName="t_station_policy" domainObjectName="StationPolicy"
                enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
                enableSelectByExample="false" selectByExampleQueryId="false"
                enableDeleteByPrimaryKey="true" enableSelectByPrimaryKey="true" enableUpdateByPrimaryKey="true">
