@@ -337,44 +337,36 @@ public class StationDataStatService {
 
 
     public void importDeviceData(Long stationId, Workbook workbook) throws ParseException {
-        Sheet powerSheet = workbook.getSheetAt(0);
-        Sheet hourSheet = workbook.getSheetAt(1);
-        Sheet statSheet = workbook.getSheetAt(2);
-        importDevicePowerData(stationId,powerSheet);
-        importDeviceHourData(stationId,hourSheet);
-        importDeviceStatData(stationId,statSheet);
+        Sheet sheet = workbook.getSheetAt(0);
+        importDevicePowerData(stationId,sheet);
+        importDeviceStatData(stationId,sheet);
+
+        Sheet sheet_1 = workbook.getSheetAt(1);
+        importDeviceHourData(stationId,sheet_1);
     }
 
     private void importDevicePowerData(Long stationId, Sheet sheet) throws ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        //从第几行开始取 从0开始
+        int startIndex = 7;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
         int lastRow = sheet.getLastRowNum();
         Date date = new Date();
-        if (lastRow > 1) {
-            Row deviceNameRow = sheet.getRow(1);//设备名称行
-            for (int i = 2; i <= lastRow; i++) {
+        if (lastRow >= startIndex) {
+            Row dateRow = sheet.getRow(0);//设备名称行
+            for (int i = startIndex; i <= lastRow; i++) {
                 Row row = sheet.getRow(i);
-                String excelDate = getCellDate(row.getCell(0));
-                if (StringUtils.isBlank(excelDate)) {
+                String deviceName = getCellValue(row.getCell(0));//厂名
+                if (StringUtils.isBlank(deviceName)) {
                     continue;
                 }
                 for (int j = 1; j < row.getLastCellNum(); j++) {
-                    String factoryName = getMergedRegionValue(sheet,0,j);//厂名
-                    Cell deviceNameCell = deviceNameRow.getCell(j);
-                    if(deviceNameCell == null){
-                        continue;
-                    }
-                    String deviceName = getCellValue(deviceNameCell);//设备
-                    String newDeviceName = "";
-                    if(StringUtils.isNotBlank(factoryName)){
-                        newDeviceName = factoryName+"-"+deviceName;
-                    }else{
-                        newDeviceName = deviceName +"-"+j;
-                    }
-                    Date statDate = sdf.parse(excelDate);//统计日期
                     Cell cell = row.getCell(j);
                     if(cell == null){
                         continue;
                     }
+                    String dateVal = getCellDate(dateRow.getCell(j));//统计日期
+                    SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+                    Date statDate = sdf1.parse(dateVal);
                     //获取设备名称和值
                     String statVal = getCellValue(cell);
                     if(StringUtils.isBlank(statVal)){
@@ -388,7 +380,7 @@ public class StationDataStatService {
                     deviceStat.setYear(year);
                     deviceStat.setMonth(month);
                     deviceStat.setStationId(stationId);
-                    deviceStat.setDeviceName(newDeviceName);
+                    deviceStat.setDeviceName(deviceName);
                     BigDecimal bd =new BigDecimal(statVal);
                     bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
                     deviceStat.setStatVal(bd);
@@ -403,83 +395,74 @@ public class StationDataStatService {
     }
 
     private void importDeviceHourData(Long stationId,Sheet sheet) throws ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        //从第几行开始取 从0开始
+        int startIndex = 1;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
         int lastRow = sheet.getLastRowNum();
         Date date = new Date();
-        if (lastRow > 1) {
-            Row deviceNameRow = sheet.getRow(1);//设备名称行
-            for (int i = 2; i <= lastRow; i++) {
+        if (lastRow >= startIndex) {
+            Row dateRow = sheet.getRow(0);//设备名称行
+            for (int i = startIndex; i <= lastRow; i++) {
                 Row row = sheet.getRow(i);
-                String excelDate = getCellDate(row.getCell(0));
-                if (StringUtils.isBlank(excelDate)) {
+                String deviceName = getCellValue(row.getCell(0));//厂名
+                if (StringUtils.isBlank(deviceName)) {
                     continue;
                 }
                 for (int j = 1; j < row.getLastCellNum(); j++) {
-                        String factoryName = getMergedRegionValue(sheet,0,j);//厂名
-                        Cell deviceNameCell = deviceNameRow.getCell(j);
-                        if(deviceNameCell == null){
-                            continue;
-                        }
-                        String deviceName = getCellValue(deviceNameCell);//设备
-                        String newDeviceName = "";
-                        if(StringUtils.isNotBlank(factoryName)){
-                            newDeviceName = factoryName+"-"+deviceName;
-                        }else{
-                            newDeviceName = deviceName +"-"+j;
-                        }
-                        Date statDate = sdf.parse(excelDate);//统计日期
-                        Cell cell = row.getCell(j);
-                        if(cell == null){
-                            continue;
-                        }
-                        //获取设备名称和值
-                        String statVal = getCellValue(cell);
-                        if(StringUtils.isBlank(statVal)){
-                            continue;
-                        }
-                        Calendar calendar = Calendar.getInstance();
-                        calendar.setTime(statDate);
-                        int year = calendar.get(Calendar.YEAR);
-                        int month = calendar.get(Calendar.MONTH)+1;
-                        StationDeviceStat deviceStat = new StationDeviceStat();
-                        deviceStat.setYear(year);
-                        deviceStat.setMonth(month);
-                        deviceStat.setStationId(stationId);
-                        deviceStat.setDeviceName(newDeviceName);
-                        BigDecimal bd =new BigDecimal(statVal);
-                        bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
-                        deviceStat.setStatVal(bd);
-                        deviceStat.setStatDate(statDate);
-                        deviceStat.setCreateDttm(date);
-                        deviceStat.setUpdateDttm(date);
-                        deviceStat.setStatType(6);
-                        deviceStatMapper.insert(deviceStat);
-
+                    Cell cell = row.getCell(j);
+                    if(cell == null){
+                        continue;
+                    }
+                    String dateVal = getCellDate(dateRow.getCell(j));//统计日期
+                    SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+                    Date statDate = sdf1.parse(dateVal);
+                    //获取设备名称和值
+                    String statVal = getCellValue(cell);
+                    if(StringUtils.isBlank(statVal)){
+                        continue;
+                    }
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTime(statDate);
+                    int year = calendar.get(Calendar.YEAR);
+                    int month = calendar.get(Calendar.MONTH)+1;
+                    StationDeviceStat deviceStat = new StationDeviceStat();
+                    deviceStat.setYear(year);
+                    deviceStat.setMonth(month);
+                    deviceStat.setStationId(stationId);
+                    deviceStat.setDeviceName(deviceName);
+                    BigDecimal bd =new BigDecimal(statVal);
+                    bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
+                    deviceStat.setStatVal(bd);
+                    deviceStat.setStatDate(statDate);
+                    deviceStat.setStatType(6);
+                    deviceStat.setCreateDttm(date);
+                    deviceStat.setUpdateDttm(date);
+                    deviceStatMapper.insert(deviceStat);
                 }
             }
         }
     }
 
-
     private void importDeviceStatData(Long stationId,Sheet sheet) throws ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
         int lastRow = sheet.getLastRowNum();
         Date date = new Date();
         if (lastRow > 0) {
-            Row statNameRow = sheet.getRow(0);//获取统计名称
+            Row dateRow = sheet.getRow(0);//获取日期
             for (int i = 1; i <= lastRow; i++) {
                 Row row = sheet.getRow(i);
-                String excelDate = getCellDate(row.getCell(0));
-                if (StringUtils.isBlank(excelDate)) {
+                String statName = getCellValue(row.getCell(0));
+                if (StringUtils.isBlank(statName)) {
                     continue;
                 }
-                for (int j = 1; j < row.getLastCellNum(); j++) {
-                    Cell statNameCell = statNameRow.getCell(j);
-                    if(statNameCell == null){
+                for (int j = 1; j <= row.getLastCellNum(); j++) {
+                    Cell cell1 = dateRow.getCell(j);
+                    if(cell1 == null){
                         continue;
                     }
-                    String statName = getCellValue(statNameCell);//设备
-                    Date statDate = sdf.parse(excelDate);//统计日期
+                    String excelDate = getCellDate(cell1);
+                    SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+                    Date statDate = sdf1.parse(excelDate);//统计日期
                     Cell cell = row.getCell(j);
                     if(cell == null){
                         continue;

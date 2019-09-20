@@ -36,6 +36,9 @@
       #{month,jdbcType=INTEGER}, #{statName,jdbcType=VARCHAR}, #{statType,jdbcType=INTEGER}, 
       #{statVal,jdbcType=VARCHAR}, #{statDate,jdbcType=DATE}, #{createDttm,jdbcType=TIMESTAMP},
       #{updateDttm,jdbcType=TIMESTAMP})
+    ON DUPLICATE KEY UPDATE
+        stat_val = #{statVal,jdbcType=VARCHAR},
+        update_dttm =  now()
   </insert>
   <insert id="insertSelective" parameterType="com.goodpower.pvams.model.StationDataStat">
     insert into t_station_data_stat
