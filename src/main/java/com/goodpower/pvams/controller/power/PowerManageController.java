@@ -69,7 +69,7 @@ public class PowerManageController {
             endtime = sdf.format(lastDay);
         }
         if(stationId == null){
-            return result.fail().code(400).message("stationId不能为空");
+            return result.fail().code(400).message("请先选择电站!");
         }
         JSONObject data = powerStatService.getPowerGeneration(stationId,starttime,endtime,type);
         return result.setData(data).success().code(200).message("请求成功");
@@ -84,7 +84,7 @@ public class PowerManageController {
     public ResultMap getPowerWeakRate(Long stationId){
         ResultMap result = new ResultMap();
         if(stationId == null){
-            return result.fail().code(400).message("stationId不能为空");
+            return result.fail().code(400).message("请先选择电站!");
         }
         JSONObject data = powerStatService.getYearPowerStat(stationId);
         return result.setData(data).success().code(200).message("请求成功");
@@ -94,7 +94,7 @@ public class PowerManageController {
     public ResultMap getPowerWeakRateMonth(Long stationId,Long year){
         ResultMap result = new ResultMap();
         if(stationId == null){
-            return result.fail().code(400).message("stationId不能为空");
+            return result.fail().code(400).message("请先选择电站!");
         }
         if(year == null){
             return result.fail().code(400).message("year不能为空");

@@ -38,7 +38,7 @@ public class DataMaintainController {
     public ResultMap queryRecord(Long stationId,Long userId,String time){
         ResultMap resultMap = new ResultMap();
         if(stationId == null){
-            return resultMap.fail().code(400).message("stationId不能为空");
+            return resultMap.fail().code(400).message("请先选择电站!");
         }
         if(userId == null){
             return resultMap.fail().code(400).message("userId不能为空");
@@ -68,7 +68,7 @@ public class DataMaintainController {
     public ResultMap addRecord(@RequestBody WorkRecord record){
         ResultMap resultMap = new ResultMap();
         if(record.getStationId() == null){
-            return resultMap.fail().message("stationId不能为空");
+            return resultMap.fail().message("请先选择电站!");
         }
         if(record.getUserId() == null){
             return resultMap.fail().message("userId不能为空");
@@ -95,7 +95,7 @@ public class DataMaintainController {
     public ResultMap queryTodayDetail(Long stationId,String time){
         ResultMap resultMap = new ResultMap();
         if(stationId == null){
-            return resultMap.fail().code(400).message("stationId不能为空");
+            return resultMap.fail().code(400).message("请先选择电站!");
         }
 
         try{

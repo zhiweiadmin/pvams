@@ -343,10 +343,6 @@ public class StationDataStatService {
             this.importDeviceStatData(stationId, sheet);
             this.importDevicePowerData(stationId, sheet);
         }
-        if(i > 1){
-            Sheet sheet_1 = workbook.getSheetAt(1);
-            this.importDeviceHourData(stationId, sheet_1);
-        }
     }
 
     private void importDevicePowerData(Long stationId, Sheet sheet) throws ParseException {
@@ -356,12 +352,13 @@ public class StationDataStatService {
         Date date = new Date();
         if (lastRow >= startIndex) {
             Row dateRow = sheet.getRow(0);
-
             for(int i = startIndex; i <= lastRow; i++) {
                 Row row = sheet.getRow(i);
                 String deviceName = this.getCellValue(row.getCell(0));
                 if (!StringUtils.isBlank(deviceName)) {
-                    for(int j = 1; j < row.getLastCellNum(); ++j) {
+                    Cell scaleCell = row.getCell(1);
+                    String scale = this.getCellValue(scaleCell);
+                    for(int j = 2; j < row.getLastCellNum(); ++j) {
                         Cell cell = row.getCell(j);
                         if (cell != null) {
                             String dateVal = this.getCellDate(dateRow.getCell(j));
@@ -385,6 +382,13 @@ public class StationDataStatService {
                                 deviceStat.setStatType(3);
                                 deviceStat.setCreateDttm(date);
                                 deviceStat.setUpdateDttm(date);
+                                this.deviceStatMapper.insert(deviceStat);
+
+                                //计算等效小时数
+                                BigDecimal scaleBD = new BigDecimal(scale);
+                                BigDecimal hourBD = bd.divide(scaleBD,BigDecimal.ROUND_HALF_UP);
+                                deviceStat.setStatType(6);
+                                deviceStat.setStatVal(hourBD);
                                 this.deviceStatMapper.insert(deviceStat);
                             }
                         }
@@ -440,18 +444,24 @@ public class StationDataStatService {
         }
     }
 
+
+    /**
+     * 从第三列开始取 第二列现在n逆变器容量
+     * @param stationId
+     * @param sheet
+     * @throws ParseException
+     */
     private void importDeviceStatData(Long stationId,Sheet sheet) throws ParseException {
         new SimpleDateFormat("yyyy/MM/dd");
         int lastRow = sheet.getLastRowNum();
         Date date = new Date();
         if (lastRow > 0) {
             Row dateRow = sheet.getRow(0);
-
             for(int i = 1; i < 7; ++i) {
                 Row row = sheet.getRow(i);
                 String statName = this.getCellValue(row.getCell(0));
                 if (!StringUtils.isBlank(statName)) {
-                    for(int j = 1; j <= row.getLastCellNum(); ++j) {
+                    for(int j = 2; j <= row.getLastCellNum(); ++j) {
                         Cell cell1 = dateRow.getCell(j);
                         if (cell1 != null) {
                             String excelDate = this.getCellDate(cell1);

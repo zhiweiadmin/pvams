@@ -56,7 +56,7 @@ public class DataController {
         ResultMap result = new ResultMap();
         try{
             if(stationId== null){
-                return result.fail().message("stationId不能为空");
+                return result.fail().message("请先选择电站!");
             }
             if(num < 0){
                 return result.fail().message("请输入正整数!");
@@ -83,7 +83,7 @@ public class DataController {
         ResultMap result = new ResultMap();
         try{
             if(stationId== null){
-                return result.fail().message("stationId不能为空");
+                return result.fail().message("请先选择电站!");
             }
             if(val == null){
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
@@ -109,7 +109,7 @@ public class DataController {
         ResultMap result = new ResultMap();
         try{
             if(stationId== null){
-                return result.fail().message("stationId不能为空");
+                return result.fail().message("请先选择电站!");
             }
             if(statType == null){
                 statType = 3;

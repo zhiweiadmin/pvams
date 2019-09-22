@@ -37,7 +37,7 @@ public class FireMaintainController {
         ResultMap resultMap = new ResultMap();
         try{
             if(stationId == null){
-                return resultMap.fail().code(400).message("stationId不能为空");
+                return resultMap.fail().code(400).message("请先选择电站!");
             }
             if(pageNo == null){
                 pageNo = 1;
