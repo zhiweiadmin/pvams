@@ -131,29 +131,29 @@ public class PowerManageController {
 
             List<Double> oweList = Lists.newArrayList();
             List<Double> beyondList = Lists.newArrayList();
-            if(weekProgress < 100){
-                oweList.add(getDoubleVal(weekProgress-100));
-                beyondList.add(0d);
-            }else{
-                oweList.add(0d);
-                beyondList.add(getDoubleVal(weekProgress-100));
-            }
-
-            if(monthProgress < 100){
-                oweList.add(getDoubleVal(monthProgress-100));
-                beyondList.add(0d);
-            }else{
-                oweList.add(0d);
-                beyondList.add(getDoubleVal(monthProgress-100));
-            }
-
-            if(quarterProgress < 100){
-                oweList.add(getDoubleVal(quarterProgress-100));
-                beyondList.add(0d);
-            }else{
-                oweList.add(0d);
-                beyondList.add(getDoubleVal(quarterProgress-100));
-            }
+//            if(weekProgress < 100){
+//                oweList.add(getDoubleVal(weekProgress-100));
+//                beyondList.add(0d);
+//            }else{
+//                oweList.add(0d);
+//                beyondList.add(getDoubleVal(weekProgress-100));
+//            }
+//
+//            if(monthProgress < 100){
+//                oweList.add(getDoubleVal(monthProgress-100));
+//                beyondList.add(0d);
+//            }else{
+//                oweList.add(0d);
+//                beyondList.add(getDoubleVal(monthProgress-100));
+//            }
+//
+//            if(quarterProgress < 100){
+//                oweList.add(getDoubleVal(quarterProgress-100));
+//                beyondList.add(0d);
+//            }else{
+//                oweList.add(0d);
+//                beyondList.add(getDoubleVal(quarterProgress-100));
+//            }
 
             if(yearProgress < 100){
                 oweList.add(getDoubleVal(yearProgress-100));

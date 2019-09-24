@@ -52,7 +52,7 @@ public class DataController {
      * @return
      */
     @GetMapping("/getDeviceStat")
-    public ResultMap getDeviceStat(Long stationId,Integer type,String val,Integer num){
+    public ResultMap getDeviceStat(Long stationId,Integer type,String val,Integer num,String deviceName){
         ResultMap result = new ResultMap();
         try{
             if(stationId== null){
@@ -63,7 +63,7 @@ public class DataController {
             }
             int year = getYear(val);
             int month = getMonth(val);
-            JSONObject jsonObject = dataStatService.getDeviceStat(stationId,type,year,month,num);
+            JSONObject jsonObject = dataStatService.getDeviceStat(stationId,type,year,month,num,deviceName);
             return result.success().code(200).setData(jsonObject).message("查询成功");
         }catch (Exception e){
             logger.error("查询失败",e);
@@ -176,7 +176,7 @@ public class DataController {
         OutputStream output = response.getOutputStream();
         dataStatService.createDevicePowerSheet(wb);
         dataStatService.createDeviceHourSheet(wb);
-        dataStatService.createStatSheet(wb);
+        //dataStatService.createStatSheet(wb);
         response.reset();
         String fileName = "数据分析模板"+".xls";
         response.setContentType("application/msexcel;charset=UTF-8");
@@ -192,7 +192,7 @@ public class DataController {
         OutputStream output = response.getOutputStream();
         dataStatService.createDevicePowerSheet(wb);
         dataStatService.createDeviceHourSheet(wb);
-        dataStatService.createStatSheet(wb);
+        //dataStatService.createStatSheet(wb);
         response.reset();
         String fileName = "数据分析模板"+".xls";
         response.setContentType("application/msexcel;charset=UTF-8");

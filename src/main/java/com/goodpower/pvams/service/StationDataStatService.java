@@ -577,8 +577,11 @@ public class StationDataStatService {
      * @param month
      * @return
      */
-    public JSONObject getDeviceStat(Long stationId,Integer type,Integer year, Integer month,Integer num){
+    public JSONObject getDeviceStat(Long stationId,Integer type,Integer year, Integer month,Integer num,String deviceName){
         Map<String,Object> param = Maps.newHashMap();
+        if(StringUtils.isNotBlank(deviceName)){
+            param.put("deviceName","%"+deviceName+"%");
+        }
         param.put("stationId",stationId);
         param.put("year",year);
         param.put("orderBy","realHour desc,realPower desc");
@@ -773,11 +776,8 @@ public class StationDataStatService {
 
         HSSFRow row1 = sheet.createRow(0);
         HSSFCell cell = row1.createCell(0);
-        cell.setCellValue("日期格式yyyy-MM-dd");
+        cell.setCellValue("名称");
         cell.setCellStyle(boderStyle);
-
-        HSSFRow row2 = sheet.createRow(1);
-        createRowCell(row2,0,boderStyle1,"日期/设备");
     }
 
     public void createDeviceHourSheet(HSSFWorkbook wb){
@@ -810,11 +810,8 @@ public class StationDataStatService {
 
         HSSFRow row1 = sheet.createRow(0);
         HSSFCell cell = row1.createCell(0);
-        cell.setCellValue("日期格式yyyy-MM-dd");
+        cell.setCellValue("名称");
         cell.setCellStyle(boderStyle);
-
-        HSSFRow row2 = sheet.createRow(1);
-        createRowCell(row2,0,boderStyle1,"日期/设备");
     }
 
     public void createStatSheet(HSSFWorkbook wb){

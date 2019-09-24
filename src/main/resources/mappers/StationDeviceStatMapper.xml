@@ -173,6 +173,7 @@
         t.station_id = #{stationId,jdbcType=BIGINT}
         and t.year = #{year,jdbcType=INTEGER}
         and t.month = #{month,jdbcType=INTEGER}
+        and t.device_name like #{deviceName,jdbcType=VARCHAR}
     group by
         t.device_name,t.year,t.month
       <if test="orderBy != null">
@@ -203,6 +204,7 @@
     t.station_id = #{stationId,jdbcType=BIGINT}
     and t.year = #{year,jdbcType=INTEGER}
     and t.month = #{month,jdbcType=INTEGER}
+    and t.device_name like #{deviceName,jdbcType=VARCHAR}
     group by
     t.device_name,t.year,t.month ) a
   </select>
@@ -224,6 +226,7 @@
     WHERE
         t.station_id = #{stationId,jdbcType=BIGINT}
         and t.YEAR = #{year,jdbcType=INTEGER}
+        and t.device_name like #{deviceName,jdbcType=VARCHAR}
     group by
         t.device_name,t.year
     <if test="orderBy != null">
@@ -252,6 +255,7 @@
     WHERE
     t.station_id = #{stationId,jdbcType=BIGINT}
     and t.YEAR = #{year,jdbcType=INTEGER}
+    and t.device_name like #{deviceName,jdbcType=VARCHAR}
     group by
     t.device_name,t.year ) a
   </select>
