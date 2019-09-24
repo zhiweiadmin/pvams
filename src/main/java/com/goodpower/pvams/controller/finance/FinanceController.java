@@ -41,7 +41,7 @@ public class FinanceController {
         ResultMap result = new ResultMap();
         try{
             if(stationId== null){
-                return result.success().code(400).message("stationId不能为空");
+                return result.success().code(400).message("请先选择电站!");
             }
             StationFinanceBaseInfo stationFinanceBaseInfo = financeService.getBaseInfo(stationId);
             JSONObject jsonObject = new JSONObject();
@@ -64,7 +64,7 @@ public class FinanceController {
         ResultMap result = new ResultMap();
         try{
             if(stationId== null){
-                return result.success().code(400).message("stationId不能为空");
+                return result.success().code(400).message("请先选择电站!");
             }
             List<Map<String,Object>> resultList = Lists.newArrayList();
             if(statType == 3){
@@ -86,7 +86,7 @@ public class FinanceController {
         ResultMap result = new ResultMap();
         try{
             if(stationId== null){
-                return result.success().code(400).message("stationId不能为空");
+                return result.success().code(400).message("请先选择电站!");
             }
             List<Map<String,Object>> resultList = Lists.newArrayList();
             if(statType == 3){
@@ -108,7 +108,7 @@ public class FinanceController {
         ResultMap result = new ResultMap();
         try{
             if(stationId== null){
-                return result.success().code(400).message("stationId不能为空");
+                return result.success().code(400).message("请先选择电站!");
             }
             JSONObject jsonObject = financeService.getProfit(stationId,null);
             return result.success().code(200).setData(jsonObject).message("查询成功");
