@@ -34,7 +34,7 @@ import java.util.Map;
  * 数据分析
  */
 @RestController
-@RequestMapping("data")
+    @RequestMapping("data")
 public class DataController {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -117,12 +117,6 @@ public class DataController {
 
             int year = getYear(val);
             int month = getMonth(val);
-            if(pageNo == null){
-                pageNo = 1;
-            }
-            if(pageSize == null){
-                pageSize = 20;
-            }
             JSONObject jsonObject = new JSONObject();
             if(type == 0){
                 jsonObject = dataStatService.getMonthDeviceStatDetail(stationId,statType,year,month,pageNo,pageSize);
@@ -148,10 +142,18 @@ public class DataController {
                 Workbook workbook;
                 if (fileName.endsWith("xlsx")){
                     workbook = new XSSFWorkbook(file.getInputStream());
+                    boolean flag = dataStatService.checkDataCorrect(workbook);
+                    if(!flag){
+                        return resultMap.fail().message("数据错误!");
+                    }
                     dataStatService.importDeviceData(stationId,workbook);
                     resultMap.success().message("导入成功");
                 }else if(fileName.endsWith("xls")){
                     workbook = new HSSFWorkbook(file.getInputStream());
+                    boolean flag = dataStatService.checkDataCorrect(workbook);
+                    if(!flag){
+                        return resultMap.fail().message("数据错误!");
+                    }
                     dataStatService.importDeviceData(stationId,workbook);
                     resultMap.success().message("导入成功");
                 }else{
@@ -175,7 +177,7 @@ public class DataController {
         HSSFWorkbook wb = new HSSFWorkbook();
         OutputStream output = response.getOutputStream();
         dataStatService.createDevicePowerSheet(wb);
-        dataStatService.createDeviceHourSheet(wb);
+        //dataStatService.createDeviceHourSheet(wb);
         //dataStatService.createStatSheet(wb);
         response.reset();
         String fileName = "数据分析模板"+".xls";
@@ -191,7 +193,7 @@ public class DataController {
         HSSFWorkbook wb = new HSSFWorkbook();
         OutputStream output = response.getOutputStream();
         dataStatService.createDevicePowerSheet(wb);
-        dataStatService.createDeviceHourSheet(wb);
+        //dataStatService.createDeviceHourSheet(wb);
         //dataStatService.createStatSheet(wb);
         response.reset();
         String fileName = "数据分析模板"+".xls";

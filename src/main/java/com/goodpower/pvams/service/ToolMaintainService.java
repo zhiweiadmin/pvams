@@ -64,10 +64,13 @@ public class ToolMaintainService {
         record.setConfirmStatus(UNCONFIRM);
         toolCheckRecordMapper.insert(record);
 
+        Date date = new Date();
         String toolId = record.getToolId();
         ToolMaintain toolMaintain = new ToolMaintain();
         toolMaintain.setId(Long.parseLong(toolId));
         toolMaintain.setCheckStatus(1);
+        toolMaintain.setCheckTime(date);
+        toolMaintain.setNextCheckTime(record.getNextCheckTime());
         toolMaintainMapper.updateByPrimaryKeySelective(toolMaintain);
     }
 

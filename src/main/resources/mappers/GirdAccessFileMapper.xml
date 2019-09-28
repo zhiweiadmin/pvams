@@ -5,11 +5,13 @@
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="station_id" jdbcType="BIGINT" property="stationId" />
     <result column="file_url" jdbcType="VARCHAR" property="fileUrl" />
+    <result column="pic_type" jdbcType="INTEGER" property="picType" />
+    <result column="pic_name" jdbcType="VARCHAR" property="picName" />
     <result column="create_dttm" jdbcType="TIMESTAMP" property="createDttm" />
     <result column="update_dttm" jdbcType="TIMESTAMP" property="updateDttm" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, station_id, file_url, create_dttm, update_dttm
+    id, station_id, file_url,pic_type, create_dttm, update_dttm,pic_name
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -22,10 +24,10 @@
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.goodpower.pvams.model.GirdAccessFile">
-    insert into t_gird_access_point_file (id, station_id, file_url, 
+    insert into t_gird_access_point_file (id, station_id, file_url,pic_type,pic_name,
       create_dttm, update_dttm)
-    values (#{id,jdbcType=BIGINT}, #{stationId,jdbcType=BIGINT}, #{fileUrl,jdbcType=VARCHAR}, 
-      now(), now())
+    values (#{id,jdbcType=BIGINT}, #{stationId,jdbcType=BIGINT}, #{fileUrl,jdbcType=VARCHAR}, #{picType,jdbcType=INTEGER},
+      #{picName,jdbcType=VARCHAR},now(), now())
   </insert>
   <insert id="insertSelective" parameterType="com.goodpower.pvams.model.GirdAccessFile">
     insert into t_gird_access_point_file
@@ -38,6 +40,12 @@
       </if>
       <if test="fileUrl != null">
         file_url,
+      </if>
+      <if test="picType != null">
+        pic_type,
+      </if>
+      <if test="picName != null">
+        pic_name,
       </if>
       <if test="createDttm != null">
         create_dttm,
@@ -55,6 +63,12 @@
       </if>
       <if test="fileUrl != null">
         #{fileUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="picType != null">
+        #{picType,jdbcType=INTEGER},
+      </if>
+      <if test="picName != null">
+        #{picName,jdbcType=VARCHAR},
       </if>
       <if test="createDttm != null">
         #{createDttm,jdbcType=TIMESTAMP},

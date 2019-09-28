@@ -3,8 +3,10 @@ package com.goodpower.pvams.service;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.goodpower.pvams.common.Page;
+import com.goodpower.pvams.mapper.PowerGenerateStatMapper;
 import com.goodpower.pvams.mapper.StationDataStatMapper;
 import com.goodpower.pvams.mapper.StationDeviceStatMapper;
+import com.goodpower.pvams.model.PowerGenerateStat;
 import com.goodpower.pvams.model.StationDataStat;
 import com.goodpower.pvams.model.StationDeviceStat;
 import com.google.common.collect.Lists;
@@ -13,6 +15,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,11 +32,23 @@ import java.util.Map;
 @Service
 public class StationDataStatService {
 
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    public static final String THEORY_POWER = "1";
+    public static final String FUZHAO_POWER = "2";
+    public static final String REAL_POWER = "3";
+    public static final String THEORY_HOUR = "4";
+    public static final String FUZHAO_HOUR = "5";
+    public static final String REAL_HOUR = "6";
+
     @Autowired
     StationDataStatMapper dataStatMapper;
 
     @Autowired
     StationDeviceStatMapper deviceStatMapper;
+
+    @Autowired
+    PowerGenerateStatMapper powerStatMapper;
 
     /**
      * 获取统计数据
@@ -188,8 +204,8 @@ public class StationDataStatService {
         param.put("month",month);
         param.put("statType",statType);
         param.put("stationId",stationId);
-        int offset = (pageNo - 1)*pageSize;
-        int limit = pageSize;
+//        int offset = (pageNo - 1)*pageSize;
+//        int limit = pageSize;
         List<Map<String,Object>> dataList =  deviceStatMapper.getMonthDeviceStatDetail(param);
         List<Object> deviceNameList = Lists.newArrayList();
         Map<String,Map<String,Object>> dataMap = Maps.newHashMap();
@@ -232,30 +248,41 @@ public class StationDataStatService {
         }
         List<Object> resultList = Lists.newArrayList();
         for(int i=0;i<deviceNameList.size();i++){
-            if(i>=offset && i < limit+offset){
-                String deviceName = String.valueOf(deviceNameList.get(i));
-                Map<String,Object> statMap = dataMap.get(deviceName);
-                List<Object> statList = Lists.newArrayList();
-                for(int k = 1;k <= monthDays ;k++){
-                    String date = getDateString(year,month,k);
-                    statList.add(statMap.get(date));
-                }
-                Map<String,Object> resultMap = Maps.newHashMap();
-                resultMap.put("stats",statList);
-                resultMap.put("deviceName",deviceName);
-                resultList.add(resultMap);
+//            if(i>=0 && i < limit+offset){
+//                String deviceName = String.valueOf(deviceNameList.get(i));
+//                Map<String,Object> statMap = dataMap.get(deviceName);
+//                List<Object> statList = Lists.newArrayList();
+//                for(int k = 1;k <= monthDays ;k++){
+//                    String date = getDateString(year,month,k);
+//                    statList.add(statMap.get(date));
+//                }
+//                Map<String,Object> resultMap = Maps.newHashMap();
+//                resultMap.put("stats",statList);
+//                resultMap.put("deviceName",deviceName);
+//                resultList.add(resultMap);
+//            }
+            String deviceName = String.valueOf(deviceNameList.get(i));
+            Map<String,Object> statMap = dataMap.get(deviceName);
+            List<Object> statList = Lists.newArrayList();
+            for(int k = 1;k <= monthDays ;k++){
+                String date = getDateString(year,month,k);
+                statList.add(statMap.get(date));
             }
+            Map<String,Object> resultMap = Maps.newHashMap();
+            resultMap.put("stats",statList);
+            resultMap.put("deviceName",deviceName);
+            resultList.add(resultMap);
         }
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("dateLen",monthDays);
         jsonObject.put("resultData",resultList);
-        Page page = new Page();
-        page.setPage(pageNo);
-        page.setPageSize(pageSize);
-        if(deviceNameList != null){
-            page.setCount(Long.parseLong(deviceNameList.size()+""));
-        }
-        jsonObject.put("page",page);
+//        Page page = new Page();
+//        page.setPage(pageNo);
+//        page.setPageSize(pageSize);
+//        if(deviceNameList != null){
+//            page.setCount(Long.parseLong(deviceNameList.size()+""));
+//        }
+//        jsonObject.put("page",page);
         return jsonObject;
     }
 
@@ -274,8 +301,8 @@ public class StationDataStatService {
         param.put("year",year);
         param.put("statType",statType);
         param.put("stationId",stationId);
-        int offset = (pageNum - 1)*pageSize;
-        int limit = pageSize;
+//        int offset = (pageNum - 1)*pageSize;
+//        int limit = pageSize;
         List<Map<String,Object>> dataList =  deviceStatMapper.getYearDeviceStatDetail(param);
         List<Object> deviceNameList = Lists.newArrayList();
         Map<String,Map<String,Object>> dataMap = Maps.newHashMap();
@@ -315,7 +342,7 @@ public class StationDataStatService {
         }
         List<Object> resultList = Lists.newArrayList();
         for(int i=0;i<deviceNameList.size();i++){
-            if(i>=offset && i < limit+offset){
+            //if(i>=offset && i < limit+offset){
                 String deviceName = String.valueOf(deviceNameList.get(i));
                 Map<String,Object> statMap = dataMap.get(String.valueOf(deviceName));
                 List<Object> statList = Lists.newArrayList();
@@ -327,7 +354,7 @@ public class StationDataStatService {
                 resultMap.put("stats",statList);
                 resultMap.put("deviceName",deviceName);
                 resultList.add(resultMap);
-            }
+            //}
         }
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("dateLen",12);
@@ -345,20 +372,53 @@ public class StationDataStatService {
         }
     }
 
+    public boolean checkDataCorrect(Workbook workbook){
+        try{
+            boolean flag = true;
+            Sheet sheet = workbook.getSheetAt(0);
+            //首先获取多少列
+            Row dateRow = sheet.getRow(1);
+            for(int i=2;i<=dateRow.getLastCellNum();i++){
+                if(sheet.getRow(10) != null && sheet.getRow(10).getCell(i) != null){
+                    Cell cell = sheet.getRow(10).getCell(i);
+                    if(cell != null && StringUtils.isNotBlank(getCellValue(cell))){
+                        double realVal = Double.parseDouble(getCellValue(cell));
+                        double total = 0;
+                        for(int row = 16;row <= sheet.getLastRowNum();row++){
+                            Cell rowCell = sheet.getRow(row).getCell(i);
+                            if(rowCell != null && StringUtils.isNotBlank(getCellValue(rowCell))){
+                                total = total + Double.parseDouble(getCellValue(rowCell));
+                            }
+                        }
+                        if(total < realVal-1 || total > realVal + 1){
+                            logger.error("错误数据日期:"+getCellDate(dateRow.getCell(i)));
+                            flag = false;
+                        }
+                    }
+                }
+            }
+            flag = true;
+            return flag;
+        }catch (Exception e){
+            logger.error("校验异常",e);
+            return false;
+        }
+    }
+
     private void importDevicePowerData(Long stationId, Sheet sheet) throws ParseException {
-        int startIndex = 7 ;
+        int startIndex = 16 ;
         new SimpleDateFormat("yyyy/MM/dd");
         int lastRow = sheet.getLastRowNum();
         Date date = new Date();
         if (lastRow >= startIndex) {
-            Row dateRow = sheet.getRow(0);
+            Row dateRow = sheet.getRow(1);
             for(int i = startIndex; i <= lastRow; i++) {
                 Row row = sheet.getRow(i);
                 String deviceName = this.getCellValue(row.getCell(0));
                 if (!StringUtils.isBlank(deviceName)) {
                     Cell scaleCell = row.getCell(1);
                     String scale = this.getCellValue(scaleCell);
-                    for(int j = 2; j < row.getLastCellNum(); ++j) {
+                    for(int j = 2; j <= row.getLastCellNum(); ++j) {
                         Cell cell = row.getCell(j);
                         if (cell != null) {
                             String dateVal = this.getCellDate(dateRow.getCell(j));
@@ -455,9 +515,9 @@ public class StationDataStatService {
         new SimpleDateFormat("yyyy/MM/dd");
         int lastRow = sheet.getLastRowNum();
         Date date = new Date();
-        if (lastRow > 0) {
-            Row dateRow = sheet.getRow(0);
-            for(int i = 1; i < 7; ++i) {
+        if (lastRow > 1) {
+            Row dateRow = sheet.getRow(1);
+            for(int i = 2; i < 8; ++i) {
                 Row row = sheet.getRow(i);
                 String statName = this.getCellValue(row.getCell(0));
                 if (!StringUtils.isBlank(statName)) {
@@ -471,6 +531,11 @@ public class StationDataStatService {
                             if (cell != null) {
                                 String statVal = this.getCellValue(cell);
                                 if (!StringUtils.isBlank(statVal)) {
+                                    //处理小数点
+                                    if(i == 6 || i == 7){
+                                        BigDecimal bg = new BigDecimal(statVal);
+                                        statVal = bg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue() + "";
+                                    }
                                     Calendar calendar = Calendar.getInstance();
                                     calendar.setTime(statDate);
                                     int year = calendar.get(1);
@@ -487,6 +552,56 @@ public class StationDataStatService {
                                     this.dataStatMapper.insert(stat);
                                 }
                             }
+                        }
+                    }
+                }
+            }
+            //TODO 处理等效小时数和发电量
+            for(int i=8;i<14;i++){
+                Row row = sheet.getRow(i);
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                String statType = "";
+                if(i == 8){
+                    statType = THEORY_POWER;
+                }else if(i == 9){
+                    statType = FUZHAO_POWER;
+                }else if(i == 10){
+                    statType = REAL_POWER;
+                }else if(i == 11){
+                    statType = THEORY_HOUR;
+                }else if(i == 12){
+                    statType = FUZHAO_HOUR;
+                }else if(i == 13){
+                    statType = REAL_HOUR;
+                }
+                for(int j = 2; j <= row.getLastCellNum(); ++j) {
+                    Cell dateRowCell = dateRow.getCell(j);
+                    if(dateRowCell != null){
+                        String excelDate = this.getCellDate(dateRowCell);
+                        Cell cell = row.getCell(j);
+                        if(cell != null && StringUtils.isNotBlank(getCellValue(cell))){
+                            SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+                            Date statDate = sdf.parse(excelDate);
+                            String statVal = getCellValue(cell);
+                            Calendar calendar = Calendar.getInstance();
+                            calendar.setFirstDayOfWeek(Calendar.MONDAY);//周一是每周的第一天
+                            calendar.setTime(statDate);
+                            int year = calendar.get(Calendar.YEAR);
+                            int month = calendar.get(Calendar.MONTH)+1;
+                            int quarter = CommonService.getMonthQuarter(month);
+                            int week = calendar.get(Calendar.WEEK_OF_YEAR);
+                            PowerGenerateStat stat = new PowerGenerateStat();
+                            stat.setStationId(stationId);
+                            stat.setYear(String.valueOf(year));
+                            stat.setMonth(String.valueOf(month));
+                            stat.setQuarter(String.valueOf(quarter));
+                            stat.setStatType(statType);
+                            stat.setStatDate(sdf.parse(excelDate));
+                            stat.setWeek(String.valueOf(week));
+                            BigDecimal bd =new BigDecimal(statVal);
+                            bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
+                            stat.setStatVal(bd);
+                            powerStatMapper.insert(stat);
                         }
                     }
                 }
@@ -601,30 +716,51 @@ public class StationDataStatService {
             }
             first5List =  deviceStatMapper.queryMonthStat(param);
 
-            //获取中间的列表
-            param.put("offset",FIRST);
-            param.put("limit",totalCount-FIRST-LAST);
-            middleList = deviceStatMapper.queryMonthStat(param);
-
-            if(num != 0){
-                int step = middleList.size() / num;
-                if(step == 0){
-                    step = 10;
-                }
-                for(int i=0;i<middleList.size();){
-                    stepList.add(middleList.get(i));
-                    if(stepList.size() == num){
-                        break;
+            if(totalCount > 5 && totalCount < 20){
+                //获取中间的列表
+                param.put("offset",FIRST);
+                param.put("limit",totalCount-FIRST);
+                middleList = deviceStatMapper.queryMonthStat(param);
+                if(num != 0){
+                    int step = middleList.size() / num;
+                    if(step == 0){
+                        step = 10;
                     }
-                    i = i + step;
+                    for(int i=0;i<middleList.size();){
+                        stepList.add(middleList.get(i));
+                        if(stepList.size() == num){
+                            break;
+                        }
+                        i = i + step;
+                    }
                 }
+                first5List.addAll(stepList);
+            }else if(totalCount >= 20){
+                //获取中间的列表
+                param.put("offset",FIRST);
+                param.put("limit",totalCount-FIRST-LAST);
+                middleList = deviceStatMapper.queryMonthStat(param);
+
+                if(num != 0){
+                    int step = middleList.size() / num;
+                    if(step == 0){
+                        step = 10;
+                    }
+                    for(int i=0;i<middleList.size();){
+                        stepList.add(middleList.get(i));
+                        if(stepList.size() == num){
+                            break;
+                        }
+                        i = i + step;
+                    }
+                }
+                param.put("offset",totalCount-LAST);
+                param.put("limit",LAST);
+                List<Map<String,Object>> lastList =  deviceStatMapper.queryMonthStat(param);
+                first5List.addAll(stepList);
+                first5List.addAll(lastList);
             }
 
-            param.put("offset",totalCount-LAST);
-            param.put("limit",LAST);
-            List<Map<String,Object>> lastList =  deviceStatMapper.queryMonthStat(param);
-            first5List.addAll(stepList);
-            first5List.addAll(lastList);
 
         }else if(type == 1){
             //总长度
@@ -633,30 +769,53 @@ public class StationDataStatService {
                 return new JSONObject();
             }
             first5List =  deviceStatMapper.queryYearStat(param);
-            //获取中间的列表
-            param.put("offset",FIRST);
-            param.put("limit",totalCount-FIRST-LAST);
-            middleList = deviceStatMapper.queryYearStat(param);
 
-            if(num != 0){
-                int step = middleList.size() / num;
-                if(step == 0){
-                    step = 10;
-                }
-                for(int i=0;i<middleList.size();){
-                    stepList.add(middleList.get(i));
-                    if(stepList.size() == num){
-                        break;
+            if(totalCount > 5 && totalCount < 20){
+                //获取中间的列表
+                param.put("offset",FIRST);
+                param.put("limit",totalCount-FIRST);
+                middleList = deviceStatMapper.queryYearStat(param);
+                if(num != 0){
+                    int step = middleList.size() / num;
+                    if(step == 0){
+                        step = 10;
                     }
-                    i = i + step;
+                    for(int i=0;i<middleList.size();){
+                        stepList.add(middleList.get(i));
+                        if(stepList.size() == num){
+                            break;
+                        }
+                        i = i + step;
+                    }
                 }
+                first5List.addAll(stepList);
+            }else if(totalCount >= 20){
+                //获取中间的列表
+                param.put("offset",FIRST);
+                param.put("limit",totalCount-FIRST-LAST);
+                middleList = deviceStatMapper.queryYearStat(param);
+
+                if(num != 0){
+                    int step = middleList.size() / num;
+                    if(step == 0){
+                        step = 10;
+                    }
+                    for(int i=0;i<middleList.size();){
+                        stepList.add(middleList.get(i));
+                        if(stepList.size() == num){
+                            break;
+                        }
+                        i = i + step;
+                    }
+                }
+
+                param.put("offset",totalCount-LAST);
+                param.put("limit",LAST);
+                List<Map<String,Object>> lastList =  deviceStatMapper.queryYearStat(param);
+                first5List.addAll(stepList);
+                first5List.addAll(lastList);
             }
 
-            param.put("offset",totalCount-LAST);
-            param.put("limit",LAST);
-            List<Map<String,Object>> lastList =  deviceStatMapper.queryYearStat(param);
-            first5List.addAll(stepList);
-            first5List.addAll(lastList);
 
         }
         JSONObject jsonObject = new JSONObject();
@@ -747,20 +906,22 @@ public class StationDataStatService {
     }
 
     public void createDevicePowerSheet(HSSFWorkbook wb){
-        HSSFSheet sheet = wb.createSheet("设备发电量");
+        HSSFSheet sheet = wb.createSheet("数据分析");
+        //设置单元格合并
+        sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 13));
         HSSFCellStyle boderStyle = wb.createCellStyle();
         boderStyle.setAlignment(HorizontalAlignment.CENTER);
         HSSFFont font = wb.createFont();
-        font.setBold(false);
+        font.setBold(true);
         font.setFontName("宋体");
-        font.setFontHeightInPoints((short)13);
+        font.setFontHeightInPoints((short)18);
         boderStyle.setFont(font);
 
         HSSFCellStyle boderStyle1 = wb.createCellStyle();
         boderStyle1.setAlignment(HorizontalAlignment.CENTER);
         HSSFFont font1 = wb.createFont();
         font1.setFontName("宋体");
-        font.setBold(false);
+        font.setBold(true);
         font1.setFontHeightInPoints((short)13);
         boderStyle1.setFont(font1);
 
@@ -771,15 +932,89 @@ public class StationDataStatService {
         font2.setFontHeightInPoints((short)12);
         boderStyle2.setFont(font2);
 
-        int[] width = {256*40+184};
+        int[] width = {256*45+184,256*42+184};
+        //设置宽度
         sheet.setColumnWidth(0,width[0]);
+        sheet.setColumnWidth(1,width[1]);
 
-        HSSFRow row1 = sheet.createRow(0);
-        HSSFCell cell = row1.createCell(0);
-        cell.setCellValue("名称");
-        cell.setCellStyle(boderStyle);
+        //在sheet里创建第一行，参数为行索引(excel的行)，可以是0～65535之间的任何一个
+        HSSFRow row = sheet.createRow(0);
+        createRowColCell(row,0,"数据分析",boderStyle);
+
+
+        row = sheet.createRow(1);
+        createRowColCell(row,0,"日期",boderStyle1);
+        createRowColCell(row,1,"\\",boderStyle1);
+
+        row = sheet.createRow(2);
+        createRowColCell(row,0,"天气（2019年10月1日后废止）",boderStyle1);
+        createRowColCell(row,1,"\\",boderStyle1);
+
+        row = sheet.createRow(3);
+        createRowColCell(row,0,"环境温度℃",boderStyle1);
+        createRowColCell(row,1,"\\",boderStyle1);
+
+        row = sheet.createRow(4);
+        createRowColCell(row,0,"组件温度℃",boderStyle1);
+        createRowColCell(row,1,"\\",boderStyle1);
+
+        row = sheet.createRow(5);
+        createRowColCell(row,0,"AQI",boderStyle1);
+        createRowColCell(row,1,"\\",boderStyle1);
+
+        row = sheet.createRow(6);
+        createRowColCell(row,0,"总辐照量MJ/M²",boderStyle1);
+        createRowColCell(row,1,"\\",boderStyle1);
+
+        row = sheet.createRow(7);
+        createRowColCell(row,0,"峰值日照时数h",boderStyle1);
+        createRowColCell(row,1,"\\",boderStyle1);
+
+        row = sheet.createRow(8);
+        createRowColCell(row,0,"理论发电量（kwh）",boderStyle1);
+        createRowColCell(row,1,"\\",boderStyle1);
+
+        row = sheet.createRow(9);
+        createRowColCell(row,0,"辐照发电量（kwh）",boderStyle1);
+        createRowColCell(row,1,"\\",boderStyle1);
+
+        row = sheet.createRow(10);
+        createRowColCell(row,0,"实际发电量（kwh）",boderStyle1);
+        createRowColCell(row,1,"\\",boderStyle1);
+
+        row = sheet.createRow(11);
+        createRowColCell(row,0,"理论等效小时数",boderStyle1);
+        createRowColCell(row,1,"\\",boderStyle1);
+
+        row = sheet.createRow(12);
+        createRowColCell(row,0,"辐照等效小时数",boderStyle1);
+        createRowColCell(row,1,"\\",boderStyle1);
+
+        row = sheet.createRow(13);
+        createRowColCell(row,0,"实际等效小时数",boderStyle1);
+        createRowColCell(row,1,"\\",boderStyle1);
+
+        row = sheet.createRow(14);
+
+        row = sheet.createRow(15);
+        createRowColCell(row,0,"设备名称",boderStyle1);
+        createRowColCell(row,1,"设备功率（kw）",boderStyle1);
+
     }
 
+    public void createRowCell(HSSFRow row,HSSFCellStyle style,String name){
+        HSSFCell cell = row.createCell(0);
+        cell.setCellValue(name);
+        cell.setCellStyle(style);
+    }
+
+    public void createRowColCell(HSSFRow row,int index,String val,HSSFCellStyle style){
+        HSSFCell cell = row.createCell(index);
+        cell.setCellStyle(style);
+        cell.setCellValue(val);
+    }
+
+    @Deprecated
     public void createDeviceHourSheet(HSSFWorkbook wb){
         HSSFSheet sheet = wb.createSheet("等效小时数");
         HSSFCellStyle boderStyle = wb.createCellStyle();

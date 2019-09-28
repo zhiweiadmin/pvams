@@ -77,6 +77,8 @@ public class UnitService {
         Date date = new Date();
         company.setUpdateDttm(date);
         companyMapper.updateByPrimaryKeySelective(company);
+        //更新树的名称
+        menuService.updateCompanyName(company.getCompanyId(),company.getCompanyName());
     }
 
     public void delete(Long companyId){

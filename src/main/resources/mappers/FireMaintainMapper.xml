@@ -15,6 +15,7 @@
     <result column="check_plan" jdbcType="VARCHAR" property="checkPlan" />
     <result column="create_dttm" jdbcType="TIMESTAMP" property="createDttm" />
     <result column="update_dttm" jdbcType="TIMESTAMP" property="updateDttm" />
+    <result column="checker" jdbcType="VARCHAR" property="checker" />
   </resultMap>
   <sql id="Base_Column_List">
     id, station_id, fire_name, position, num, type, check_time, next_check_time, param,
@@ -187,8 +188,9 @@
   </update>
   <select id="selectByFields" parameterType="java.util.Map" resultMap="BaseResultMap">
     select
-    <include refid="Base_Column_List" />
-    from t_fire_maintain
+        t.*,
+        t1.realname checker
+    from t_fire_maintain t left join t_user t1 on t.check_user_id = t1.user_id
     where
         1 = 1
     <if test="stationId != null">

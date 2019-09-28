@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goodpower.pvams.mapper.FireImgMapper">
+  <resultMap id="BaseResultMap" type="com.goodpower.pvams.model.FireImg">
+    <id column="station_id" jdbcType="BIGINT" property="stationId" />
+    <result column="pic_name" jdbcType="VARCHAR" property="picName" />
+    <result column="path" jdbcType="VARCHAR" property="path" />
+    <result column="create_dttm" jdbcType="TIMESTAMP" property="createDttm" />
+    <result column="update_dttm" jdbcType="TIMESTAMP" property="updateDttm" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    station_id, pic_name, path, create_dttm, update_dttm
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_fire_img
+    where station_id = #{stationId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_fire_img
+    where station_id = #{stationId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.goodpower.pvams.model.FireImg">
+    insert into t_fire_img (station_id, pic_name, path, 
+      create_dttm, update_dttm)
+    values (#{stationId,jdbcType=BIGINT}, #{picName,jdbcType=VARCHAR}, #{path,jdbcType=VARCHAR}, 
+      #{createDttm,jdbcType=TIMESTAMP}, #{updateDttm,jdbcType=TIMESTAMP})
+    on duplicate key update
+      pic_name = #{picName,jdbcType=VARCHAR},
+      path = #{path,jdbcType=VARCHAR},
+      update_dttm = now()
+  </insert>
+  <insert id="insertSelective" parameterType="com.goodpower.pvams.model.FireImg">
+    insert into t_fire_img
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="stationId != null">
+        station_id,
+      </if>
+      <if test="picName != null">
+        pic_name,
+      </if>
+      <if test="path != null">
+        path,
+      </if>
+      <if test="createDttm != null">
+        create_dttm,
+      </if>
+      <if test="updateDttm != null">
+        update_dttm,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="stationId != null">
+        #{stationId,jdbcType=BIGINT},
+      </if>
+      <if test="picName != null">
+        #{picName,jdbcType=VARCHAR},
+      </if>
+      <if test="path != null">
+        #{path,jdbcType=VARCHAR},
+      </if>
+      <if test="createDttm != null">
+        #{createDttm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDttm != null">
+        #{updateDttm,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.goodpower.pvams.model.FireImg">
+    update t_fire_img
+    <set>
+      <if test="picName != null">
+        pic_name = #{picName,jdbcType=VARCHAR},
+      </if>
+      <if test="path != null">
+        path = #{path,jdbcType=VARCHAR},
+      </if>
+      <if test="createDttm != null">
+        create_dttm = #{createDttm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDttm != null">
+        update_dttm = #{updateDttm,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where station_id = #{stationId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.goodpower.pvams.model.FireImg">
+    update t_fire_img
+    set pic_name = #{picName,jdbcType=VARCHAR},
+      path = #{path,jdbcType=VARCHAR},
+      create_dttm = #{createDttm,jdbcType=TIMESTAMP},
+      update_dttm = #{updateDttm,jdbcType=TIMESTAMP}
+    where station_id = #{stationId,jdbcType=BIGINT}
+  </update>
+</mapper>

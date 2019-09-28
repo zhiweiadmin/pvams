@@ -112,9 +112,6 @@ public class StationController {
             return resultMap.fail().message("请先选择电站!");
         }
         try{
-            if(stationId == null){
-                return resultMap.success().setData(new JSONObject());
-            }
             String fileName = file.getOriginalFilename();
             if(StringUtils.isNotBlank(fileName) && fileName.endsWith("pdf")){
                 path = FileHandleUtil.upload(file.getInputStream(),file.getOriginalFilename());
@@ -152,24 +149,35 @@ public class StationController {
         return resultMap;
     }
 
-    @PostMapping("/uploadAccessPointFile/{stationId}")
-    public ResultMap uploadAccessPointFile(@PathVariable Long stationId, @RequestParam("file") MultipartFile file, HttpServletRequest request,HttpServletResponse response) {
+    @PostMapping("/uploadAccessPointFile/{stationId}/{picType}")
+    public ResultMap uploadAccessPointFile(@PathVariable Long stationId,@PathVariable Integer picType,@RequestParam("file") MultipartFile file) {
         String path = null;
         ResultMap resultMap = new ResultMap();
+        String originalFilename = file.getOriginalFilename();
         try{
             if(stationId == null){
                 return resultMap.fail().message("请先选择电站!");
             }
-            path = FileHandleUtil.upload(file.getInputStream(), file.getOriginalFilename());
+            if(picType == null){
+                return resultMap.fail().message("请先选择图片类别!");
+            }
+
+            if(StringUtils.isBlank(originalFilename)){
+                return resultMap.fail().message("文件名不能为空!");
+            }
+            path = FileHandleUtil.upload(file.getInputStream(), originalFilename);
+            if(StringUtils.isNotBlank(path)){
+                //保存上传的信息
+                GirdAccessFile girdAccessFile = new GirdAccessFile();
+                girdAccessFile.setFileUrl(path);
+                girdAccessFile.setStationId(stationId);
+                girdAccessFile.setPicType(picType);
+                girdAccessFile.setPicName(originalFilename.substring(0,originalFilename.lastIndexOf(".")));
+                stationService.uploadAccessImg(girdAccessFile);
+            }
         }catch (Exception e){
             logger.error("上传图片失败",e);
-        }
-        if(StringUtils.isNotBlank(path)){
-            //保存上传的信息
-            GirdAccessFile girdAccessFile = new GirdAccessFile();
-            girdAccessFile.setFileUrl(path);
-            girdAccessFile.setStationId(stationId);
-            stationService.uploadAccessImg(girdAccessFile);
+            resultMap.fail().message("上传图片失败");
         }
         resultMap.success().setData(path).message("上传成功");
         return resultMap;

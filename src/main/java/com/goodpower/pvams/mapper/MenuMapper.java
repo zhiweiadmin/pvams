@@ -6,11 +6,14 @@ import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Mapper
 public interface MenuMapper {
     int insert(TreeNode record);
+
+    void updateCompanyName(Map<String,Object> param);
 
     int insertSelective(TreeNode record);
 

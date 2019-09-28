@@ -5,12 +5,14 @@ import com.goodpower.pvams.mapper.MenuMapper;
 import com.goodpower.pvams.model.Menu;
 import com.goodpower.pvams.model.TreeNode;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class MenuService {
@@ -118,6 +120,20 @@ public class MenuService {
 
     public int add(TreeNode treeNode){
         return menuMapper.insert(treeNode);
+    }
+
+    public void updateCompanyName(Object id,String cName){
+        Map<String,Object> param = Maps.newHashMap();
+        param.put("id","c"+id);
+        param.put("showName",cName);
+        menuMapper.updateCompanyName(param);
+    }
+
+    public void updateStationName(Object id,String cName){
+        Map<String,Object> param = Maps.newHashMap();
+        param.put("id","s"+id);
+        param.put("showName",cName);
+        menuMapper.updateCompanyName(param);
     }
 
 }

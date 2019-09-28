@@ -191,7 +191,7 @@ public class FireMaintainService {
         SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = sdf1.parse(sdf1.format(new Date()));
         if(lastRowNum > 1){
-                for(int i=2;i<=lastRowNum;i++){
+                for(int i=2;i < lastRowNum;i++){
                     Row row = sheet.getRow(i);
                     String fireName = formatter.formatCellValue(row.getCell(0));
                     String position = formatter.formatCellValue(row.getCell(1));
@@ -218,7 +218,7 @@ public class FireMaintainService {
                         if(checkDate.after(date)){
                             fireMaintain.setCheckStatus(0);//未点检
                         }else{
-                            fireMaintain.setCheckStatus(1);//点检未确认
+                            fireMaintain.setCheckStatus(0);//点检未确认
                         }
                     }else{
                         fireMaintain.setCheckStatus(0);

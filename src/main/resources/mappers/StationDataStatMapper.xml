@@ -176,7 +176,7 @@
     select
         stat_name,
         month,
-        sum(stat_val) sumVal
+        round(sum(stat_val),2) sumVal
     from
         t_station_data_stat
     where

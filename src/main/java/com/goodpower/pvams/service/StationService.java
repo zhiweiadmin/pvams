@@ -23,6 +23,9 @@ public class StationService {
     private static final Integer STATION_GIRD_ACCESS_FILE = 1;
 
     @Autowired
+    MenuService menuService;
+
+    @Autowired
     PowerStationFileMapper powerStationFileMapper;
 
     @Autowired
@@ -135,37 +138,35 @@ public class StationService {
 
 
         List<PowerStationFile> fileList = fileMapper.selectByStationId(stationId);
-        if(girdInfo != null){
-            List<GirdAccessFile> accessPointFiles = accessFileMapper.selectByStationId(stationId);
-            girdInfo.setAccessPointFiles(accessPointFiles);
-        }
-        if(powerStation != null){
-            switch (powerStation.getStationType()){
-                case "1":
-                    powerStation.setStationTypeName("地面电站");
-                    break;
-                case "2":
-                    powerStation.setStationTypeName("山面电站");
-                    break;
-                case "3":
-                    powerStation.setStationTypeName("农光电站");
-                    break;
-                case "4":
-                    powerStation.setStationTypeName("渔光电站");
-                    break;
-                case "5":
-                    powerStation.setStationTypeName("漂浮电站");
-                    break;
-                case "6":
-                    powerStation.setStationTypeName("分布式电站");
-                    break;
-                case "7":
-                    powerStation.setStationTypeName("扶贫电站");
-                    break;
-                case "8":
-                    powerStation.setStationTypeName("户用分布式电站");
-                    break;
-            }
+
+        List<GirdAccessFile> accessPointFiles = accessFileMapper.selectByStationId(stationId);
+        girdInfo.setAccessPointFiles(accessPointFiles);
+
+        switch (powerStation.getStationType()){
+            case "1":
+                powerStation.setStationTypeName("地面电站");
+                break;
+            case "2":
+                powerStation.setStationTypeName("山面电站");
+                break;
+            case "3":
+                powerStation.setStationTypeName("农光电站");
+                break;
+            case "4":
+                powerStation.setStationTypeName("渔光电站");
+                break;
+            case "5":
+                powerStation.setStationTypeName("漂浮电站");
+                break;
+            case "6":
+                powerStation.setStationTypeName("分布式电站");
+                break;
+            case "7":
+                powerStation.setStationTypeName("扶贫电站");
+                break;
+            case "8":
+                powerStation.setStationTypeName("户用分布式电站");
+                break;
         }
 
         JSONObject jsonObject = new JSONObject();
@@ -174,7 +175,64 @@ public class StationService {
         jsonObject.put("buildInfo",buildInfo);
         jsonObject.put("superviseInfo",superviseInfo);
         jsonObject.put("constructInfo",constructInfo);
+        List<GirdAccessFile> type1List = Lists.newArrayList();
+        List<GirdAccessFile> type2List = Lists.newArrayList();
+        List<GirdAccessFile> type3List = Lists.newArrayList();
+        List<GirdAccessFile> type4List = Lists.newArrayList();
+        List<GirdAccessFile> type5List = Lists.newArrayList();
+        List<GirdAccessFile> type6List = Lists.newArrayList();
+        List<GirdAccessFile> type7List = Lists.newArrayList();
+        List<GirdAccessFile> type8List = Lists.newArrayList();
+        List<GirdAccessFile> type9List = Lists.newArrayList();
+        List<GirdAccessFile> type10List = Lists.newArrayList();
+        List<GirdAccessFile> type11List = Lists.newArrayList();
+        List<GirdAccessFile> type12List = Lists.newArrayList();
+
+        for(GirdAccessFile accessFile : girdInfo.getAccessPointFiles()){
+            if(accessFile.getPicType() != null){
+                if(accessFile.getPicType() == 1){
+                    type1List.add(accessFile);
+                }else if(accessFile.getPicType() == 2){
+                    type2List.add(accessFile);
+                }else if(accessFile.getPicType() == 3){
+                    type3List.add(accessFile);
+                }else if(accessFile.getPicType() == 4){
+                    type4List.add(accessFile);
+                }else if(accessFile.getPicType() == 5){
+                    type5List.add(accessFile);
+                }else if(accessFile.getPicType() == 6){
+                    type6List.add(accessFile);
+                }else if(accessFile.getPicType() == 7){
+                    type7List.add(accessFile);
+                }else if(accessFile.getPicType() == 8){
+                    type8List.add(accessFile);
+                }else if(accessFile.getPicType() == 9){
+                    type9List.add(accessFile);
+                }else if(accessFile.getPicType() == 10){
+                    type10List.add(accessFile);
+                }else if(accessFile.getPicType() == 11){
+                    type11List.add(accessFile);
+                }else if(accessFile.getPicType() == 12){
+                    type12List.add(accessFile);
+                }
+            }
+        }
+        JSONObject fileJSONObject = new JSONObject();
+        fileJSONObject.put("TYPE1",type1List);
+        fileJSONObject.put("TYPE2",type2List);
+        fileJSONObject.put("TYPE3",type3List);
+        fileJSONObject.put("TYPE4",type4List);
+        fileJSONObject.put("TYPE5",type5List);
+        fileJSONObject.put("TYPE6",type6List);
+        fileJSONObject.put("TYPE7",type7List);
+        fileJSONObject.put("TYPE8",type8List);
+        fileJSONObject.put("TYPE9",type9List);
+        fileJSONObject.put("TYPE10",type10List);
+        fileJSONObject.put("TYPE11",type11List);
+        fileJSONObject.put("TYPE12",type12List);
+
         jsonObject.put("girdInfo",girdInfo);
+        jsonObject.put("assetsImgs",fileJSONObject);
         jsonObject.put("stationFileList",fileList);
         return jsonObject;
     }
@@ -220,6 +278,7 @@ public class StationService {
         stationBase.setLongitude(longitude);
         stationBase.setLatitude(latitude);
         stationBaseMapper.upsert(stationBase);
+        menuService.updateStationName(stationId,stationName);
     }
 
     private void dealBaseInfo(Sheet sheet,Long stationId){

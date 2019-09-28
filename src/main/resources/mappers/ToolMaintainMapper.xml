@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.goodpower.pvams.model.ToolMaintain">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="station_id" jdbcType="BIGINT" property="stationId" />
+    <result column="check_user_id" jdbcType="BIGINT" property="checkUserId" />
     <result column="tool" jdbcType="VARCHAR" property="tool" />
     <result column="position" jdbcType="VARCHAR" property="position" />
     <result column="num" jdbcType="INTEGER" property="num" />
@@ -15,10 +16,11 @@
     <result column="check_plan" jdbcType="VARCHAR" property="checkPlan" />
     <result column="create_dttm" jdbcType="TIMESTAMP" property="createDttm" />
     <result column="update_dttm" jdbcType="TIMESTAMP" property="updateDttm" />
+    <result column="checker" jdbcType="VARCHAR" property="checker" />
   </resultMap>
   <sql id="Base_Column_List">
     id, station_id, tool, position, num, type, check_time, next_check_time, param, check_status, 
-    check_plan, create_dttm, update_dttm
+    check_plan, create_dttm, update_dttm,check_user_id
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -187,8 +189,9 @@
   </update>
   <select id="selectByFields" parameterType="java.util.Map" resultMap="BaseResultMap">
     select
-    <include refid="Base_Column_List" />
-    from t_tool_maintain
+      t.*,
+      t1.realname checker
+    from t_tool_maintain t left join t_user t1 on t.check_user_id = t1.user_id
     where
     1 = 1
     <if test="stationId != null">

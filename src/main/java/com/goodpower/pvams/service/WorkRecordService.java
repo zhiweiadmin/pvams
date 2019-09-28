@@ -144,6 +144,10 @@ public class WorkRecordService {
 
     }
 
+    public WorkRecord queryRecord(Long recordId){
+        return workRecordMapper.selectByPrimaryKey(recordId);
+    }
+
 
 }
 

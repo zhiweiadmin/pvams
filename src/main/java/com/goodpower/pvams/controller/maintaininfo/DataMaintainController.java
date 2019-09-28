@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -142,6 +144,51 @@ public class DataMaintainController {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("dataResult",resultList);
         return resultMap.setData(jsonObject).success();
+    }
+
+    @GetMapping("/download/{id}")
+    public ResultMap download(@PathVariable Long id,HttpServletRequest request, HttpServletResponse response) {
+        BufferedInputStream bis = null;
+        BufferedOutputStream bos = null;
+        ResultMap resultMap = new ResultMap();
+        try {
+            response.setContentType("text/html;charset=utf-8");
+            request.setCharacterEncoding("UTF-8");
+            WorkRecord workRecord = workRecordService.queryRecord(id);
+            String downLoadPath = workRecord.getAttach();
+            if (StringUtils.isBlank(downLoadPath)) {
+                return resultMap.fail().message("附件为空!");
+            }
+            String name = downLoadPath.substring(downLoadPath.lastIndexOf("/"));
+            long fileLength = new File(downLoadPath).length();
+            response.setContentType("application/x-msdownload;");
+            response.setHeader("Content-disposition", "attachment; filename=" + name);
+            response.setHeader("Content-Length", String.valueOf(fileLength));
+            bis = new BufferedInputStream(new FileInputStream(downLoadPath));
+            bos = new BufferedOutputStream(response.getOutputStream());
+            byte[] buff = new byte[2048];
+            int bytesRead;
+            while (-1 != (bytesRead = bis.read(buff, 0, buff.length))) {
+                bos.write(buff, 0, bytesRead);
+            }
+        } catch (Exception e) {
+            logger.error("下载失败",e);
+            return resultMap.fail().message("下载失败!");
+        } finally {
+            if (bis != null)
+                try {
+                    bis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            if (bos != null)
+                try {
+                    bos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+        }
+        return null;
     }
 
 }

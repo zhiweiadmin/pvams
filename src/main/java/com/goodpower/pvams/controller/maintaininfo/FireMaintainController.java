@@ -2,9 +2,13 @@ package com.goodpower.pvams.controller.maintaininfo;
 
 import com.alibaba.fastjson.JSONObject;
 import com.goodpower.pvams.common.ResultMap;
+import com.goodpower.pvams.mapper.FireImgMapper;
 import com.goodpower.pvams.model.FireCheckRecord;
+import com.goodpower.pvams.model.FireImg;
+import com.goodpower.pvams.model.GirdAccessFile;
 import com.goodpower.pvams.model.PowerStation;
 import com.goodpower.pvams.service.FireMaintainService;
+import com.goodpower.pvams.util.FileHandleUtil;
 import com.google.common.collect.Maps;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -21,6 +25,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URLEncoder;
 import java.text.ParseException;
+import java.util.Date;
 import java.util.Map;
 
 @RestController
@@ -31,6 +36,9 @@ public class FireMaintainController {
 
     @Autowired
     FireMaintainService fireMaintainService;
+
+    @Autowired
+    FireImgMapper fireImgMapper;
 
     @GetMapping("/query")
     public ResultMap query(Long stationId,Integer pageNo,Integer pageSize){
@@ -51,6 +59,12 @@ public class FireMaintainController {
             param.put("stationId",stationId);
 
             JSONObject jsonObject =  fireMaintainService.selectByFields(pageNo,pageSize,param);
+            FireImg fireImg = fireImgMapper.selectByPrimaryKey(stationId);
+            if(fireImg != null){
+                jsonObject.put("path",fireImg.getPath());
+                jsonObject.put("name",fireImg.getPicName());
+            }
+
             resultMap.setData(jsonObject).success().message("查询成功");
         }catch (Exception e){
             resultMap.fail().message(e.getMessage());
@@ -160,6 +174,40 @@ public class FireMaintainController {
             }
         }
         return resultMap;
+    }
+
+    @PostMapping("/uploadFile/{stationId}")
+    public ResultMap uploadFile(@PathVariable Long stationId,@RequestParam("file") MultipartFile file) {
+        String path = null;
+        ResultMap resultMap = new ResultMap();
+        String originalFilename = file.getOriginalFilename();
+        JSONObject result = new JSONObject();
+        try{
+            if(stationId == null){
+                return resultMap.fail().message("请先选择电站!");
+            }
+
+            if(StringUtils.isBlank(originalFilename)){
+                return resultMap.fail().message("文件名不能为空!");
+            }
+            path = FileHandleUtil.upload(file.getInputStream(), originalFilename);
+            if(StringUtils.isNotBlank(path)){
+                //保存上传的信息
+                FireImg fireImg = new FireImg();
+                fireImg.setStationId(stationId);
+                fireImg.setPath(path);
+                fireImg.setCreateDttm(new Date());
+                fireImg.setUpdateDttm(new Date());
+                fireImg.setPicName(originalFilename.substring(0,originalFilename.lastIndexOf(".")));
+                fireImgMapper.insert(fireImg);
+                result.put("name",originalFilename.substring(0,originalFilename.lastIndexOf(".")));
+            }
+        }catch (Exception e){
+            logger.error("上传图片失败",e);
+            return resultMap.fail().message("上传图片失败");
+        }
+        result.put("path",path);
+        return resultMap.success().setData(result).message("上传成功");
     }
 
 }

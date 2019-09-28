@@ -163,21 +163,30 @@ public class CarMaintainService {
         if(lastRowNum > 1){
                 for(int i=2;i<=lastRowNum;i++){
                     Row row = sheet.getRow(i);
-                    String carNum = formatter.formatCellValue(row.getCell(0));
-                    String header = formatter.formatCellValue(row.getCell(1));
-                    String brand = formatter.formatCellValue(row.getCell(2));
-                    String param = formatter.formatCellValue(row.getCell(3));
-                    CarMaintain carMaintain = new CarMaintain();
-                    carMaintain.setStatus(0);
-                    carMaintain.setConfirmStatus(1);
-                    carMaintain.setCarNum(carNum);
-                    carMaintain.setStationId(stationId);
-                    carMaintain.setHeader(header);
-                    carMaintain.setParam(param);
-                    carMaintain.setBrand(brand);
-                    carMaintain.setCreateDttm(date);
-                    carMaintain.setUpdateDttm(date);
-                    carMaintainMapper.insert(carMaintain);
+                    if(row !=null){
+                        Cell cell0 = row.getCell(0);
+                        Cell cell1 = row.getCell(1);
+                        Cell cell2 = row.getCell(2);
+                        Cell cell3 = row.getCell(3);
+                        if(cell0 != null && !"".equals(formatter.formatCellValue(cell0))){
+                            CarMaintain carMaintain = new CarMaintain();
+                            String carNum = formatter.formatCellValue(cell0);
+                            String header = formatter.formatCellValue(cell1);
+                            String brand = formatter.formatCellValue(cell2);
+                            String param = formatter.formatCellValue(cell3);
+                            carMaintain.setStatus(0);
+                            carMaintain.setConfirmStatus(1);
+                            carMaintain.setCarNum(carNum);
+                            carMaintain.setStationId(stationId);
+                            carMaintain.setHeader(header);
+                            carMaintain.setParam(param);
+                            carMaintain.setBrand(brand);
+                            carMaintain.setCreateDttm(date);
+                            carMaintain.setUpdateDttm(date);
+                            carMaintainMapper.insert(carMaintain);
+                        }
+                    }
+
                 }
                 Map<String,Object> param = Maps.newHashMap();
                 param.put("stationId",stationId);

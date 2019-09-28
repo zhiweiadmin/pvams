@@ -26,6 +26,10 @@ public class FireMaintain implements Serializable {
 
     private String checkPlan;
 
+    private Long checkUserId;
+
+    private String checker;
+
     private Date createDttm;
 
     private Date updateDttm;
@@ -134,5 +138,21 @@ public class FireMaintain implements Serializable {
 
     public void setUpdateDttm(Date updateDttm) {
         this.updateDttm = updateDttm;
+    }
+
+    public Long getCheckUserId() {
+        return checkUserId;
+    }
+
+    public void setCheckUserId(Long checkUserId) {
+        this.checkUserId = checkUserId;
+    }
+
+    public String getChecker() {
+        return checker;
+    }
+
+    public void setChecker(String checker) {
+        this.checker = checker;
     }
 }

@@ -173,7 +173,9 @@
         t.station_id = #{stationId,jdbcType=BIGINT}
         and t.year = #{year,jdbcType=INTEGER}
         and t.month = #{month,jdbcType=INTEGER}
-        and t.device_name like #{deviceName,jdbcType=VARCHAR}
+        <if test="deviceName != null">
+          and t.device_name like #{deviceName,jdbcType=VARCHAR}
+        </if>
     group by
         t.device_name,t.year,t.month
       <if test="orderBy != null">
@@ -204,7 +206,9 @@
     t.station_id = #{stationId,jdbcType=BIGINT}
     and t.year = #{year,jdbcType=INTEGER}
     and t.month = #{month,jdbcType=INTEGER}
-    and t.device_name like #{deviceName,jdbcType=VARCHAR}
+    <if test="deviceName != null">
+      and t.device_name like #{deviceName,jdbcType=VARCHAR}
+    </if>
     group by
     t.device_name,t.year,t.month ) a
   </select>
@@ -226,7 +230,9 @@
     WHERE
         t.station_id = #{stationId,jdbcType=BIGINT}
         and t.YEAR = #{year,jdbcType=INTEGER}
-        and t.device_name like #{deviceName,jdbcType=VARCHAR}
+        <if test="deviceName != null">
+          and t.device_name like #{deviceName,jdbcType=VARCHAR}
+        </if>
     group by
         t.device_name,t.year
     <if test="orderBy != null">
@@ -255,7 +261,9 @@
     WHERE
     t.station_id = #{stationId,jdbcType=BIGINT}
     and t.YEAR = #{year,jdbcType=INTEGER}
-    and t.device_name like #{deviceName,jdbcType=VARCHAR}
+    <if test="deviceName != null">
+      and t.device_name like #{deviceName,jdbcType=VARCHAR}
+    </if>
     group by
     t.device_name,t.year ) a
   </select>
@@ -273,7 +281,7 @@
         and year = #{year,jdbcType=INTEGER}
         and month = #{month,jdbcType=INTEGER}
         and stat_type = #{statType,jdbcType=INTEGER}
-    order by stat_date ) t
+    order by id ) t
     <if test="offset != null and limit != null">
       limit #{offset,jdbcType=INTEGER},#{limit,jdbcType=INTEGER}
     </if>
@@ -293,6 +301,7 @@
           and stat_type = #{statType,jdbcType=INTEGER}
           and year = #{year,jdbcType=INTEGER}
       group by device_name,year,month
+      order by id
     ) t
       <if test="offset != null and limit != null">
           limit #{offset,jdbcType=INTEGER},#{limit,jdbcType=INTEGER}

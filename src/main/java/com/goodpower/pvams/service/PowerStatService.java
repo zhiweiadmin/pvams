@@ -11,6 +11,8 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +28,8 @@ import java.util.Map;
 
 @Service
 public class PowerStatService {
+
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     public static final Integer THEORY_POWER = 1;
     public static final Integer FUZHAO_POWER = 2;

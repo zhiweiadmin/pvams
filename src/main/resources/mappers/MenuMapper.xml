@@ -55,4 +55,12 @@
             p_id = #{pId,jdbcType=VARCHAR},
         </if>
   </select>
+  <insert id="updateCompanyName" parameterType="java.util.Map">
+    update
+        t_menu
+    set
+        show_name = #{showName,jdbcType=VARCHAR}
+    where
+        id = #{id,jdbcType=VARCHAR}
+  </insert>
 </mapper>
