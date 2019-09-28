@@ -281,6 +281,9 @@
         and year = #{year,jdbcType=INTEGER}
         and month = #{month,jdbcType=INTEGER}
         and stat_type = #{statType,jdbcType=INTEGER}
+        <if test="deviceName != null">
+          and device_name like #{deviceName,jdbcType=VARCHAR}
+        </if>
     order by id ) t
     <if test="offset != null and limit != null">
       limit #{offset,jdbcType=INTEGER},#{limit,jdbcType=INTEGER}
@@ -300,6 +303,9 @@
           and station_id = #{stationId,jdbcType=BIGINT}
           and stat_type = #{statType,jdbcType=INTEGER}
           and year = #{year,jdbcType=INTEGER}
+          <if test="deviceName != null">
+            and device_name like #{deviceName,jdbcType=VARCHAR}
+          </if>
       group by device_name,year,month
       order by id
     ) t

@@ -6,6 +6,7 @@ import com.goodpower.pvams.model.WorkRecord;
 import com.goodpower.pvams.service.CommonService;
 import com.goodpower.pvams.service.WorkRecordService;
 import com.goodpower.pvams.util.DateUtil;
+import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,8 +55,16 @@ public class DataMaintainController {
                 date = sdf.parse(time);
             }
             List<WorkRecord> resultList = workRecordService.query(stationId,userId,date);
+            List<WorkRecord> newResultList = Lists.newArrayList();
+            for(WorkRecord record : resultList){
+                String filePath = record.getAttach();
+                if(StringUtils.isNotBlank(filePath)){
+                    record.setAttach(filePath.substring(filePath.lastIndexOf("/")+1));
+                }
+                newResultList.add(record);
+            }
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("resultList",resultList);
+            jsonObject.put("resultList",newResultList);
             resultMap.setData(jsonObject).success().message("查询成功");
         }catch (Exception e){
             logger.error("error",e);
@@ -159,10 +168,10 @@ public class DataMaintainController {
             if (StringUtils.isBlank(downLoadPath)) {
                 return resultMap.fail().message("附件为空!");
             }
-            String name = downLoadPath.substring(downLoadPath.lastIndexOf("/"));
+            String name = downLoadPath.substring(downLoadPath.lastIndexOf("/")+1);
             long fileLength = new File(downLoadPath).length();
             response.setContentType("application/x-msdownload;");
-            response.setHeader("Content-disposition", "attachment; filename=" + name);
+            response.setHeader("Content-disposition", "attachment; filename=" + new String(name.getBytes("utf-8"), "ISO8859-1"));
             response.setHeader("Content-Length", String.valueOf(fileLength));
             bis = new BufferedInputStream(new FileInputStream(downLoadPath));
             bos = new BufferedOutputStream(response.getOutputStream());

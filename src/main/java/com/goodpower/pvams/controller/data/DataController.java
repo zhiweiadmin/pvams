@@ -42,6 +42,8 @@ public class DataController {
     @Autowired
     StationDataStatService dataStatService;
 
+    private static String deviceName = "";
+
     /**
      *
      * @param stationId
@@ -63,6 +65,8 @@ public class DataController {
             }
             int year = getYear(val);
             int month = getMonth(val);
+            DataController.deviceName = "";
+            DataController.deviceName = deviceName;
             JSONObject jsonObject = dataStatService.getDeviceStat(stationId,type,year,month,num,deviceName);
             return result.success().code(200).setData(jsonObject).message("查询成功");
         }catch (Exception e){
@@ -119,9 +123,9 @@ public class DataController {
             int month = getMonth(val);
             JSONObject jsonObject = new JSONObject();
             if(type == 0){
-                jsonObject = dataStatService.getMonthDeviceStatDetail(stationId,statType,year,month,pageNo,pageSize);
+                jsonObject = dataStatService.getMonthDeviceStatDetail(stationId,statType,year,month,pageNo,pageSize,DataController.deviceName);
             }else if(type == 1){
-                jsonObject = dataStatService.getYearDeviceStatDetail(stationId,statType,year,pageNo,pageSize);
+                jsonObject = dataStatService.getYearDeviceStatDetail(stationId,statType,year,pageNo,pageSize,DataController.deviceName);
             }
             return result.success().code(200).setData(jsonObject).message("查询成功");
         }catch (Exception e){

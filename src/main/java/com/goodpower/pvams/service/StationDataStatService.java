@@ -198,12 +198,15 @@ public class StationDataStatService {
      * @param statType
      * 获取每月设备统计详情
      */
-    public JSONObject getMonthDeviceStatDetail(Long stationId, Integer statType, int year, int month,int pageNo,int pageSize){
+    public JSONObject getMonthDeviceStatDetail(Long stationId, Integer statType, int year, int month,int pageNo,int pageSize,String nameLike){
         Map<String,Object> param = Maps.newHashMap();
         param.put("year",year);
         param.put("month",month);
         param.put("statType",statType);
         param.put("stationId",stationId);
+        if(StringUtils.isNotBlank(nameLike)){
+            param.put("deviceName","%"+nameLike+"%");
+        }
 //        int offset = (pageNo - 1)*pageSize;
 //        int limit = pageSize;
         List<Map<String,Object>> dataList =  deviceStatMapper.getMonthDeviceStatDetail(param);
@@ -296,11 +299,14 @@ public class StationDataStatService {
     }
 
     //获取每年设备统计详情
-    public JSONObject getYearDeviceStatDetail(Long stationId, Integer statType, int year,int pageNum,int pageSize){
+    public JSONObject getYearDeviceStatDetail(Long stationId, Integer statType, int year,int pageNum,int pageSize,String nameLike){
         Map<String,Object> param = Maps.newHashMap();
         param.put("year",year);
         param.put("statType",statType);
         param.put("stationId",stationId);
+        if(StringUtils.isNotBlank(nameLike)){
+            param.put("deviceName","%"+nameLike+"%");
+        }
 //        int offset = (pageNum - 1)*pageSize;
 //        int limit = pageSize;
         List<Map<String,Object>> dataList =  deviceStatMapper.getYearDeviceStatDetail(param);
