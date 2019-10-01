@@ -187,6 +187,18 @@
       update_dttm = #{updateDttm,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
+  <update id="updateStatus" parameterType="java.util.Map">
+    update t_tool_maintain
+    set
+    check_status = #{checkStatus,jdbcType=INTEGER},
+    update_dttm = now()
+    where
+    1 = 1
+    <if test="date != null">
+      and next_check_time >= #{date,jdbcType=TIMESTAMP}
+      and #{nextDate,jdbcType=TIMESTAMP} > next_check_time
+    </if>
+  </update>
   <select id="selectByFields" parameterType="java.util.Map" resultMap="BaseResultMap">
     select
       t.*,
