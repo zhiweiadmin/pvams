@@ -33,7 +33,7 @@ public class SchedulerConfig {
         SchedulerFactoryBean factory = new SchedulerFactoryBean();
         factory.setJobFactory(jobFactory);
         factory.setQuartzProperties(quartzProperties());
-        factory.setTriggers(simpleJobTrigger);
+        //factory.setTriggers(simpleJobTrigger);
         return factory;
     }
 

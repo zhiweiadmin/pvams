@@ -14,9 +14,9 @@ public class JobAutoRunService implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
         //每天凌晨10秒的时候开始运行
-        myScheduler.startJob("10 * * * * ? *","fireJob","fireJobGroup", FireScheduledJob.class);
+        myScheduler.startJob("10 0 0 * * ? ","fireJob","fireJobGroup", FireScheduledJob.class);
         //每天凌晨20秒的时候开始运行
-        myScheduler.startJob("20 * * * * ? *","toolJob","toolJobGroup", ToolScheduledJob.class);
+        myScheduler.startJob("20 0 0 * * ? ","toolJob","toolJobGroup", ToolScheduledJob.class);
     }
 
 

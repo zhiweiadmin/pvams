@@ -43,17 +43,19 @@ public class ReadExcelStationInfo {
         String clearWaterSource = getSheetValue(sheet,15,1);//清洗水源
         String weekStart = getSheetValue(sheet,16,1);//周初始
         String monthStart = getSheetValue(sheet,17,1);//月初始
+        String installedCapacity = getSheetValue(sheet,18,1);//装机容量
+        String gridCapacity = getSheetValue(sheet,19,1);//并网容量
 
         PowerStation station = new PowerStation();
         station.setStationId(stationId);
+        station.setInstalledCapacity(installedCapacity);
+        station.setGridCapacity(gridCapacity);
         station.setInstalledPower(installedPower);
         station.setGridTime(gridTime);
         station.setProjectAngle(projectAngle);
         station.setArraySpace(arraySpace);
         station.setGridPowerLevel(gridPowerLevel);
-        if(StringUtils.isNotBlank(gridNum)){
-            station.setGridNum(Long.parseLong(gridNum));
-        }
+        station.setGridNum(gridNum);
         station.setScale(scale);
         station.setLineLength(lineLength);
         station.setRoadType(roadType);
@@ -97,17 +99,19 @@ public class ReadExcelStationInfo {
         String clearWaterSource = getSheetValue(sheet,16,1);
         String weekStart = getSheetValue(sheet,17,1);//周初始
         String monthStart = getSheetValue(sheet,18,1);//月初始
+        String installedCapacity = getSheetValue(sheet,19,1);//装机容量
+        String gridCapacity = getSheetValue(sheet,20,1);//并网容量
 
         PowerStation station = new PowerStation();
         station.setStationId(stationId);
+        station.setInstalledCapacity(installedCapacity);
+        station.setGridCapacity(gridCapacity);
         station.setInstalledPower(installedPower);
         station.setGridTime(gridTime);
         station.setProjectAngle(projectAngle);
         station.setArraySpace(arraySpace);
         station.setGridPowerLevel(gridPowerLevel);
-        if(StringUtils.isNotBlank(gridNum)){
-            station.setGridNum(Long.parseLong(gridNum));
-        }
+        station.setGridNum(gridNum);
         station.setScale(scale);
         station.setLineLength(lineLength);
         station.setRoadType(roadType);
@@ -149,16 +153,20 @@ public class ReadExcelStationInfo {
         String clearWaterSource = getSheetValue(sheet,14,1);//清洗水源
         String weekStart = getSheetValue(sheet,15,1);//周初始
         String monthStart = getSheetValue(sheet,16,1);//月初始
+        String installedCapacity = getSheetValue(sheet,17,1);//装机容量
+        String gridCapacity = getSheetValue(sheet,18,1);//并网容量
 
         PowerStation station = new PowerStation();
         station.setStationId(stationId);
+        station.setInstalledCapacity(installedCapacity);
+        station.setGridCapacity(gridCapacity);
         station.setInstalledPower(installedPower);
         station.setGridTime(gridTime);
         station.setProjectAngle(projectAngle);
         station.setArraySpace(arraySpace);
         station.setGridPowerLevel(gridPowerLevel);
         if(StringUtils.isNotBlank(gridNum)){
-            station.setGridNum(Long.parseLong(gridNum));
+            station.setGridNum(gridNum);
         }
         station.setScale(scale);
         station.setLineLength(lineLength);
@@ -204,17 +212,19 @@ public class ReadExcelStationInfo {
         String clearWaterSource = getSheetValue(sheet,16,1);//清洗水源
         String weekStart = getSheetValue(sheet,17,1);//周初始
         String monthStart = getSheetValue(sheet,18,1);//月初始
+        String installedCapacity = getSheetValue(sheet,19,1);//装机容量
+        String gridCapacity = getSheetValue(sheet,20,1);//并网容量
 
         PowerStation station = new PowerStation();
         station.setStationId(stationId);
+        station.setInstalledCapacity(installedCapacity);
+        station.setGridCapacity(gridCapacity);
         station.setInstalledPower(installedPower);
         station.setGridTime(gridTime);
         station.setProjectAngle(projectAngle);
         station.setArraySpace(arraySpace);
         station.setGridPowerLevel(gridPowerLevel);
-        if(StringUtils.isNotBlank(gridNum)){
-            station.setGridNum(Long.parseLong(gridNum));
-        }
+        station.setGridNum(gridNum);
         station.setScale(scale);
         station.setLineLength(lineLength);
         station.setRoadType(roadType);
@@ -256,19 +266,21 @@ public class ReadExcelStationInfo {
         String clearWaterSourceAccess = getSheetValue(sheet,13,1);
         String weekStart = getSheetValue(sheet,14,1);
         String monthStart = getSheetValue(sheet,15,1);
+        String installedCapacity = getSheetValue(sheet,16,1);//装机容量
+        String gridCapacity = getSheetValue(sheet,17,1);//并网容量
 
         PowerStation station = new PowerStation();
         station.setStationId(stationId);
         station.setInstalledPower(installedPower);
+        station.setGridCapacity(gridCapacity);
+        station.setInstalledCapacity(installedCapacity);
         if(StringUtils.isNotBlank(gridTime)){
             station.setGridTime(gridTime);
         }
         station.setProjectAngle(projectAngle);
         station.setArraySpace(arraySpace);
         station.setGridPowerLevel(gridPowerLevel);
-        if(StringUtils.isNotBlank(gridNum)){
-            station.setGridNum(Math.round(Double.valueOf(gridNum)));
-        }
+        station.setGridNum(gridNum);
         station.setScale(scale);
         station.setRoofType(roofType);
         station.setIsDaylight(isDaylight);
@@ -316,9 +328,7 @@ public class ReadExcelStationInfo {
         station.setProjectAngle(projectAngle);
         station.setArraySpace(arraySpace);
         station.setGridPowerLevel(gridPowerLevel);
-        if(StringUtils.isNotBlank(gridNum)){
-            station.setGridNum(Long.parseLong(gridNum));
-        }
+        station.setGridNum(gridNum);
         station.setScale(scale);
         station.setRoadType(roadType);
         station.setIsCloseFramarea(isCloseFramarea);
@@ -350,10 +360,14 @@ public class ReadExcelStationInfo {
         String clearWaterSourceAccess = getSheetValue(sheet,11,1);
         String weekStart = getSheetValue(sheet,12,1);
         String monthStart = getSheetValue(sheet,13,1);
+        String installedCapacity = getSheetValue(sheet,14,1);//装机容量
+        String gridCapacity = getSheetValue(sheet,15,1);//并网容量
 
         PowerStation station = new PowerStation();
         station.setStationId(stationId);
         station.setInstalledPower(installedPower);
+        station.setInstalledCapacity(installedCapacity);
+        station.setGridCapacity(gridCapacity);
         if(StringUtils.isNotBlank(gridTime)){
             station.setGridTime(gridTime);
         }
