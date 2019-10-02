@@ -9,14 +9,16 @@ import org.springframework.stereotype.Component;
 public class JobAutoRunService implements ApplicationRunner {
 
     @Autowired
-    public SchedulerManager myScheduler;
+    public SchedulerManager schedulerManager;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
         //每天凌晨10秒的时候开始运行
-        myScheduler.startJob("10 0 0 * * ? ","fireJob","fireJobGroup", FireScheduledJob.class);
+        schedulerManager.startJob("10 0 0 * * ? ","fireJob","fireJobGroup", FireScheduledJob.class);
         //每天凌晨20秒的时候开始运行
-        myScheduler.startJob("20 0 0 * * ? ","toolJob","toolJobGroup", ToolScheduledJob.class);
+        schedulerManager.startJob("20 0 0 * * ? ","toolJob","toolJobGroup", ToolScheduledJob.class);
+        //每天凌晨30秒的时候开始运行
+        schedulerManager.startJob("30 0 0 * * ? ","infoJob","infoJobGroup", ImportantMaintainScheduledJob.class);
     }
 
 

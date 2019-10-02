@@ -294,4 +294,17 @@
             and t.station_id = #{stationId,jdbcType=BIGINT}
         </if>
   </select>
+  <update id="updateStatus" parameterType="java.util.Map">
+      update
+        t_maintain_info
+      set
+        status = #{staus,jdbcType=INTEGER},
+        update_dttm = now()
+      where
+        1 = 1
+        <if test="date != null">
+          and #{date,jdbcType=TIMESTAMP} > end_date
+          and status = 0
+        </if>
+  </update>
 </mapper>
