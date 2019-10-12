@@ -170,10 +170,10 @@ public class DeviceController {
         cell2_7.setCellValue("联系方式");
         cell2_7.setCellStyle(boderStyle1);
         HSSFCell cell2_8 = row2.createCell(7);
-        cell2_8.setCellValue("保修起始日期(yyyy-MM-dd）");
+        cell2_8.setCellValue("保修起始日期");
         cell2_8.setCellStyle(boderStyle1);
         HSSFCell cell2_9 = row2.createCell(8);
-        cell2_9.setCellValue("保修截止日期(yyyy-MM-dd）");
+        cell2_9.setCellValue("保修截止日期");
         cell2_9.setCellStyle(boderStyle1);
         HSSFCell cell2_10 = row2.createCell(9);
         cell2_10.setCellValue("主要参数");
