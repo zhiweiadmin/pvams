@@ -5,7 +5,7 @@
     <id column="device_id" jdbcType="BIGINT" property="deviceId" />
     <result column="station_id" jdbcType="BIGINT" property="stationId" />
     <result column="device_name" jdbcType="VARCHAR" property="deviceName" />
-    <result column="number" jdbcType="INTEGER" property="number" />
+    <result column="number" jdbcType="VARCHAR" property="number" />
     <result column="type" jdbcType="VARCHAR" property="type" />
     <result column="model" jdbcType="VARCHAR" property="model" />
     <result column="supplier" jdbcType="VARCHAR" property="supplier" />
@@ -46,7 +46,7 @@
       update_dttm, creator, updater,param
       )
     values ( #{stationId,jdbcType=BIGINT}, #{deviceName,jdbcType=VARCHAR},
-      #{number,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{model,jdbcType=VARCHAR}, 
+      #{number,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{model,jdbcType=VARCHAR},
       #{supplier,jdbcType=VARCHAR}, #{contact,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
       #{warrantyStartDate,jdbcType=VARCHAR}, #{warrantyEndDate,jdbcType=VARCHAR}, #{stockUpper,jdbcType=VARCHAR},
       #{stockLower,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{createDttm,jdbcType=TIMESTAMP}, 
@@ -123,7 +123,7 @@
         #{deviceName,jdbcType=VARCHAR},
       </if>
       <if test="number != null">
-        #{number,jdbcType=INTEGER},
+        #{number,jdbcType=VARCHAR},
       </if>
       <if test="type != null">
         #{type,jdbcType=VARCHAR},
@@ -179,7 +179,7 @@
         device_name = #{deviceName,jdbcType=VARCHAR},
       </if>
       <if test="number != null">
-        number = #{number,jdbcType=INTEGER},
+        number = #{number,jdbcType=VARCHAR},
       </if>
       <if test="type != null">
         type = #{type,jdbcType=VARCHAR},
@@ -231,7 +231,7 @@
     update t_power_station_device
     set station_id = #{stationId,jdbcType=BIGINT},
       device_name = #{deviceName,jdbcType=VARCHAR},
-      number = #{number,jdbcType=INTEGER},
+      number = #{number,jdbcType=VARCHAR},
       type = #{type,jdbcType=VARCHAR},
       model = #{model,jdbcType=VARCHAR},
       supplier = #{supplier,jdbcType=VARCHAR},

@@ -10,7 +10,7 @@ public class PowerStationDevice implements Serializable {
 
     private String deviceName;
 
-    private Integer number;
+    private String number;
 
     private String type;
 
@@ -68,11 +68,11 @@ public class PowerStationDevice implements Serializable {
         this.deviceName = deviceName == null ? null : deviceName.trim();
     }
 
-    public Integer getNumber() {
+    public String getNumber() {
         return number;
     }
 
-    public void setNumber(Integer number) {
+    public void setNumber(String number) {
         this.number = number;
     }
 

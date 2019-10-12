@@ -48,7 +48,7 @@ public class DeviceService {
                     String remark = formatter.formatCellValue(row.getCell(10));
                     PowerStationDevice device = new PowerStationDevice();
                     device.setDeviceName(deviceName);
-                    device.setNumber(Integer.parseInt(number));
+                    device.setNumber(number);
                     device.setType(type);
                     device.setModel(model);
                     device.setSupplier(supplier);
