@@ -205,7 +205,12 @@
     WHERE
         type = 1
         AND day = #{day,jdbcType=TIMESTAMP}
-        AND t.user_id = #{userId,jdbcType=BIGINT}
+        <if test="userId != null">
+            AND t.user_id = #{userId,jdbcType=BIGINT}
+        </if>
+        <if test="role != null">
+          AND t1.role >= #{role,jdbcType=BIGINT}
+        </if>
         AND station_id = #{stationId,jdbcType=BIGINT}
     UNION all
     SELECT
@@ -217,7 +222,12 @@
         type = 2
         AND year = #{year,jdbcType=INTEGER}
         and week = #{week,jdbcType=INTEGER}
-        AND t.user_id = #{userId,jdbcType=BIGINT}
+        <if test="userId != null">
+          AND t.user_id = #{userId,jdbcType=BIGINT}
+        </if>
+        <if test="role != null">
+          AND t1.role >= #{role,jdbcType=BIGINT}
+        </if>
         AND station_id = #{stationId,jdbcType=BIGINT}
     union all
     SELECT
@@ -229,7 +239,12 @@
         type = 3
         AND year = #{year,jdbcType=INTEGER}
         and month = #{month,jdbcType=INTEGER}
-        AND t.user_id = #{userId,jdbcType=BIGINT}
+        <if test="userId != null">
+          AND t.user_id = #{userId,jdbcType=BIGINT}
+        </if>
+        <if test="role != null">
+          AND t1.role >= #{role,jdbcType=BIGINT}
+        </if>
         AND station_id = #{stationId,jdbcType=BIGINT}
     union all
     SELECT
@@ -241,7 +256,12 @@
         type = 4
         AND year = #{year,jdbcType=INTEGER}
         and quarter = #{quarter,jdbcType=INTEGER}
-        AND t.user_id = #{userId,jdbcType=BIGINT}
+        <if test="userId != null">
+          AND t.user_id = #{userId,jdbcType=BIGINT}
+        </if>
+        <if test="role != null">
+          AND t1.role >= #{role,jdbcType=BIGINT}
+        </if>
         AND station_id = #{stationId,jdbcType=BIGINT}
     union all
     SELECT
@@ -252,7 +272,12 @@
     WHERE
         type = 5
         AND year = #{year,jdbcType=INTEGER}
-        AND t.user_id = #{userId,jdbcType=BIGINT}
+        <if test="userId != null">
+          AND t.user_id = #{userId,jdbcType=BIGINT}
+        </if>
+        <if test="role != null">
+          AND t1.role >= #{role,jdbcType=BIGINT}
+        </if>
         AND station_id = #{stationId,jdbcType=BIGINT}
 
   </select>
