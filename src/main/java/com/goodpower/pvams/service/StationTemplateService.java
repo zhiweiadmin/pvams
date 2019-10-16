@@ -64,8 +64,10 @@ public class StationTemplateService {
         createRowCell(sheet.createRow(12),boderStyle1,"是否有外来人员祭祖");
         createRowCell(sheet.createRow(13),boderStyle1,"组件底端距地面距离");
         createRowCell(sheet.createRow(14),boderStyle1,"分布点数量");
-        createRowCell(sheet.createRow(15),boderStyle1,"周初始(请输入数字1-7)(请输入数字1-7)");
-        createRowCell(sheet.createRow(16),boderStyle1,"月初始(请输入数字1-31)(请输入数字1-30)");
+        createRowCell(sheet.createRow(15),boderStyle1,"周初始(请输入数字1-7)");
+        createRowCell(sheet.createRow(16),boderStyle1,"月初始(请输入数字1-31)");
+        createRowCell(sheet.createRow(17),boderStyle1,"装机容量");
+        createRowCell(sheet.createRow(18),boderStyle1,"并网容量");
 
     }
 
@@ -132,8 +134,10 @@ public class StationTemplateService {
         createRowCell(sheet.createRow(14),boderStyle1,"组件底端距地面距离");
         createRowCell(sheet.createRow(15),boderStyle1,"是否有动物养殖");
         createRowCell(sheet.createRow(16),boderStyle1,"清洗水源");
-        createRowCell(sheet.createRow(17),boderStyle1,"周初始(请输入数字1-7)(请输入数字1-7)");
+        createRowCell(sheet.createRow(17),boderStyle1,"周初始(请输入数字1-7)");
         createRowCell(sheet.createRow(18),boderStyle1,"月初始(请输入数字1-31)");
+        createRowCell(sheet.createRow(19),boderStyle1,"装机容量");
+        createRowCell(sheet.createRow(20),boderStyle1,"并网容量");
     }
 
     public void createFishStationTmp(HSSFWorkbook wb){
@@ -191,8 +195,10 @@ public class StationTemplateService {
         createRowCell(sheet.createRow(12),boderStyle1,"组件底端距水面距离");
         createRowCell(sheet.createRow(13),boderStyle1,"是否有水产养殖");
         createRowCell(sheet.createRow(14),boderStyle1,"清洗水源");
-        createRowCell(sheet.createRow(15),boderStyle1,"周初始(请输入数字1-7)(请输入数字1-7)");
+        createRowCell(sheet.createRow(15),boderStyle1,"周初始(请输入数字1-7)");
         createRowCell(sheet.createRow(16),boderStyle1,"月初始(请输入数字1-31)");
+        createRowCell(sheet.createRow(17),boderStyle1,"装机容量");
+        createRowCell(sheet.createRow(18),boderStyle1,"并网容量");
     }
 
     public void createFloatStationTmp(HSSFWorkbook wb){
@@ -252,8 +258,10 @@ public class StationTemplateService {
         createRowCell(sheet.createRow(14),boderStyle1,"组件底端距水面距离");
         createRowCell(sheet.createRow(15),boderStyle1,"是否有水产养殖");
         createRowCell(sheet.createRow(16),boderStyle1,"清洗水源");
-        createRowCell(sheet.createRow(17),boderStyle1,"周初始(请输入数字1-7)(请输入数字1-7)");
+        createRowCell(sheet.createRow(17),boderStyle1,"周初始(请输入数字1-7)");
         createRowCell(sheet.createRow(18),boderStyle1,"月初始(请输入数字1-31)");
+        createRowCell(sheet.createRow(19),boderStyle1,"装机容量");
+        createRowCell(sheet.createRow(20),boderStyle1,"并网容量");
     }
 
     public void createDistributedStationTmp(HSSFWorkbook wb){
@@ -312,6 +320,8 @@ public class StationTemplateService {
         createRowCell(sheet.createRow(13),boderStyle1,"清洗水源接入");
         createRowCell(sheet.createRow(14),boderStyle1,"周初始(请输入数字1-7)");
         createRowCell(sheet.createRow(15),boderStyle1,"月初始(请输入数字1-31)");
+        createRowCell(sheet.createRow(16),boderStyle1,"装机容量");
+        createRowCell(sheet.createRow(17),boderStyle1,"并网容量");
     }
 
 
@@ -372,6 +382,8 @@ public class StationTemplateService {
         createRowCell(sheet.createRow(14),boderStyle1,"分布点数量");
         createRowCell(sheet.createRow(15),boderStyle1,"周初始(请输入数字1-7)");
         createRowCell(sheet.createRow(16),boderStyle1,"月初始(请输入数字1-31)");
+        createRowCell(sheet.createRow(17),boderStyle1,"装机容量");
+        createRowCell(sheet.createRow(18),boderStyle1,"并网容量");
     }
 
     public void createUserDistributedStationTmp(HSSFWorkbook wb){
@@ -428,6 +440,8 @@ public class StationTemplateService {
         createRowCell(sheet.createRow(11),boderStyle1,"清洗水源接入");
         createRowCell(sheet.createRow(12),boderStyle1,"周初始(请输入数字1-7)");
         createRowCell(sheet.createRow(13),boderStyle1,"月初始(请输入数字1-31)");
+        createRowCell(sheet.createRow(14),boderStyle1,"装机容量");
+        createRowCell(sheet.createRow(15),boderStyle1,"并网容量");
     }
 
     public void createBuildSheet(HSSFWorkbook wb){

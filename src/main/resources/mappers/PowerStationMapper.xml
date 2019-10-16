@@ -12,7 +12,7 @@
     <result column="grid_capacity" jdbcType="VARCHAR" property="gridCapacity" />
     <result column="installed_power" jdbcType="VARCHAR" property="installedPower" />
     <result column="grid_time" jdbcType="VARCHAR" property="gridTime" />
-    <result column="grid_num" jdbcType="BIGINT" property="gridNum" />
+    <result column="grid_num" jdbcType="VARCHAR" property="gridNum" />
     <result column="project_angle" jdbcType="VARCHAR" property="projectAngle" />
     <result column="array_space" jdbcType="VARCHAR" property="arraySpace" />
     <result column="grid_power_level" jdbcType="VARCHAR" property="gridPowerLevel" />
@@ -75,7 +75,7 @@
     values (#{stationId,jdbcType=BIGINT}, #{companyId,jdbcType=BIGINT}, #{stationName,jdbcType=VARCHAR}, 
       #{scale,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{stationType,jdbcType=VARCHAR}, 
       #{installedCapacity,jdbcType=VARCHAR}, #{gridCapacity,jdbcType=VARCHAR}, #{installedPower,jdbcType=VARCHAR}, 
-      #{gridNum,jdbcType=BIGINT},#{gridTime,jdbcType=VARCHAR}, #{projectAngle,jdbcType=VARCHAR}, #{arraySpace,jdbcType=VARCHAR},
+      #{gridNum,jdbcType=VARCHAR},#{gridTime,jdbcType=VARCHAR}, #{projectAngle,jdbcType=VARCHAR}, #{arraySpace,jdbcType=VARCHAR},
       #{gridPowerLevel,jdbcType=VARCHAR}, #{lineLength,jdbcType=VARCHAR}, #{roadType,jdbcType=VARCHAR}, 
       #{isCloseFramarea,jdbcType=VARCHAR}, #{isCorral,jdbcType=VARCHAR}, #{isOutsidersPlant,jdbcType=VARCHAR}, 
       #{isOutsidersAncestor,jdbcType=VARCHAR}, #{bottomLandDistance,jdbcType=VARCHAR}, 
@@ -230,7 +230,7 @@
         #{installedPower,jdbcType=VARCHAR},
       </if>
       <if test="gridNum != null">
-        #{gridNum,jdbcType=BIGINT},
+        #{gridNum,jdbcType=VARCHAR},
       </if>
       <if test="gridTime != null">
         #{gridTime,jdbcType=VARCHAR},
@@ -343,7 +343,7 @@
         installed_power = #{installedPower,jdbcType=VARCHAR},
       </if>
       <if test="gridNum != null">
-        grid_num = #{gridNum,jdbcType=BIGINT},
+        grid_num = #{gridNum,jdbcType=VARCHAR},
       </if>
       <if test="gridTime != null">
         grid_time = #{gridTime,jdbcType=VARCHAR},
@@ -439,7 +439,7 @@
       installed_capacity = #{installedCapacity,jdbcType=VARCHAR},
       grid_capacity = #{gridCapacity,jdbcType=VARCHAR},
       installed_power = #{installedPower,jdbcType=VARCHAR},
-      grid_num = #{gridNum,jdbcType=BIGINT},
+      grid_num = #{gridNum,jdbcType=VARCHAR},
       grid_time = #{gridTime,jdbcType=VARCHAR},
       project_angle = #{projectAngle,jdbcType=VARCHAR},
       array_space = #{arraySpace,jdbcType=VARCHAR},
@@ -487,7 +487,7 @@
     values (#{stationId,jdbcType=BIGINT}, #{companyId,jdbcType=BIGINT}, #{stationName,jdbcType=VARCHAR},
       #{scale,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{stationType,jdbcType=VARCHAR},
       #{installedCapacity,jdbcType=VARCHAR}, #{gridCapacity,jdbcType=VARCHAR}, #{installedPower,jdbcType=VARCHAR},
-      #{gridNum,jdbcType=BIGINT},#{gridTime,jdbcType=VARCHAR}, #{projectAngle,jdbcType=VARCHAR}, #{arraySpace,jdbcType=VARCHAR},
+      #{gridNum,jdbcType=VARCHAR},#{gridTime,jdbcType=VARCHAR}, #{projectAngle,jdbcType=VARCHAR}, #{arraySpace,jdbcType=VARCHAR},
       #{gridPowerLevel,jdbcType=VARCHAR}, #{lineLength,jdbcType=VARCHAR}, #{roadType,jdbcType=VARCHAR},
       #{isCloseFramarea,jdbcType=VARCHAR}, #{isCorral,jdbcType=VARCHAR}, #{isOutsidersPlant,jdbcType=VARCHAR},
       #{isOutsidersAncestor,jdbcType=VARCHAR}, #{bottomLandDistance,jdbcType=VARCHAR},
@@ -504,7 +504,7 @@
       installed_capacity = #{installedCapacity,jdbcType=VARCHAR},
       grid_capacity = #{gridCapacity,jdbcType=VARCHAR},
       installed_power = #{installedPower,jdbcType=VARCHAR},
-      grid_num = #{gridNum,jdbcType=BIGINT},
+      grid_num = #{gridNum,jdbcType=VARCHAR},
       grid_time = #{gridTime,jdbcType=VARCHAR},
       project_angle = #{projectAngle,jdbcType=VARCHAR},
       array_space = #{arraySpace,jdbcType=VARCHAR},

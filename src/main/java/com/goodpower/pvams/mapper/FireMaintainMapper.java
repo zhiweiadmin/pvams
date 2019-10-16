@@ -22,6 +22,8 @@ public interface FireMaintainMapper {
 
     int updateByPrimaryKey(FireMaintain record);
 
+    int updateStatus(Map<String,Object> map);
+
     List<FireMaintain> selectByFields(Map<String,Object> map);
 
     int getCount(Map<String,Object> map);

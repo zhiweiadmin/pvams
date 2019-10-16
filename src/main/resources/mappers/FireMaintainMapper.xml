@@ -186,6 +186,18 @@
       update_dttm = #{updateDttm,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <update id="updateStatus" parameterType="java.util.Map">
+    update t_fire_maintain
+    set
+        check_status = #{checkStatus,jdbcType=INTEGER},
+        update_dttm = now()
+    where
+        1 = 1
+        <if test="date != null">
+          and next_check_time >= #{date,jdbcType=TIMESTAMP}
+          and #{nextDate,jdbcType=TIMESTAMP} > next_check_time
+        </if>
+  </update>
   <select id="selectByFields" parameterType="java.util.Map" resultMap="BaseResultMap">
     select
         t.*,
@@ -193,12 +205,15 @@
     from t_fire_maintain t left join t_user t1 on t.check_user_id = t1.user_id
     where
         1 = 1
-    <if test="stationId != null">
-      and station_Id = #{stationId,jdbcType=BIGINT}
-    </if>
-    <if test="offset != null and limit != null">
-      limit #{offset,jdbcType=INTEGER},#{limit,jdbcType=INTEGER}
-    </if>
+        <if test="stationId != null">
+          and station_Id = #{stationId,jdbcType=BIGINT}
+        </if>
+        <if test="date != null">
+          and next_check_time like #{date,jdbcType=VARCHAR}
+        </if>
+        <if test="offset != null and limit != null">
+          limit #{offset,jdbcType=INTEGER},#{limit,jdbcType=INTEGER}
+        </if>
   </select>
   <select id="getCount" parameterType="java.util.Map" resultType="java.lang.Integer">
     select

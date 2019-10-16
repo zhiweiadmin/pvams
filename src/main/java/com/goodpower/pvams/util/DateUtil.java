@@ -95,7 +95,7 @@ public class DateUtil {
         return currYearLast;
     }
 
-    private static Date addDay(Date date, int num){
+    public static Date addDay(Date date, int num){
         Calendar c = Calendar.getInstance();
         c.setTime(date);
         c.add(Calendar.DAY_OF_MONTH, num);

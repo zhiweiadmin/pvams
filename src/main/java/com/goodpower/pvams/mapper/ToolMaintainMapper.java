@@ -22,6 +22,8 @@ public interface ToolMaintainMapper {
 
     int updateByPrimaryKey(ToolMaintain record);
 
+    int updateStatus(Map<String,Object> map);
+
     List<ToolMaintain> selectByFields(Map<String,Object> map);
 
     int getCount(Map<String,Object> map);

@@ -22,6 +22,8 @@ public interface MaintainInfoMapper {
 
     int updateByPrimaryKey(MaintainInfo record);
 
+    int updateStatus(Map<String,Object> param);
+
     List<MaintainInfo> selectByFields(Map<String,Object> param);
 
     int getCount(Map<String,Object> param);
