@@ -14,6 +14,10 @@ public class GirdAccessFile implements Serializable {
 
     private String picName;
 
+    private String name;
+
+    private String url;
+
     private Date createDttm;
 
     private Date updateDttm;
@@ -76,4 +80,19 @@ public class GirdAccessFile implements Serializable {
         this.picName = picName;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
 }

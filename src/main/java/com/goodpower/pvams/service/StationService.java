@@ -189,6 +189,8 @@ public class StationService {
         List<GirdAccessFile> type12List = Lists.newArrayList();
 
         for(GirdAccessFile accessFile : girdInfo.getAccessPointFiles()){
+            accessFile.setName(accessFile.getPicName());
+            accessFile.setUrl(accessFile.getFileUrl());
             if(accessFile.getPicType() != null){
                 if(accessFile.getPicType() == 1){
                     type1List.add(accessFile);
@@ -451,6 +453,10 @@ public class StationService {
             return null;
         }
         return null;
+    }
+
+    public void deleteAssetsPic(Long picId){
+        accessFileMapper.deleteByPrimaryKey(picId);
     }
 
 }

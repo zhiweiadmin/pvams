@@ -36,6 +36,9 @@ public class DeviceService {
             for(int i=2;i<=lastRowNum;i++){
                     Row row = sheet.getRow(i);
                     String deviceName = formatter.formatCellValue(row.getCell(0));
+                    if(StringUtils.isBlank(deviceName)){
+                        continue;
+                    }
                     String number = formatter.formatCellValue(row.getCell(1));
                     String type = formatter.formatCellValue(row.getCell(2));
                     String model = formatter.formatCellValue(row.getCell(3));
@@ -48,7 +51,7 @@ public class DeviceService {
                     String remark = formatter.formatCellValue(row.getCell(10));
                     PowerStationDevice device = new PowerStationDevice();
                     device.setDeviceName(deviceName);
-                    device.setNumber(Integer.parseInt(number));
+                    device.setNumber(number);
                     device.setType(type);
                     device.setModel(model);
                     device.setSupplier(supplier);

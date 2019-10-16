@@ -34,7 +34,7 @@ import java.util.Map;
  * 数据分析
  */
 @RestController
-    @RequestMapping("data")
+@RequestMapping("data")
 public class DataController {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());

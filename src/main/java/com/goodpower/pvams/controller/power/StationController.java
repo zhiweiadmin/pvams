@@ -345,4 +345,16 @@ public class StationController {
         return null;
     }
 
+    @GetMapping("/deleteAssetsPic/{id}")
+    public ResultMap deleteAssetsPic(@PathVariable Long id){
+        ResultMap resultMap = new ResultMap();
+        try{
+            stationService.deleteAssetsPic(id);
+        }catch (Exception e){
+            logger.error("deleteAssetsPic error ",e);
+            resultMap.fail().message("删除失败");
+        }
+        return resultMap.success().message("删除成功!");
+    }
+
 }

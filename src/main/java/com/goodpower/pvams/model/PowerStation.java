@@ -26,7 +26,7 @@ public class PowerStation implements Serializable {
 
     private String gridTime;
 
-    private Long gridNum;
+    private String gridNum;
 
     private String projectAngle;
 
@@ -374,11 +374,11 @@ public class PowerStation implements Serializable {
         this.updateDttm = updateDttm;
     }
 
-    public Long getGridNum() {
+    public String getGridNum() {
         return gridNum;
     }
 
-    public void setGridNum(Long gridNum) {
+    public void setGridNum(String gridNum) {
         this.gridNum = gridNum;
     }
 

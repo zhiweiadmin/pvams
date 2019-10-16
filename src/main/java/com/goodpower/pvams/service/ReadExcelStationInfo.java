@@ -52,7 +52,7 @@ public class ReadExcelStationInfo {
         station.setArraySpace(arraySpace);
         station.setGridPowerLevel(gridPowerLevel);
         if(StringUtils.isNotBlank(gridNum)){
-            station.setGridNum(Long.parseLong(gridNum));
+            station.setGridNum(gridNum);
         }
         station.setScale(scale);
         station.setLineLength(lineLength);
@@ -105,9 +105,7 @@ public class ReadExcelStationInfo {
         station.setProjectAngle(projectAngle);
         station.setArraySpace(arraySpace);
         station.setGridPowerLevel(gridPowerLevel);
-        if(StringUtils.isNotBlank(gridNum)){
-            station.setGridNum(Long.parseLong(gridNum));
-        }
+        station.setGridNum(gridNum);
         station.setScale(scale);
         station.setLineLength(lineLength);
         station.setRoadType(roadType);
@@ -157,9 +155,7 @@ public class ReadExcelStationInfo {
         station.setProjectAngle(projectAngle);
         station.setArraySpace(arraySpace);
         station.setGridPowerLevel(gridPowerLevel);
-        if(StringUtils.isNotBlank(gridNum)){
-            station.setGridNum(Long.parseLong(gridNum));
-        }
+        station.setGridNum(gridNum);
         station.setScale(scale);
         station.setLineLength(lineLength);
         station.setRoadType(roadType);
@@ -212,9 +208,7 @@ public class ReadExcelStationInfo {
         station.setProjectAngle(projectAngle);
         station.setArraySpace(arraySpace);
         station.setGridPowerLevel(gridPowerLevel);
-        if(StringUtils.isNotBlank(gridNum)){
-            station.setGridNum(Long.parseLong(gridNum));
-        }
+        station.setGridNum(gridNum);
         station.setScale(scale);
         station.setLineLength(lineLength);
         station.setRoadType(roadType);
@@ -266,9 +260,7 @@ public class ReadExcelStationInfo {
         station.setProjectAngle(projectAngle);
         station.setArraySpace(arraySpace);
         station.setGridPowerLevel(gridPowerLevel);
-        if(StringUtils.isNotBlank(gridNum)){
-            station.setGridNum(Math.round(Double.valueOf(gridNum)));
-        }
+        station.setGridNum(gridNum);
         station.setScale(scale);
         station.setRoofType(roofType);
         station.setIsDaylight(isDaylight);
@@ -316,9 +308,7 @@ public class ReadExcelStationInfo {
         station.setProjectAngle(projectAngle);
         station.setArraySpace(arraySpace);
         station.setGridPowerLevel(gridPowerLevel);
-        if(StringUtils.isNotBlank(gridNum)){
-            station.setGridNum(Long.parseLong(gridNum));
-        }
+        station.setGridNum(gridNum);
         station.setScale(scale);
         station.setRoadType(roadType);
         station.setIsCloseFramarea(isCloseFramarea);
