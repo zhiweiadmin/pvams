@@ -647,15 +647,16 @@ public class PowerStatService {
         Integer month = com.goodpower.pvams.util.DateUtil.getCurMonth();
         Integer quarter = getQuarter(month);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String now = sdf.format(new Date());
-        //获取周发电量进度
+        Date date = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
         Map<String,Object> param = Maps.newHashMap();
+        param.put("year",calendar.get(Calendar.YEAR));
         param.put("quarter",quarter);
         param.put("stationId",stationId);
-        param.put("statType", "1");//理論
+        param.put("statType", THEORY_POWER);//理論
         Map<String, Object> theoryStatMap = powerStatMapper.queryPowerStatByFields(param);
-        param.put("endDate",now);
-        param.put("statType", "3");//实际发电量
+        param.put("statType", REAL_POWER);//实际发电量
         Map<String, Object> realStatMap = powerStatMapper.queryPowerStatByFields(param);
 
         Float theoryVal = 0F;
