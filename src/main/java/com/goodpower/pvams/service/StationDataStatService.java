@@ -1113,4 +1113,55 @@ public class StationDataStatService {
         cell.setCellStyle(style);
     }
 
+    public void import25Power(Long stationId, Workbook workbook) throws ParseException {
+        int i = workbook.getNumberOfSheets();
+        if(i > 0){
+            Sheet sheet = workbook.getSheetAt(0);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            int lastRow = sheet.getLastRowNum();
+            Date date = new Date();
+            for(int k = 0; k <= lastRow; ++k) {
+                Row row = sheet.getRow(k);
+                if(row != null){
+                    if(row.getCell(0) != null && row.getCell(1) != null){
+                        String statDateStr  = getCellDate(row.getCell(0));
+                        Date statDate = sdf.parse(statDateStr);
+                        String statVal = getCellValue(row.getCell(1));
+
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.setTime(statDate);
+                        if(StringUtils.isNotBlank(statVal)){
+                            Double val = Double.parseDouble(statVal);
+                            saveData(calendar,stationId,statDate,val);
+                            for(int j=2;j<=25;j++){
+                                //下一年
+                                calendar.add(Calendar.YEAR,1);
+                                statDate = calendar.getTime();
+                                //計算公式
+                                double v = (val/0.975)*(1-0.025-(j-1)*0.007);
+                                saveData(calendar,stationId,statDate,v);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void saveData(Calendar calendar,Long stationId,Date statDate,Double val){
+        int month = calendar.get(Calendar.MONTH) + 1;
+        PowerGenerateStat stat = new PowerGenerateStat();
+        stat.setStationId(stationId);
+        stat.setYear(calendar.get(Calendar.YEAR)+"");
+        stat.setMonth(month+"");
+        stat.setQuarter(com.goodpower.pvams.util.DateUtil.getQuarter(month)+"");
+        stat.setStatType(THEORY_POWER);
+        stat.setStatDate(statDate);
+        stat.setWeek(com.goodpower.pvams.util.DateUtil.getDayWeek(statDate) + "");
+        BigDecimal bd =new BigDecimal(val);
+        bd = bd.setScale(4, BigDecimal.ROUND_HALF_UP);
+        stat.setStatVal(bd);
+        powerStatMapper.insert(stat);
+    }
+
 }
