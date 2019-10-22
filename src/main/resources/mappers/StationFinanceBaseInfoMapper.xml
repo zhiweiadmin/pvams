@@ -37,6 +37,15 @@
       #{loanCost,jdbcType=DECIMAL}, #{runCost,jdbcType=DECIMAL}, #{loanType,jdbcType=INTEGER}, 
       #{loanYear,jdbcType=INTEGER}, #{firstRepaymentDate,jdbcType=TIMESTAMP}, #{loanRate,jdbcType=DECIMAL}, 
       #{createDttm,jdbcType=TIMESTAMP}, #{updateDttm,jdbcType=TIMESTAMP})
+    ON DUPLICATE KEY UPDATE
+        total_cost = #{totalCost,jdbcType=DECIMAL},
+        loan_cost = #{loanCost,jdbcType=DECIMAL},
+        run_cost = #{runCost,jdbcType=DECIMAL},
+        loan_type = #{loanType,jdbcType=INTEGER},
+        loan_year = #{loanYear,jdbcType=INTEGER},
+        first_repayment_date = #{firstRepaymentDate,jdbcType=TIMESTAMP},
+        loan_rate = #{loanRate,jdbcType=DECIMAL},
+        update_dttm = now()
   </insert>
   <insert id="insertSelective" parameterType="com.goodpower.pvams.model.StationFinanceBaseInfo">
     insert into t_station_finance_base_info
