@@ -12,6 +12,8 @@ import java.util.Map;
 public interface StationFinanceDataMapper {
     int deleteByPrimaryKey(Long id);
 
+    int deleteByField(Map<String,Object> map);
+
     int insert(StationFinanceData record);
 
     int insertSelective(StationFinanceData record);

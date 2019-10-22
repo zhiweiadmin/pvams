@@ -23,4 +23,6 @@ public interface StationPolicyMapper {
     int updateByPrimaryKey(StationPolicy record);
 
     List<StationPolicy> selectByFields(Map<String,Object> param);
+
+    void deleteByField(Map<String,Object> param);
 }
