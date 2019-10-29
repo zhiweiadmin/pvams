@@ -6,13 +6,19 @@ import com.goodpower.pvams.common.ResultMap;
 import com.goodpower.pvams.model.User;
 import com.goodpower.pvams.service.UserService;
 import com.goodpower.pvams.util.JWTUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @RestController
 public class AuthenticationController {
+
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     UserService userService;
@@ -34,6 +40,9 @@ public class AuthenticationController {
             jsonObject.put("realname",userParam.getRealname());
             jsonObject.put("userType",userParam.getUserType());
             jsonObject.put("userId",userParam.getUserId());
+            Date date = new Date();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            logger.info("用户:"+user.getUsername()+" 登录于:"+sdf.format(date));
             return result.success().code(200).setData(jsonObject).message("登录成功");
         }
     }
