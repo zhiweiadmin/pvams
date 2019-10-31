@@ -72,16 +72,6 @@ public class PowerStatService {
     public JSONObject getYearPowerStat(Long stationId){
         List<Map<String,Object>> statList = powerStatMapper.getYearPowerStat(stationId);
         List<PowerModel> dataList = getLastData(statList,2);
-
-        //xiesi
-        for(PowerModel powerModel : dataList){
-            if(powerModel.getYear() == 2017){
-                powerModel.setPowerRealVal(new BigDecimal(73000000));
-            }else if(powerModel.getYear() == 2018){
-                powerModel.setPowerRealVal(new BigDecimal(79000000));
-            }
-        }
-
         JSONObject data = new JSONObject();
         data.put("list",dataList);
         return data;
