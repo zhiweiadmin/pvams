@@ -89,6 +89,5 @@
      where
         t.use_role = t1.role
         and t.role = #{role,jdbcType=INTEGER}
-        and t.user_type = #{userType,jdbcType=INTEGER}
   </select>
 </mapper>
