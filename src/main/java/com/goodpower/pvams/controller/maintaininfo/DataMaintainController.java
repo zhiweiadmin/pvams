@@ -58,6 +58,7 @@ public class DataMaintainController {
             List<WorkRecord> newResultList = Lists.newArrayList();
             for(WorkRecord record : resultList){
                 String filePath = record.getAttach();
+                record.setFilePath(filePath);
                 if(StringUtils.isNotBlank(filePath)){
                     record.setAttach(filePath.substring(filePath.lastIndexOf("/")+1));
                 }

@@ -154,7 +154,6 @@ public class PowerManageController {
 //                oweList.add(0d);
 //                beyondList.add(getDoubleVal(quarterProgress-100));
 //            }
-
             if(yearProgress < 100){
                 oweList.add(getDoubleVal(yearProgress-100));
                 beyondList.add(0d);

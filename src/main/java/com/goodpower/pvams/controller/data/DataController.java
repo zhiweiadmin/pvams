@@ -34,7 +34,7 @@ import java.util.Map;
  * 数据分析
  */
 @RestController
-    @RequestMapping("data")
+@RequestMapping("data")
 public class DataController {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -239,6 +239,46 @@ public class DataController {
             logger.error("转换时间失败:",e);
         }
         return DateUtil.getCurMonth();
+    }
+
+    /**
+     * 导入计算25年理论发电量
+     * @param stationId
+     * @param file
+     * @return
+     */
+    @PostMapping("/import25Power/{stationId}")
+    public ResultMap import25Power(@PathVariable Long stationId, @RequestParam("file") MultipartFile file){
+        ResultMap resultMap = new ResultMap();
+        try{
+            if(stationId == null){
+                return resultMap.fail().message("请先选择电站!");
+            }
+            String fileName = file.getOriginalFilename();
+            if(StringUtils.isNotBlank(fileName)){
+                Workbook workbook;
+                if (fileName.endsWith("xlsx")){
+                    workbook = new XSSFWorkbook(file.getInputStream());
+                    dataStatService.import25Power(stationId,workbook);
+                    resultMap.success().message("导入成功");
+                }else if(fileName.endsWith("xls")){
+                    workbook = new HSSFWorkbook(file.getInputStream());
+                    dataStatService.import25Power(stationId,workbook);
+                    resultMap.success().message("导入成功");
+                }else{
+                    resultMap.fail().message("文件格式错误").code(400);
+                }
+            }
+        }catch (Exception e){
+            if(e instanceof ParseException){
+                logger.error("导入信息失败,转换错误",e);
+                return resultMap.fail().message("导入失败,请检查文件格式是否正确!");
+            }else{
+                logger.error("导入信息失败",e);
+                return resultMap.fail().message("导入失败!");
+            }
+        }
+        return resultMap;
     }
 
 }

@@ -32,6 +32,28 @@ public class ExcelService {
         return  value;
     }
 
+    public String getCellValue(Row row,int col){
+        Cell cell = row.getCell(col);
+        if(cell == null){
+            return null;
+        }
+        String value = null;
+        DataFormatter formatter = new DataFormatter();
+        switch (cell.getCellTypeEnum()) {
+            case FORMULA:
+                try {
+                    value = String.valueOf(cell.getNumericCellValue());
+                } catch (IllegalStateException e) {
+                    value = String.valueOf(cell.getRichStringCellValue());
+                }
+                break;
+            default:
+                value = formatter.formatCellValue(cell);
+                break;
+        }
+        return  value;
+    }
+
     public String getCellDate(Cell currentCell) {
         if(currentCell == null){
             return "";
@@ -97,5 +119,6 @@ public class ExcelService {
         }
         return null;
     }
+
 
 }

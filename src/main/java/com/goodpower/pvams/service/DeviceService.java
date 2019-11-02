@@ -36,6 +36,9 @@ public class DeviceService {
             for(int i=2;i<=lastRowNum;i++){
                     Row row = sheet.getRow(i);
                     String deviceName = formatter.formatCellValue(row.getCell(0));
+                    if(StringUtils.isBlank(deviceName)){
+                        continue;
+                    }
                     String number = formatter.formatCellValue(row.getCell(1));
                     String type = formatter.formatCellValue(row.getCell(2));
                     String model = formatter.formatCellValue(row.getCell(3));

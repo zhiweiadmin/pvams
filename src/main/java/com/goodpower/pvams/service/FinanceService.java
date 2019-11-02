@@ -1,34 +1,35 @@
 package com.goodpower.pvams.service;
 
-        import com.alibaba.fastjson.JSONObject;
-        import com.goodpower.pvams.common.AverageCapitalUtils;
-        import com.goodpower.pvams.mapper.StationFinanceBaseInfoMapper;
-        import com.goodpower.pvams.mapper.StationFinanceDataMapper;
-        import com.goodpower.pvams.mapper.StationLoanInfoMapper;
-        import com.goodpower.pvams.mapper.StationPolicyMapper;
-        import com.goodpower.pvams.model.StationFinanceBaseInfo;
-        import com.goodpower.pvams.model.StationFinanceData;
-        import com.goodpower.pvams.model.StationLoanInfo;
-        import com.goodpower.pvams.model.StationPolicy;
-        import com.goodpower.pvams.util.DateUtil;
-        import com.google.common.collect.Lists;
-        import com.google.common.collect.Maps;
-        import org.apache.commons.lang3.StringUtils;
-        import org.apache.poi.hssf.usermodel.*;
-        import org.apache.poi.ss.usermodel.*;
-        import org.apache.poi.ss.util.CellRangeAddress;
-        import org.slf4j.Logger;
-        import org.slf4j.LoggerFactory;
-        import org.springframework.beans.factory.annotation.Autowired;
-        import org.springframework.stereotype.Service;
+import com.alibaba.fastjson.JSONObject;
+import com.goodpower.pvams.common.AverageCapitalPlusInterestUtils;
+import com.goodpower.pvams.common.AverageCapitalUtils;
+import com.goodpower.pvams.mapper.StationFinanceBaseInfoMapper;
+import com.goodpower.pvams.mapper.StationFinanceDataMapper;
+import com.goodpower.pvams.mapper.StationLoanInfoMapper;
+import com.goodpower.pvams.mapper.StationPolicyMapper;
+import com.goodpower.pvams.model.StationFinanceBaseInfo;
+import com.goodpower.pvams.model.StationFinanceData;
+import com.goodpower.pvams.model.StationLoanInfo;
+import com.goodpower.pvams.model.StationPolicy;
+import com.goodpower.pvams.util.DateUtil;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.hssf.usermodel.*;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-        import java.math.BigDecimal;
-        import java.text.ParseException;
-        import java.text.SimpleDateFormat;
-        import java.util.Calendar;
-        import java.util.Date;
-        import java.util.List;
-        import java.util.Map;
+import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class FinanceService {
@@ -47,9 +48,13 @@ public class FinanceService {
     @Autowired
     StationLoanInfoMapper stationLoanInfoMapper;
 
+    @Autowired
+    StationPolicyMapper stationPolicyMapper;
+
     public void saveExcelData(Long stationId, Workbook workbook) throws ParseException {
         readFinanceBaseInfo(stationId,workbook.getSheetAt(0));
         readFinanceProfitInfo(stationId,workbook.getSheetAt(1));
+        readFinancePolicyInfo(stationId,workbook.getSheetAt(2));
     }
 
     public void readFinanceBaseInfo(Long stationId, Sheet sheet) throws ParseException {
@@ -59,10 +64,17 @@ public class FinanceService {
             String totalCost = excelService.getRowValue(row,0);//总造价
             String loanCost = excelService.getRowValue(row,1);//融资成本
             String runCost = excelService.getRowValue(row,2);//运营成本
+            //等额本金
             String loanType = excelService.getRowValue(row,3);//贷款方式
+            if("等额本金".equals(loanType)){
+                loanType = "0";
+            }else{
+                loanType = "1";
+            }
+
             String loanYear = excelService.getRowValue(row,4);//贷款年限
-            String firstRepaymentDate = excelService.getCellDate(row.getCell(5));
-            String loanRate = excelService.getRowValue(row,6);
+            String loanRate = excelService.getRowValue(row,5);
+            String firstRepaymentDate = excelService.getCellDate(row.getCell(6));
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             StationFinanceBaseInfo financeBaseInfo = new StationFinanceBaseInfo();
             if(StringUtils.isNotBlank(firstRepaymentDate)){
@@ -102,26 +114,29 @@ public class FinanceService {
     }
 
     public void readFinanceProfitInfo(Long stationId,Sheet sheet) throws ParseException {
+        Map<String,Object> param = Maps.newHashMap();
+        param.put("stationId",stationId);
+        financeDataMapper.deleteByField(param);
         int lastRowNum = sheet.getLastRowNum();
         if(lastRowNum > 1){
             for(int i=2;i<=lastRowNum;i++){
                     Row row = sheet.getRow(i);
                     String date = excelService.getCellDate(row.getCell(0));
-                    String self_peak_power = excelService.getRowValue(row,1);
-                    String self_peak_elcprice = excelService.getRowValue(row,2);
-                    String self_peak_discount = excelService.getRowValue(row,3);
-                    String self_power = excelService.getRowValue(row,4);
-                    String self_elcprice = excelService.getRowValue(row,5);
-                    String self_discount = excelService.getRowValue(row,6);
-                    String self_low_power = excelService.getRowValue(row,7);
-                    String self_low_elcprice = excelService.getRowValue(row,8);
-                    String self_low_discount = excelService.getRowValue(row,9);
-                    String sell_power = excelService.getRowValue(row,10);
-                    String p_power_price = excelService.getRowValue(row,11);
-                    String subsidy_price = excelService.getRowValue(row,12);
-                    String month_subsidy_price = excelService.getRowValue(row,13);
-                    String plan_power = excelService.getRowValue(row,14);
-                    String plan_profit = excelService.getRowValue(row,15);
+                    String self_peak_power = excelService.getCellValue(row,1);
+                    String self_peak_elcprice = excelService.getCellValue(row,2);
+                    String self_peak_discount = excelService.getCellValue(row,3);
+                    String self_power = excelService.getCellValue(row,4);
+                    String self_elcprice = excelService.getCellValue(row,5);
+                    String self_discount = excelService.getCellValue(row,6);
+                    String self_low_power = excelService.getCellValue(row,7);
+                    String self_low_elcprice = excelService.getCellValue(row,8);
+                    String self_low_discount = excelService.getCellValue(row,9);
+                    String sell_power = excelService.getCellValue(row,10);
+                    String p_power_price = excelService.getCellValue(row,11);
+                    String subsidy_price = excelService.getCellValue(row,12);
+//                    String month_subsidy_price = excelService.getRowValue(row,13);
+                    String plan_power = excelService.getCellValue(row,14);
+                    String plan_profit = excelService.getCellValue(row,15);
 
                     //TODO
                     StationFinanceData stationFinanceData = new StationFinanceData();
@@ -198,11 +213,12 @@ public class FinanceService {
                     }else{
                         stationFinanceData.setSubsidyPrice(BigDecimal.ZERO);
                     }
-                    if(StringUtils.isNotBlank(month_subsidy_price)){
-                        stationFinanceData.setMonthSubsidyPrice(new BigDecimal(month_subsidy_price));
-                    }else{
-                        stationFinanceData.setMonthSubsidyPrice(BigDecimal.ZERO);
-                    }
+//                    if(StringUtils.isNotBlank(month_subsidy_price)){
+//                        stationFinanceData.setMonthSubsidyPrice(new BigDecimal(month_subsidy_price));
+//                    }else{
+//                        stationFinanceData.setMonthSubsidyPrice(BigDecimal.ZERO);
+//                    }
+                    stationFinanceData.setMonthSubsidyPrice(BigDecimal.ZERO);
                     if(StringUtils.isNotBlank(plan_power)){
                         stationFinanceData.setPlanPower(new BigDecimal(plan_power));
                     }else{
@@ -260,8 +276,14 @@ public class FinanceService {
         }
     }
 
-    public void saveStationLoanInfo(long stationId,int loanType,BigDecimal loanCost,int loanYear,BigDecimal loanRate,Date firstRepaymentDate){
-        Map<Integer, Double> dataMap = AverageCapitalUtils.getPerMonthPrincipalInterest(loanCost.doubleValue(),loanRate.doubleValue(),loanYear * 12);
+    private void saveStationLoanInfo(long stationId,int loanType,BigDecimal loanCost,int loanYear,BigDecimal loanRate,Date firstRepaymentDate){
+        Map<Integer, BigDecimal> dataMap;
+        if(loanType == 0){
+            dataMap = AverageCapitalUtils.getPerMonthPrincipalInterest2(loanCost.doubleValue(),loanRate.doubleValue(),loanYear * 12);
+        }else{
+            dataMap = AverageCapitalPlusInterestUtils.getPerMonthInterest(loanCost.doubleValue(),loanRate.doubleValue(),loanYear * 12);
+
+        }
         for(Integer num : dataMap.keySet()){
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(firstRepaymentDate);
@@ -276,7 +298,7 @@ public class FinanceService {
             loanInfo.setPayDate(newDate);
             loanInfo.setYear(year);
             loanInfo.setMonth(month);
-            loanInfo.setMonthPay(new BigDecimal(dataMap.get(num)));
+            loanInfo.setMonthPay(dataMap.get(num));
             loanInfo.setCreateDttm(new Date());
             loanInfo.setUpdateDttm(new Date());
             loanInfo.setStationId(stationId);
@@ -329,7 +351,6 @@ public class FinanceService {
         }
 
         List<StationLoanInfo> loanInfoList = stationLoanInfoMapper.selectByFields(param);
-
         //
         List<Map<String,Object>> loanList = Lists.newArrayList();
         List<Map<String,Object>> incomeList = Lists.newArrayList();
@@ -535,13 +556,37 @@ public class FinanceService {
         cell.setCellStyle(cellStyle);
     }
 
-    @Autowired
-    StationPolicyMapper stationPolicyMapper;
-
     public List<StationPolicy> getPolicy(Long stationId){
         Map<String,Object> param = Maps.newHashMap();
         param.put("stationId",stationId);
         return stationPolicyMapper.selectByFields(param);
+    }
+
+    public void readFinancePolicyInfo(Long stationId, Sheet sheet) throws ParseException {
+        Map<String,Object> param = Maps.newHashMap();
+        param.put("stationId",stationId);
+        stationPolicyMapper.deleteByField(param);
+        int lastRowNum = sheet.getLastRowNum();
+        if(lastRowNum > 1){
+            for(int i=2;i<=lastRowNum;i++){
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                Row row = sheet.getRow(2);
+                String policyName = excelService.getCellValue(row,0);
+                if(StringUtils.isBlank(policyName)){
+                    continue;
+                }
+                String policyStartDate = excelService.getCellDate(row.getCell(1));
+                String policyEndDate = excelService.getCellDate(row.getCell(2));
+                String policyFee = excelService.getCellValue(row,3);
+                StationPolicy policy = new StationPolicy();
+                policy.setPolicyName(policyName);
+                policy.setPolicyStartDate(sdf.parse(policyStartDate));
+                policy.setPolicyEndDate(sdf.parse(policyEndDate));
+                policy.setPolicyFee(new BigDecimal(policyFee));
+                policy.setStationId(stationId);
+                stationPolicyMapper.insert(policy);
+            }
+        }
     }
 
 }

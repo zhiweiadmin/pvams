@@ -2,6 +2,8 @@ package com.goodpower.pvams.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 public class PowerStationMember implements Serializable {
     private Long memberId;
@@ -21,6 +23,10 @@ public class PowerStationMember implements Serializable {
     private String userPic;
 
     private String certificatePic;
+
+    private List<String> fileList;
+
+    private List<Map<String,Object>> imgList;
 
     private Date createDttm;
 
@@ -114,5 +120,21 @@ public class PowerStationMember implements Serializable {
 
     public void setUpdateDttm(Date updateDttm) {
         this.updateDttm = updateDttm;
+    }
+
+    public List<String> getFileList() {
+        return fileList;
+    }
+
+    public void setFileList(List<String> fileList) {
+        this.fileList = fileList;
+    }
+
+    public List<Map<String, Object>> getImgList() {
+        return imgList;
+    }
+
+    public void setImgList(List<Map<String, Object>> imgList) {
+        this.imgList = imgList;
     }
 }

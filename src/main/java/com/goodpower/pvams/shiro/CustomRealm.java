@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class CustomRealm extends AuthorizingRealm {
@@ -60,6 +61,9 @@ public class CustomRealm extends AuthorizingRealm {
         if( System.currentTimeMillis() > expireDate.getTime()){
             throw new AuthenticationException(ResultEnums.TOKEN_EXPIRE.getCode());
         }
+        Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        logger.info("用户 : "+username+" 执行身份认证于 : "+sdf.format(date));
         return new SimpleAuthenticationInfo(token, token, getName());
     }
 

@@ -42,6 +42,10 @@
     delete from t_station_finance_data
     where id = #{id,jdbcType=BIGINT}
   </delete>
+  <delete id="deleteByField" parameterType="java.util.Map">
+    delete from t_station_finance_data
+    where station_id = #{stationId,jdbcType=BIGINT}
+  </delete>
   <insert id="insert" parameterType="com.goodpower.pvams.model.StationFinanceData">
     insert into t_station_finance_data (id, station_id, year, 
       month, self_peak_power, self_peak_elcprice, 

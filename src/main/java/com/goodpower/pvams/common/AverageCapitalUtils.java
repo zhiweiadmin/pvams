@@ -11,6 +11,8 @@ package com.goodpower.pvams.common;
  * Modified by :
  */
 
+import com.google.common.collect.Maps;
+
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,7 +32,7 @@ public class AverageCapitalUtils {
      *            总借款额（贷款本金）
      * @param yearRate
      *            年利率
-     * @param month
+     * @param totalMonth
      *            还款总月数
      * @return 每月偿还本金和利息,不四舍五入，直接截取小数点最后两位
      */
@@ -47,6 +49,23 @@ public class AverageCapitalUtils {
             double monthRes = monthPri + monthLixi.doubleValue();
             monthRes = new BigDecimal(monthRes).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
             map.put(i, monthRes);
+        }
+        return map;
+    }
+
+    public static Map<Integer, BigDecimal> getPerMonthPrincipalInterest2(double invest, double yearRate, int totalMonth) {
+        Map<Integer, BigDecimal> map = Maps.newHashMap();
+        // 每月本金
+        double monthPri = getPerMonthPrincipal(invest, totalMonth);
+        // 获取月利率
+        double monthRate = yearRate / 12;
+        //monthRate = new BigDecimal(monthRate).setScale(6, BigDecimal.ROUND_DOWN).doubleValue();
+        for (int i = 1; i <= totalMonth; i++) {
+            double dMonhtLixi = (invest - monthPri * (i - 1)) * monthRate;
+            BigDecimal monthLixi = new BigDecimal(dMonhtLixi).setScale(2, BigDecimal.ROUND_HALF_UP);
+            double monthRes = monthPri + monthLixi.doubleValue();
+            monthRes = new BigDecimal(monthRes).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+            map.put(i, new BigDecimal(monthRes));
         }
         return map;
     }

@@ -168,6 +168,7 @@ public class ReadExcelStationInfo {
         if(StringUtils.isNotBlank(gridNum)){
             station.setGridNum(gridNum);
         }
+        station.setGridNum(gridNum);
         station.setScale(scale);
         station.setLineLength(lineLength);
         station.setRoadType(roadType);

@@ -6,6 +6,7 @@ import com.goodpower.pvams.common.ResultMap;
 import com.goodpower.pvams.mapper.PowerGenerateStatMapper;
 import com.goodpower.pvams.mapper.WorkRecordMapper;
 import com.goodpower.pvams.model.PowerGenerateStat;
+import com.goodpower.pvams.model.User;
 import com.goodpower.pvams.model.WorkRecord;
 import com.goodpower.pvams.util.DateUtil;
 import com.google.common.collect.Lists;
@@ -33,6 +34,9 @@ public class WorkRecordService {
     @Autowired
     PowerGenerateStatMapper powerGenerateStatMapper;
 
+    @Autowired
+    UserService userService;
+
     public void add(WorkRecord workRecord) throws ParseException {
         Date date = new Date();
         int week = DateUtil.getCurWeek();
@@ -50,6 +54,8 @@ public class WorkRecordService {
     }
 
     public List<WorkRecord> query(Long stationId, Long userId,Date date){
+        User user = userService.findUserById(userId);
+        Integer role = user.getRole();//用户角色  根绝用户角色查询相关的日报记录
         int week = DateUtil.getTarWeek(date);
         int month = DateUtil.getTarMonth(date);
         int quarter = DateUtil.getQuarter(month);
@@ -64,7 +70,15 @@ public class WorkRecordService {
         map.put("quarter",quarter);
         map.put("year",year);
         map.put("stationId",stationId);
-        map.put("userId",userId);
+        if(role != null){
+            if(role == 1 || role == 2 || role == 5){
+                map.put("role",role);
+            }else{
+                map.put("userId",userId);
+            }
+        }else{
+            map.put("userId",userId);
+        }
         return workRecordMapper.selectByFields(map);
     }
 

@@ -63,6 +63,11 @@ public class UserService {
     }
 
     public void update(User user){
+        if(user.getRole() <= 4 ){
+            user.setUserType(0);
+        }else{
+            user.setUserType(1);
+        }
         userMapper.updateByPrimaryKeySelective(user);
     }
 

@@ -26,6 +26,8 @@ public class WorkRecord implements Serializable {
 
     private String attach;
 
+    private String filePath;
+
     private String recordDesc;
 
     private String time;
@@ -165,4 +167,13 @@ public class WorkRecord implements Serializable {
     public void setRealname(String realname) {
         this.realname = realname;
     }
+
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
+
 }

@@ -29,6 +29,18 @@ public class UserController {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    static Map<Integer,String> roleMap = Maps.newHashMap();
+
+    static {
+        roleMap.put(1,"超级管理员");
+        roleMap.put(2,"企业管理员");
+        roleMap.put(3,"企业运维人员");
+        roleMap.put(4,"企业普通用户");
+        roleMap.put(5,"电站管理员");
+        roleMap.put(6,"电站运维人员");
+        roleMap.put(7,"电站普通用户");
+    }
+
     @Autowired
     UserService userService;
 
@@ -114,29 +126,33 @@ public class UserController {
         }
     }
 
-    static Map<Integer,String> roleMap = Maps.newHashMap();
-    static {
-        roleMap.put(1,"超级管理员");
-        roleMap.put(2,"企业管理员");
-        roleMap.put(3,"企业运维人员");
-        roleMap.put(4,"企业普通用户");
-        roleMap.put(5,"电站管理员");
-        roleMap.put(6,"电站运维人员");
-        roleMap.put(7,"电站普通用户");
-    }
-
     @GetMapping("/query")
-    public ResultMap query(@RequestParam Integer userType,
+    public ResultMap query(HttpServletRequest request,@RequestParam Integer userType,
                            @RequestParam Long unitId,
                            @RequestParam(required = false,defaultValue = "1") Integer pageNo,
                            @RequestParam(required = false,defaultValue = "20") Integer pageSize){
         ResultMap result = new ResultMap();
         try{
+            String token = request.getHeader("Token");
+            String userName = JWTUtil.getUsername(token);
+            User loginUser = userService.findUserByUsername(userName);
+            if(loginUser == null){
+                return result.fail().message("请先登陆");
+            }
             Map<String,Object> param = Maps.newHashMap();
             param.put("offset",(pageNo-1)*pageSize);
             param.put("limit",pageSize);
             param.put("userType",userType);
             param.put("unitId",unitId);
+
+            if(loginUser.getRole() == 3
+                    || loginUser.getRole() == 4
+                    || loginUser.getRole() == 5
+                    || loginUser.getRole() == 6
+                    || loginUser.getRole() == 7){
+                param.put("userId",loginUser.getUserId());
+            }
+
             List<User> userList = userService.find(param);
             for(User user : userList){
                 user.setRoleName(roleMap.get(user.getRole()));
@@ -205,7 +221,7 @@ public class UserController {
     }
 
     @GetMapping("/getRole")
-    public ResultMap getRole(HttpServletRequest request,Integer type, Integer userType){
+    public ResultMap getRole(HttpServletRequest request,Integer userType,String username){
         ResultMap result = new ResultMap();
         try{
             String token = request.getHeader("Token");
@@ -214,7 +230,11 @@ public class UserController {
             if(user == null){
                 return result.fail().message("未找到该用户信息");
             }
-            List<Map<String,Object>> dataList = userService.getAddRole(user.getRole(),userType);
+            //如果是自己的話 不允許修改自己的角色
+            List<Map<String,Object>> dataList = Lists.newArrayList();
+            if(!userName.equals(username)){
+                dataList  = userService.getAddRole(user.getRole(),userType);
+            }
             if(dataList == null ||dataList.isEmpty()){
                 Map<String,Object> map = Maps.newHashMap();
                 map.put("role",user.getRole());
