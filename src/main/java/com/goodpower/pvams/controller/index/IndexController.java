@@ -40,6 +40,9 @@ public class IndexController {
         }
         String username = JWTUtil.getUsername(token);
         User user = userService.findUserByUsername(username);
+        if(user == null){
+            return resultMap.fail().message("用户不存在");
+        }
         //超级管理员
         try{
             if(user.getRole() == 1){

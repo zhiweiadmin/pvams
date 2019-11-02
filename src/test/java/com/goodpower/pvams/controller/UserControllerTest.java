@@ -56,9 +56,9 @@ public class UserControllerTest {
 
     @Test
     public void checkName(){
-        ResultMap resultMap = userController.query(1,1001L,1,10);
-        JSONObject jsonObject = new JSONObject(resultMap);
-        System.out.println(jsonObject.toJSONString());
+//        ResultMap resultMap = userController.query(1,1001L,1,10);
+//        JSONObject jsonObject = new JSONObject(resultMap);
+//        System.out.println(jsonObject.toJSONString());
     }
 
     @Test

@@ -28,7 +28,12 @@
       )
     values (#{stationId,jdbcType=BIGINT}, #{girdName,jdbcType=VARCHAR}, #{contact,jdbcType=VARCHAR}, 
       #{phone,jdbcType=VARCHAR}, #{voltageLevel,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}
-      )
+      ) on duplicate key update
+        gird_name = #{girdName,jdbcType=VARCHAR},
+        contact = #{contact,jdbcType=VARCHAR},
+        phone = #{phone,jdbcType=VARCHAR},
+        voltage_level = #{voltageLevel,jdbcType=VARCHAR},
+        remark = #{remark,jdbcType=VARCHAR}
   </insert>
   <insert id="insertSelective" parameterType="com.goodpower.pvams.model.PowerStationGirdInfo">
     insert into t_power_station_gird

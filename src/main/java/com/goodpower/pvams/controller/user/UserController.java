@@ -112,16 +112,20 @@ public class UserController {
         ResultMap result = new ResultMap();
         try{
             JSONArray jsonArray = request.getJSONArray("idList");
-            List<Long> idList = Lists.newArrayList();
-            for(Object id : jsonArray){
-                if(id != null && !"".equals(id)){
-                    idList.add(Long.parseLong(id.toString()));
+            if(jsonArray != null && !jsonArray.isEmpty()){
+                List<Long> idList = Lists.newArrayList();
+                for(Object id : jsonArray){
+                    if(id != null && !"".equals(id)){
+                        idList.add(Long.parseLong(id.toString()));
+                    }
                 }
+                userService.delete(idList);
+                return result.success().code(200).message("删除用户成功");
+            }else{
+                return result.fail().message("请先选择删除的用户");
             }
-            userService.delete(idList);
-            return result.success().code(200).message("删除用户成功");
         }catch (Exception e){
-            logger.error("添加用户失败",e);
+            logger.error("删除用户失败",e);
             return result.success().code(400).message("删除用户失败");
         }
     }
