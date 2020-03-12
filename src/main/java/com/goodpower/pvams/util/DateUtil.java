@@ -469,4 +469,21 @@ public class DateUtil {
         return sdf.format(endDate);
     }
 
+
+    public static String getMonthFirstDay(){
+        SimpleDateFormat formatTemp = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar cale = Calendar.getInstance();
+        cale.add(Calendar.MONTH, 0);
+        cale.set(Calendar.DAY_OF_MONTH, 1);
+        return formatTemp.format(cale.getTime());
+    }
+
+    public static String getMonthLastDay(){
+        SimpleDateFormat formatTemp = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar cale = Calendar.getInstance();
+        cale.add(Calendar.MONTH, 1);
+        cale.set(Calendar.DAY_OF_MONTH, 0);
+        return formatTemp.format(cale.getTime());
+    }
+
 }

@@ -18,6 +18,9 @@ public class UserService {
     @Autowired
     UserMapper userMapper;
 
+    @Autowired
+    RoleAddMapper roleAddMapper;
+
     public User findUserById(Long userId){
         return userMapper.selectByPrimaryKey(userId);
     }
@@ -76,9 +79,6 @@ public class UserService {
         param.put("username",username);
         return userMapper.selectByFields(param);
     }
-
-    @Autowired
-    RoleAddMapper roleAddMapper;
 
     public List<Map<String,Object>> getAddRole(Integer role,Integer userType){
         Map<String,Object> param = Maps.newHashMap();

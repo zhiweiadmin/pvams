@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.goodpower.pvams.model.TrainPlan">
     <id column="train_id" jdbcType="BIGINT" property="trainId" />
     <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="person" jdbcType="VARCHAR" property="person" />
     <result column="year" jdbcType="INTEGER" property="year" />
     <result column="station_id" jdbcType="BIGINT" property="stationId" />
     <result column="content" jdbcType="VARCHAR" property="content" />
@@ -14,7 +15,7 @@
     <result column="update_dttm" jdbcType="TIMESTAMP" property="updateDttm" />
   </resultMap>
   <sql id="Base_Column_List">
-    train_id, title, content,msg, creator, updater, create_dttm, update_dttm,year,station_id
+    train_id, title,person, content,msg, creator, updater, create_dttm, update_dttm,year,station_id
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -27,10 +28,10 @@
     where train_id = #{trainId,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.goodpower.pvams.model.TrainPlan" useGeneratedKeys="true" keyProperty="trainId">
-    insert into t_train_plan (train_id, title, content, 
+    insert into t_train_plan (train_id, title,person, content,
       creator, updater, create_dttm, 
       update_dttm,year,station_id,msg)
-    values (#{trainId,jdbcType=BIGINT}, #{title,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
+    values (#{trainId,jdbcType=BIGINT}, #{title,jdbcType=VARCHAR},#{person,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR},
       #{creator,jdbcType=BIGINT}, #{updater,jdbcType=BIGINT}, #{createDttm,jdbcType=TIMESTAMP}, 
       #{updateDttm,jdbcType=TIMESTAMP},#{year,jdbcType=INTEGER},#{stationId,jdbcType=BIGINT},#{msg,jdbcType=VARCHAR})
   </insert>
@@ -48,6 +49,9 @@
       </if>
       <if test="title != null">
         title,
+      </if>
+      <if test="person != null">
+        person,
       </if>
       <if test="content != null">
         content,
@@ -81,6 +85,9 @@
       <if test="title != null">
         #{title,jdbcType=VARCHAR},
       </if>
+      <if test="person != null">
+        #{person,jdbcType=VARCHAR},
+      </if>
       <if test="content != null">
         #{content,jdbcType=VARCHAR},
       </if>
@@ -106,6 +113,9 @@
     <set>
       <if test="title != null">
         title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="person != null">
+        person = #{person,jdbcType=VARCHAR},
       </if>
       <if test="year != null">
         year = #{year,jdbcType=INTEGER},
@@ -137,6 +147,7 @@
   <update id="updateByPrimaryKey" parameterType="com.goodpower.pvams.model.TrainPlan">
     update t_train_plan
     set title = #{title,jdbcType=VARCHAR},
+      person = #{person,jdbcType=VARCHAR},
       year = #{year,jdbcType=INTEGER},
       station_id = #{stationId,jdbcType=INTEGER},
       content = #{content,jdbcType=VARCHAR},

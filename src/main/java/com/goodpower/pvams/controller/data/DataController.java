@@ -47,14 +47,14 @@ public class DataController {
     /**
      *
      * @param stationId
-     * @param type 0：月  1:年
-     * @param val
+     * @param type 0：月  1:年   不在按年进行查询  使用时间区间进行查询
+     * @param
      *
      * num 中间显示多少个柱子
      * @return
      */
     @GetMapping("/getDeviceStat")
-    public ResultMap getDeviceStat(Long stationId,Integer type,String val,Integer num,String deviceName){
+    public ResultMap getDeviceStat(Long stationId,Integer type,String startDate,String endDate,Integer num,String deviceName){
         ResultMap result = new ResultMap();
         try{
             if(stationId== null){
@@ -63,11 +63,19 @@ public class DataController {
             if(num < 0){
                 return result.fail().message("请输入正整数!");
             }
-            int year = getYear(val);
-            int month = getMonth(val);
+            if(StringUtils.isBlank(startDate) && StringUtils.isBlank(endDate)){
+                startDate = DateUtil.getMonthFirstDay();
+                endDate = DateUtil.getMonthLastDay();
+            }
+            if(StringUtils.isNotBlank(startDate) && StringUtils.isBlank(endDate)){
+                return result.fail().code(400).message("查询日期请填写完整!");
+            }
+            if(StringUtils.isNotBlank(endDate) && StringUtils.isBlank(startDate)){
+                return result.fail().code(400).message("查询日期请填写完整!");
+            }
             DataController.deviceName = "";
             DataController.deviceName = deviceName;
-            JSONObject jsonObject = dataStatService.getDeviceStat(stationId,type,year,month,num,deviceName);
+            JSONObject jsonObject = dataStatService.getDeviceStat(stationId,startDate,endDate,num,deviceName);
             return result.success().code(200).setData(jsonObject).message("查询成功");
         }catch (Exception e){
             logger.error("查询失败",e);
@@ -78,29 +86,37 @@ public class DataController {
     /**
      *
      * @param stationId
-     * @param type 0：月  1:年
-     * @param val
+     * @param
+     * @param
      * @return
+     * 暂时只获取当前月的  如果时间跨月该怎么去
      */
     @GetMapping("/getStatData")
-    public ResultMap getStatData(Long stationId,Integer type,String val){
+    public ResultMap getStatData(Long stationId,String startDate,String endDate){
         ResultMap result = new ResultMap();
         try{
             if(stationId== null){
                 return result.fail().message("请先选择电站!");
             }
-            if(val == null){
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
-                val = sdf.format(new Date());
+            if(StringUtils.isBlank(startDate) && StringUtils.isBlank(endDate)){
+                startDate = DateUtil.getMonthFirstDay();
+                endDate = DateUtil.getMonthLastDay();
             }
-            int year = getYear(val);
-            int month = getMonth(val);
+            if(StringUtils.isNotBlank(startDate) && StringUtils.isBlank(endDate)){
+                return result.fail().code(400).message("查询日期请填写完整!");
+            }
+            if(StringUtils.isNotBlank(endDate) && StringUtils.isBlank(startDate)){
+                return result.fail().code(400).message("查询日期请填写完整!");
+            }
             JSONObject jsonObject = new JSONObject();
-            if(type == 0){
-                jsonObject = dataStatService.getMonthStatData(stationId,year,month);
-            }else if(type == 1){
-                jsonObject = dataStatService.getYearStatData(stationId,year);
-            }
+//            if(type == 0){
+//                jsonObject = dataStatService.getMonthStatData(stationId,year,month);
+//            }else if(type == 1){
+//                jsonObject = dataStatService.getYearStatData(stationId,year);
+//            }
+            int year = DateUtil.getCurYear();
+            int month = DateUtil.getCurMonth();
+            jsonObject = dataStatService.getMonthStatData(stationId,year,month);
             return result.success().code(200).setData(jsonObject).message("查询成功");
         }catch (Exception e){
             logger.error("查询失败",e);
@@ -109,7 +125,7 @@ public class DataController {
     }
 
     @GetMapping("/getDeviceStatDetail")
-    public ResultMap getDeviceStatDetail(Long stationId,Integer statType,Integer type,String val,Integer pageNo,Integer pageSize){
+    public ResultMap getDeviceStatDetail(Long stationId,Integer statType,String startDate,String endDate,Integer pageNo,Integer pageSize){
         ResultMap result = new ResultMap();
         try{
             if(stationId== null){
@@ -118,15 +134,26 @@ public class DataController {
             if(statType == null){
                 statType = 3;
             }
-
-            int year = getYear(val);
-            int month = getMonth(val);
-            JSONObject jsonObject = new JSONObject();
-            if(type == 0){
-                jsonObject = dataStatService.getMonthDeviceStatDetail(stationId,statType,year,month,pageNo,pageSize,DataController.deviceName);
-            }else if(type == 1){
-                jsonObject = dataStatService.getYearDeviceStatDetail(stationId,statType,year,pageNo,pageSize,DataController.deviceName);
+            if(StringUtils.isBlank(startDate) && StringUtils.isBlank(endDate)){
+                startDate = DateUtil.getMonthFirstDay();
+                endDate = DateUtil.getMonthLastDay();
             }
+            if(StringUtils.isNotBlank(startDate) && StringUtils.isBlank(endDate)){
+                return result.fail().code(400).message("查询日期请填写完整!");
+            }
+            if(StringUtils.isNotBlank(endDate) && StringUtils.isBlank(startDate)){
+                return result.fail().code(400).message("查询日期请填写完整!");
+            }
+            JSONObject jsonObject = new JSONObject();
+            //暂时注销
+//            if(type == 0){
+//                jsonObject = dataStatService.getMonthDeviceStatDetail(stationId,statType,year,month,pageNo,pageSize,DataController.deviceName);
+//            }else if(type == 1){
+//                jsonObject = dataStatService.getYearDeviceStatDetail(stationId,statType,year,pageNo,pageSize,DataController.deviceName);
+//            }
+            int year = DateUtil.getCurYear();
+            int month = DateUtil.getCurMonth();
+            jsonObject = dataStatService.getMonthDeviceStatDetail(stationId,statType,year,month,pageNo,pageSize,DataController.deviceName);
             return result.success().code(200).setData(jsonObject).message("查询成功");
         }catch (Exception e){
             logger.error("查询失败",e);

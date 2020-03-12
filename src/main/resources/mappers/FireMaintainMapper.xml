@@ -16,10 +16,12 @@
     <result column="create_dttm" jdbcType="TIMESTAMP" property="createDttm" />
     <result column="update_dttm" jdbcType="TIMESTAMP" property="updateDttm" />
     <result column="checker" jdbcType="VARCHAR" property="checker" />
+    <result column="person" jdbcType="VARCHAR" property="person" />
+    <result column="asset_num" jdbcType="VARCHAR" property="assetNum" />
   </resultMap>
   <sql id="Base_Column_List">
     id, station_id, fire_name, position, num, type, check_time, next_check_time, param,
-    check_status, check_plan, create_dttm, update_dttm
+    check_status, check_plan, create_dttm, update_dttm,person,asset_num
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -36,12 +38,12 @@
       position, num, type, 
       check_time, next_check_time, param, 
       check_status, check_plan, create_dttm, 
-      update_dttm)
+      update_dttm,person,asset_num)
     values (#{id,jdbcType=INTEGER}, #{stationId,jdbcType=BIGINT}, #{fireName,jdbcType=VARCHAR},
       #{position,jdbcType=VARCHAR}, #{num,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, 
       #{checkTime,jdbcType=TIMESTAMP}, #{nextCheckTime,jdbcType=TIMESTAMP}, #{param,jdbcType=VARCHAR}, 
       #{checkStatus,jdbcType=INTEGER}, #{checkPlan,jdbcType=VARCHAR}, #{createDttm,jdbcType=TIMESTAMP}, 
-      #{updateDttm,jdbcType=TIMESTAMP})
+      #{updateDttm,jdbcType=TIMESTAMP},#{person,jdbcType=VARCHAR},#{assetNum,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.goodpower.pvams.model.FireMaintain">
     insert into t_fire_maintain

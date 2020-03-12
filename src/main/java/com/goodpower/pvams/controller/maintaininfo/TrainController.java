@@ -87,6 +87,12 @@ public class TrainController {
             return result.fail().code(400).message("演练结果不能为空");
         }
         try{
+            if(trainPlanDetail.getFileList2() == null
+                || trainPlanDetail.getFileList2().isEmpty()){
+                return result.fail().code(400).message("培训记录不能为空!");
+            }
+
+            trainService.uploadTrainRecord(trainPlanDetail);
             trainService.uploadTrainFile(trainPlanDetail);
             trainService.updateTrainPlan(trainPlanDetail);
             return result.success().code(200).message("更新成功");

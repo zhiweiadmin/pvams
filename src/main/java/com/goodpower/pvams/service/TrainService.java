@@ -6,11 +6,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.goodpower.pvams.mapper.TrainPlanDetailFileMapper;
 import com.goodpower.pvams.mapper.TrainPlanDetailMapper;
 import com.goodpower.pvams.mapper.TrainPlanMapper;
+import com.goodpower.pvams.mapper.TrainRecordMapper;
 import com.goodpower.pvams.model.*;
 import com.goodpower.pvams.util.DateUtil;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,8 +28,13 @@ public class TrainService {
     @Autowired
     TrainPlanDetailMapper trainPlanDetailMapper;
 
+    //培训资料mapper
     @Autowired
     TrainPlanDetailFileMapper trainPlanDetailFileMapper;
+
+//    //培训记录mapper
+    @Autowired
+    TrainRecordMapper trainRecordMapper;
 
     @Autowired
     UserService userService;
@@ -49,11 +54,13 @@ public class TrainService {
         String content = jsonObject.getString("content");
         Long stationId = jsonObject.getLong("stationId");
         Long userId = jsonObject.getLong("userId");
+        String person = jsonObject.getString("person");
         String msg = jsonObject.toJSONString();
 
         TrainPlan trainPlan = new TrainPlan();
         trainPlan.setContent(content);
         trainPlan.setTitle(title);
+        trainPlan.setPerson(person);
         trainPlan.setStationId(stationId);
         trainPlan.setCreator(userId);
         trainPlan.setUpdater(userId);
@@ -88,17 +95,19 @@ public class TrainService {
             year = DateUtil.getCurYear();
         }
         Long stationId = jsonObject.getLong("stationId");
-        Long userId = jsonObject.getLong("userId");
         Long trainId = jsonObject.getLong("trainId");
+        String userId = jsonObject.getString("userId");
         String msg = jsonObject.toJSONString();
+        String person = jsonObject.getString("person");//审批人
 
         TrainPlan trainPlan = new TrainPlan();
         trainPlan.setContent(content);
         trainPlan.setTitle(title);
+        trainPlan.setPerson(person);
         trainPlan.setMsg(msg);
         trainPlan.setStationId(stationId);
-        trainPlan.setCreator(userId);
-        trainPlan.setUpdater(userId);
+        trainPlan.setCreator(Long.parseLong(userId));
+        trainPlan.setUpdater(Long.parseLong(userId));
         trainPlan.setTrainId(trainId);
         Date date = new Date();
         trainPlan.setYear(year);
@@ -125,6 +134,18 @@ public class TrainService {
             param.put("date",sdf.format(date));
             param.put("trainId",trainId);
             trainPlanDetailMapper.deleteByFields(param);
+        }
+    }
+
+    public void uploadTrainRecord(TrainPlanDetail trainPlanDetail){
+        for(String path : trainPlanDetail.getFileList2()){
+            TrainRecord record = new TrainRecord();
+            record.setTrainDetailId(trainPlanDetail.getTrainDetailId());
+            record.setPath(path);
+            Date date = new Date();
+            record.setCreateDttm(date);
+            record.setUpdateDttm(date);
+            trainRecordMapper.insert(record);
         }
     }
 
@@ -167,6 +188,7 @@ public class TrainService {
             List<Object> newDetailList = Lists.newArrayList();
             Map<Integer,JSONObject> weekTrainMap = Maps.newHashMap();
             for(TrainPlanDetail trainPlanDetail : detailList){
+                //获取培训资料
                 Long trainDetailId = trainPlanDetail.getTrainDetailId();
                 Map<String,Object> paramMap = Maps.newHashMap();
                 paramMap.put("trainDetailId",trainDetailId);
@@ -176,6 +198,14 @@ public class TrainService {
                     fileList.add(file.getPath());
                 }
                 trainPlanDetail.setFileList(fileList);
+                //获取培训记录
+                List<TrainRecord> list2 = trainRecordMapper.selectByFields(paramMap);
+                List<String> fileList2 = Lists.newArrayList();
+                for(TrainRecord record : list2){
+                    fileList2.add(record.getPath());
+                }
+                trainPlanDetail.setFileList2(fileList2);
+
                 Integer week = trainPlanDetail.getTrainWeek();
                 JSONObject jsonObject = (JSONObject) JSON.toJSON(trainPlanDetail);
                 if(trainPlanDetail.getConfirmUserId() != null){

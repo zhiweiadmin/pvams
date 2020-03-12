@@ -175,6 +175,7 @@ public class StationService {
         jsonObject.put("buildInfo",buildInfo);
         jsonObject.put("superviseInfo",superviseInfo);
         jsonObject.put("constructInfo",constructInfo);
+        List<GirdAccessFile> type0List = Lists.newArrayList();
         List<GirdAccessFile> type1List = Lists.newArrayList();
         List<GirdAccessFile> type2List = Lists.newArrayList();
         List<GirdAccessFile> type3List = Lists.newArrayList();
@@ -187,6 +188,8 @@ public class StationService {
         List<GirdAccessFile> type10List = Lists.newArrayList();
         List<GirdAccessFile> type11List = Lists.newArrayList();
         List<GirdAccessFile> type12List = Lists.newArrayList();
+        List<GirdAccessFile> type13List = Lists.newArrayList();
+        List<GirdAccessFile> type14List = Lists.newArrayList();
 
         for(GirdAccessFile accessFile : girdInfo.getAccessPointFiles()){
             accessFile.setName(accessFile.getPicName());
@@ -216,10 +219,17 @@ public class StationService {
                     type11List.add(accessFile);
                 }else if(accessFile.getPicType() == 12){
                     type12List.add(accessFile);
+                }else if(accessFile.getPicType() == 13){
+                    type13List.add(accessFile);
+                }else if(accessFile.getPicType() == 14){
+                    type14List.add(accessFile);
+                }else if(accessFile.getPicType() == 0){
+                    type0List.add(accessFile);
                 }
             }
         }
         JSONObject fileJSONObject = new JSONObject();
+        fileJSONObject.put("TYPE0",type0List);
         fileJSONObject.put("TYPE1",type1List);
         fileJSONObject.put("TYPE2",type2List);
         fileJSONObject.put("TYPE3",type3List);
@@ -232,6 +242,8 @@ public class StationService {
         fileJSONObject.put("TYPE10",type10List);
         fileJSONObject.put("TYPE11",type11List);
         fileJSONObject.put("TYPE12",type12List);
+        fileJSONObject.put("TYPE13",type13List);
+        fileJSONObject.put("TYPE14",type14List);
 
         jsonObject.put("girdInfo",girdInfo);
         jsonObject.put("assetsImgs",fileJSONObject);

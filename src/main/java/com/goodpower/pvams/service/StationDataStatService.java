@@ -57,7 +57,7 @@ public class StationDataStatService {
      * @param month
      * @return
      */
-    public JSONObject getMonthStatData(Long stationId,int year, int month){
+    public JSONObject getMonthStatData(Long stationId,int year,int month){
         Map<String,Object> param = Maps.newHashMap();
         param.put("year",year);
         param.put("month",month);
@@ -233,12 +233,22 @@ public class StationDataStatService {
             Map<String,Object> map = dataMap.get(key);
             for(int i=1;i<=monthDays;i++){
                 String dateKey = getDateString(year,month,i);
-                if(!map.containsKey(dateKey)){
-                    Map<String,Object> newMap = Maps.newHashMap();
-                    newMap.put("val",0);
-                    newMap.put("date",i);
-                    map.put(dateKey,newMap);
-                }else{
+
+//                if(!map.containsKey(dateKey)){
+//                    Map<String,Object> newMap = Maps.newHashMap();
+//                    newMap.put("val",0);
+//                    newMap.put("date",i);
+//                    map.put(dateKey,newMap);
+//                }else{
+//                    JSONObject jsonObject = (JSONObject) JSON.toJSON(map.get(dateKey));
+//                    jsonObject.put("val",jsonObject.get("stat_val"));
+//                    jsonObject.put("date",i);
+//                    jsonObject.remove("stat_val");
+//                    jsonObject.remove("stat_date");
+//                    jsonObject.remove("device_name");
+//                    map.put(dateKey,jsonObject);
+//                }
+                if(map.containsKey(dateKey)){
                     JSONObject jsonObject = (JSONObject) JSON.toJSON(map.get(dateKey));
                     jsonObject.put("val",jsonObject.get("stat_val"));
                     jsonObject.put("date",i);
@@ -267,9 +277,16 @@ public class StationDataStatService {
             String deviceName = String.valueOf(deviceNameList.get(i));
             Map<String,Object> statMap = dataMap.get(deviceName);
             List<Object> statList = Lists.newArrayList();
+            //for(int k = 1;k <= monthDays ;k++){
             for(int k = 1;k <= monthDays ;k++){
                 String date = getDateString(year,month,k);
-                statList.add(statMap.get(date));
+                //优化
+                if(statMap.get(date) != null){
+                    Map<String,Object> map = (Map<String,Object>)statMap.get(date);
+                    statList.add(map.get("val"));
+                }else{
+                    statList.add(0);
+                }
             }
             Map<String,Object> resultMap = Maps.newHashMap();
             resultMap.put("stats",statList);
@@ -278,7 +295,16 @@ public class StationDataStatService {
         }
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("dateLen",monthDays);
-        jsonObject.put("resultData",resultList);
+        List<Object> resultListTmp = Lists.newArrayList();
+        if(resultList != null){
+            //暂时最多展示30个  优化下性能
+            for(int i=0;i<30;i++){
+                if(i < resultList.size()){
+                    resultListTmp.add(resultList.get(i));
+                }
+            }
+        }
+        jsonObject.put("resultData",resultListTmp);
 //        Page page = new Page();
 //        page.setPage(pageNo);
 //        page.setPageSize(pageSize);
@@ -698,13 +724,14 @@ public class StationDataStatService {
      * @param month
      * @return
      */
-    public JSONObject getDeviceStat(Long stationId,Integer type,Integer year, Integer month,Integer num,String deviceName){
+    public JSONObject getDeviceStat(Long stationId,String startDate, String endDate,Integer num,String deviceName){
         Map<String,Object> param = Maps.newHashMap();
         if(StringUtils.isNotBlank(deviceName)){
             param.put("deviceName","%"+deviceName+"%");
         }
         param.put("stationId",stationId);
-        param.put("year",year);
+        param.put("startDate",startDate);
+        param.put("endDate",endDate);
         param.put("orderBy","realHour desc,realPower desc");
         param.put("offset",0);
         param.put("limit",FIRST);
@@ -713,8 +740,8 @@ public class StationDataStatService {
         //中间的列表
         List<Map<String,Object>> middleList = Lists.newArrayList();
         List<Map<String,Object>> stepList = Lists.newArrayList();
+        int type = 0;
         if(type == 0){
-            param.put("month",month);
             //总长度
             totalCount = deviceStatMapper.queryMonthStatCount(param);
             if(totalCount == 0){
@@ -768,62 +795,63 @@ public class StationDataStatService {
             }
 
 
-        }else if(type == 1){
-            //总长度
-            totalCount = deviceStatMapper.queryYearStatCount(param);
-            if(totalCount == 0){
-                return new JSONObject();
-            }
-            first5List =  deviceStatMapper.queryYearStat(param);
-
-            if(totalCount > 5 && totalCount < 20){
-                //获取中间的列表
-                param.put("offset",FIRST);
-                param.put("limit",totalCount-FIRST);
-                middleList = deviceStatMapper.queryYearStat(param);
-                if(num != 0){
-                    int step = middleList.size() / num;
-                    if(step == 0){
-                        step = 10;
-                    }
-                    for(int i=0;i<middleList.size();){
-                        stepList.add(middleList.get(i));
-                        if(stepList.size() == num){
-                            break;
-                        }
-                        i = i + step;
-                    }
-                }
-                first5List.addAll(stepList);
-            }else if(totalCount >= 20){
-                //获取中间的列表
-                param.put("offset",FIRST);
-                param.put("limit",totalCount-FIRST-LAST);
-                middleList = deviceStatMapper.queryYearStat(param);
-
-                if(num != 0){
-                    int step = middleList.size() / num;
-                    if(step == 0){
-                        step = 10;
-                    }
-                    for(int i=0;i<middleList.size();){
-                        stepList.add(middleList.get(i));
-                        if(stepList.size() == num){
-                            break;
-                        }
-                        i = i + step;
-                    }
-                }
-
-                param.put("offset",totalCount-LAST);
-                param.put("limit",LAST);
-                List<Map<String,Object>> lastList =  deviceStatMapper.queryYearStat(param);
-                first5List.addAll(stepList);
-                first5List.addAll(lastList);
-            }
-
-
         }
+//        else if(type == 1){
+//            //总长度
+//            totalCount = deviceStatMapper.queryYearStatCount(param);
+//            if(totalCount == 0){
+//                return new JSONObject();
+//            }
+//            first5List =  deviceStatMapper.queryYearStat(param);
+//
+//            if(totalCount > 5 && totalCount < 20){
+//                //获取中间的列表
+//                param.put("offset",FIRST);
+//                param.put("limit",totalCount-FIRST);
+//                middleList = deviceStatMapper.queryYearStat(param);
+//                if(num != 0){
+//                    int step = middleList.size() / num;
+//                    if(step == 0){
+//                        step = 10;
+//                    }
+//                    for(int i=0;i<middleList.size();){
+//                        stepList.add(middleList.get(i));
+//                        if(stepList.size() == num){
+//                            break;
+//                        }
+//                        i = i + step;
+//                    }
+//                }
+//                first5List.addAll(stepList);
+//            }else if(totalCount >= 20){
+//                //获取中间的列表
+//                param.put("offset",FIRST);
+//                param.put("limit",totalCount-FIRST-LAST);
+//                middleList = deviceStatMapper.queryYearStat(param);
+//
+//                if(num != 0){
+//                    int step = middleList.size() / num;
+//                    if(step == 0){
+//                        step = 10;
+//                    }
+//                    for(int i=0;i<middleList.size();){
+//                        stepList.add(middleList.get(i));
+//                        if(stepList.size() == num){
+//                            break;
+//                        }
+//                        i = i + step;
+//                    }
+//                }
+//
+//                param.put("offset",totalCount-LAST);
+//                param.put("limit",LAST);
+//                List<Map<String,Object>> lastList =  deviceStatMapper.queryYearStat(param);
+//                first5List.addAll(stepList);
+//                first5List.addAll(lastList);
+//            }
+//
+//
+//        }
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("resultData",first5List);
         jsonObject.put("resultDataNew",dealHighchartsData(num,first5List));
@@ -845,6 +873,10 @@ public class StationDataStatService {
     private static final String BLUE = "#547598";
     private static final String RED = "#F10E14";
 
+    private static final String ORANGE = "orange";
+    private static final String BROWN  = "brown ";
+    private static final String WHITE = "black";
+
     /**
      * 将数据处理成Highcharts格式数据的Data
      * 前5名都是绿色   #47d147
@@ -861,24 +893,24 @@ public class StationDataStatService {
         List<JSONObject> hourList = Lists.newArrayList();
         if(dataLen <= 5){
             for(Map<String,Object> dataMap : dataList){
-                dealDataMap(deviceNameList,powerList,hourList,dataMap,GREEN);
+                dealDataMap(deviceNameList,powerList,hourList,dataMap,GREEN,ORANGE);
             }
         }else if(dataLen <= num + 5){
             for(int i=0;i<dataLen;i++){
                 if(i < 5){
-                    dealDataMap(deviceNameList,powerList,hourList,dataList.get(i),GREEN);
+                    dealDataMap(deviceNameList,powerList,hourList,dataList.get(i),GREEN,ORANGE);
                 }else{
-                    dealDataMap(deviceNameList,powerList,hourList,dataList.get(i),BLUE);
+                    dealDataMap(deviceNameList,powerList,hourList,dataList.get(i),BLUE,BROWN);
                 }
             }
         }else{
             for(int i=0;i<dataLen;i++){
                 if(i < 5){
-                    dealDataMap(deviceNameList,powerList,hourList,dataList.get(i),GREEN);
+                    dealDataMap(deviceNameList,powerList,hourList,dataList.get(i),GREEN,ORANGE);
                 }else if(i< num + 5){
-                    dealDataMap(deviceNameList,powerList,hourList,dataList.get(i),BLUE);
+                    dealDataMap(deviceNameList,powerList,hourList,dataList.get(i),BLUE,BROWN);
                 }else{
-                    dealDataMap(deviceNameList,powerList,hourList,dataList.get(i),RED);
+                    dealDataMap(deviceNameList,powerList,hourList,dataList.get(i),RED,WHITE);
                 }
             }
         }
@@ -893,7 +925,7 @@ public class StationDataStatService {
                             List<JSONObject> powerList,
                             List<JSONObject> hourList,
                             Map<String,Object> dataMap,
-                            String color){
+                            String color,String hourColor){
         Object deviceName = dataMap.get("deviceName");
         Object realPower = dataMap.get("realPower");
         Object realHour = dataMap.get("realHour");
@@ -905,7 +937,7 @@ public class StationDataStatService {
 
         JSONObject realObject = new JSONObject();
         realObject.put("y",realHour);
-        realObject.put("color",color);
+        realObject.put("color",hourColor);
 
         powerList.add(powerObject);
         hourList.add(realObject);

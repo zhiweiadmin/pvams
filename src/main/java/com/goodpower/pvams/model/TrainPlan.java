@@ -17,6 +17,8 @@ public class TrainPlan implements Serializable {
 
     private String msg;
 
+    private String person;
+
     private Long creator;
 
     private Long updater;
@@ -115,6 +117,14 @@ public class TrainPlan implements Serializable {
 
     public void setMsg(String msg) {
         this.msg = msg;
+    }
+
+    public String getPerson() {
+        return person;
+    }
+
+    public void setPerson(String person) {
+        this.person = person;
     }
 
 }

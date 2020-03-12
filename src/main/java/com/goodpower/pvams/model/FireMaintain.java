@@ -30,6 +30,12 @@ public class FireMaintain implements Serializable {
 
     private String checker;
 
+    //责任人
+    private String person;
+
+    //资产编号
+    private String assetNum;
+
     private Date createDttm;
 
     private Date updateDttm;
@@ -155,4 +161,21 @@ public class FireMaintain implements Serializable {
     public void setChecker(String checker) {
         this.checker = checker;
     }
+
+    public String getPerson() {
+        return person;
+    }
+
+    public void setPerson(String person) {
+        this.person = person;
+    }
+
+    public String getAssetNum() {
+        return assetNum;
+    }
+
+    public void setAssetNum(String assetNum) {
+        this.assetNum = assetNum;
+    }
+
 }

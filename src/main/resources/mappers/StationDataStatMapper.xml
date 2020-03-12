@@ -164,8 +164,10 @@
     where
         1 = 1
         and station_id = #{stationId,jdbcType=BIGINT}
-        and year = #{year,jdbcType=INTEGER}
-        and month = #{month,jdbcType=INTEGER}
+        <if test="startDate != null and endDate != null ">
+          and stat_date >= #{startDate,jdbcType=VARCHAR}
+          and #{endDate,jdbcType=VARCHAR} >= stat_date
+        </if>
         <if test="statType != null">
         and stat_type = #{statType,jdbcType=INTEGER}
         </if>

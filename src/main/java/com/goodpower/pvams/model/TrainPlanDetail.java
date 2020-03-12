@@ -35,6 +35,8 @@ public class TrainPlanDetail implements Serializable {
 
     private List<String> fileList;
 
+    private List<String> fileList2;
+
     private Integer month;
 
     private Integer week;
@@ -185,6 +187,14 @@ public class TrainPlanDetail implements Serializable {
 
     public void setFirstDay(String firstDay) {
         this.firstDay = firstDay;
+    }
+
+    public List<String> getFileList2() {
+        return fileList2;
+    }
+
+    public void setFileList2(List<String> fileList2) {
+        this.fileList2 = fileList2;
     }
 
 }

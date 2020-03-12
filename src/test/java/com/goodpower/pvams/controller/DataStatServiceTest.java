@@ -22,26 +22,26 @@ public class DataStatServiceTest {
 
     @Test
     public void getDeviceDetail(){
-        ResultMap result = dataController.getDeviceStatDetail(1L,3,0,"2019-08",null,null);
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("list",result);
-        System.out.println(jsonObject.toJSONString());
+//        ResultMap result = dataController.getDeviceStatDetail(1L,3,0,"2019-08",null,null);
+//        JSONObject jsonObject = new JSONObject();
+//        jsonObject.put("list",result);
+//        System.out.println(jsonObject.toJSONString());
     }
 
     @Test
     public void getMonthStatData(){
-        ResultMap resultMap = dataController.getStatData(1L,0,null);
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("resultMap",resultMap);
-        System.out.println(jsonObject.toJSONString());
+//        ResultMap resultMap = dataController.getStatData(1L,0,null);
+//        JSONObject jsonObject = new JSONObject();
+//        jsonObject.put("resultMap",resultMap);
+//        System.out.println(jsonObject.toJSONString());
     }
 
     @Test
     public void getDeviceStat(){
-        ResultMap result = dataController.getDeviceStat(1L,0,null,10,"1");
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("datas",result);
-        System.out.println(jsonObject.toJSONString());
+//        ResultMap result = dataController.getDeviceStat(1L,10,"1");
+//        JSONObject jsonObject = new JSONObject();
+//        jsonObject.put("datas",result);
+//        System.out.println(jsonObject.toJSONString());
     }
 
 }

@@ -112,6 +112,8 @@ public class FireMaintainService {
                 256*50+184,
                 256*40+184,
                 256*40+184,
+                256*50+184,
+                256*50+184,
                 256*50+184};
         //设置宽度
         sheet.setColumnWidth(0,width[0]);
@@ -122,6 +124,8 @@ public class FireMaintainService {
         sheet.setColumnWidth(5,width[5]);
         sheet.setColumnWidth(6,width[6]);
         sheet.setColumnWidth(7,width[7]);
+        sheet.setColumnWidth(8,width[8]);
+        sheet.setColumnWidth(9,width[9]);
         HSSFRow row1 = sheet.createRow(0);
         HSSFCell cell = row1.createCell(0);
         cell.setCellValue("消防器材维护");
@@ -134,10 +138,12 @@ public class FireMaintainService {
         createRowCell(row2,1,"位置",boderStyle2);
         createRowCell(row2,2,"数量",boderStyle2);
         createRowCell(row2,3,"类型",boderStyle2);
-        createRowCell(row2,4,"本次点检日期(文本格式 2010-01-01 12:00:00)",boderStyle2);
+        createRowCell(row2,4,"本次点检日期(文本格式2020-01-01 12:00:00)",boderStyle2);
         createRowCell(row2,5,"参数",boderStyle2);
         createRowCell(row2,6,"点检校验计划",boderStyle2);
-        createRowCell(row2,7,"下次点检日期(文本格式 2010-01-01 12:00:00)",boderStyle2);
+        createRowCell(row2,7,"下次点检日期(文本格式2020-01-01 12:00:00)",boderStyle2);
+        createRowCell(row2,8,"责任人",boderStyle2);
+        createRowCell(row2,9,"资产编号",boderStyle2);
 
         List<FireMaintain> dataList = query(stationId);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -170,6 +176,12 @@ public class FireMaintainService {
                 if(fireTool.getNextCheckTime() != null){
                     createRowCell(row,7,sdf.format(fireTool.getNextCheckTime()),boderStyle2);
                 }
+                if(fireTool.getPerson() != null){
+                    createRowCell(row,8,fireTool.getPerson(),boderStyle2);
+                }
+                if(fireTool.getAssetNum() != null){
+                    createRowCell(row,9,fireTool.getAssetNum(),boderStyle2);
+                }
             }
         }
     }
@@ -201,6 +213,8 @@ public class FireMaintainService {
                     String param = formatter.formatCellValue(row.getCell(5));
                     String checkPlan = formatter.formatCellValue(row.getCell(6));
                     String nextCheckTime = formatter.formatCellValue(row.getCell(7));
+                    String person = formatter.formatCellValue(row.getCell(8));
+                    String assetNum = formatter.formatCellValue(row.getCell(9));
 
                     FireMaintain fireMaintain = new FireMaintain();
                     fireMaintain.setStationId(stationId);
@@ -226,6 +240,8 @@ public class FireMaintainService {
                     if(StringUtils.isNotBlank(nextCheckTime)){
                         fireMaintain.setNextCheckTime(sdf.parse(nextCheckTime));
                     }
+                    fireMaintain.setPerson(person);
+                    fireMaintain.setAssetNum(assetNum);
                     fireMaintain.setCreateDttm(date);
                     fireMaintain.setUpdateDttm(date);
                     fireMaintainMapper.insert(fireMaintain);
