@@ -28,4 +28,6 @@ public interface PowerStationDeviceMapper {
 
     void deleteByFields(Map<String,Object> map);
 
+    List<Map<String,Object>> getDeviceName(Map<String,Object> map);
+
 }

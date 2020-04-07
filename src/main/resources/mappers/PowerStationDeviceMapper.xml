@@ -258,6 +258,9 @@
         <if test="stationId != null">
           and station_id = #{stationId,jdbcType=BIGINT}
         </if>
+        <if test="deviceName != null">
+          and device_name = #{deviceName,jdbcType=VARCHAR}
+        </if>
         <if test="index != null and limit != null">
           limit #{index,jdbcType=INTEGER},#{limit,jdbcType=INTEGER}
         </if>
@@ -273,6 +276,9 @@
       <if test="stationId != null">
         and station_id = #{stationId,jdbcType=BIGINT}
       </if>
+      <if test="deviceName != null">
+        and device_name = #{deviceName,jdbcType=VARCHAR}
+      </if>
   </select>
 
   <delete id="deleteByFields" parameterType="java.util.Map">
@@ -283,5 +289,18 @@
         station_Id = #{stationId,jdbcType=BIGINT}
         and #{date,jdbcType=TIMESTAMP} > create_dttm
   </delete>
+
+
+  <select id="getDeviceName" parameterType="java.util.Map" resultType="java.util.Map">
+    select
+        distinct device_name
+    from
+        t_power_station_device
+    where
+    1 = 1
+    <if test="stationId != null">
+      and station_id = #{stationId,jdbcType=BIGINT}
+    </if>
+  </select>
 
 </mapper>

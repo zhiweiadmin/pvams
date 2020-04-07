@@ -83,17 +83,15 @@ public class StationService {
         accessFileMapper.insert(girdAccessFile);
     }
 
-    public List<PowerStationDevice> getStationDevice(Long stationId, Integer pageNo, Integer pageSize){
+    public List<PowerStationDevice> getStationDevice(Long stationId, Integer pageNo, Integer pageSize,Map<String,Object> param){
         Integer index = (pageNo - 1)*pageSize;
-        Map<String,Object> param = Maps.newHashMap();
         param.put("stationId",stationId);
         param.put("index",index);
         param.put("limit",pageSize);
         return powerStationDeviceMapper.selectByField(param);
     }
 
-    public Long getStationDeviceCount(Long stationId){
-        Map<String,Object> param = Maps.newHashMap();
+    public Long getStationDeviceCount(Long stationId,Map<String,Object> param){
         param.put("stationId",stationId);
         return powerStationDeviceMapper.getStationDeviceCount(param);
     }
@@ -470,5 +468,17 @@ public class StationService {
     public void deleteAssetsPic(Long picId){
         accessFileMapper.deleteByPrimaryKey(picId);
     }
+
+    public List<Map<String,Object>> getDeviceName(Long stationId){
+        Map<String,Object> param = Maps.newHashMap();
+        param.put("stationId",stationId);
+        return powerStationDeviceMapper.getDeviceName(param);
+    }
+
+//    public List<Map<String,Object>> getDevicePosition(Long stationId){
+//        Map<String,Object> param = Maps.newHashMap();
+//        param.put("stationId",stationId);
+//        return null;
+//    }
 
 }

@@ -22,8 +22,8 @@ public class DeviceControllerTest {
 
     @Test
     public void getStationDeviceCount(){
-        Long count = stationService.getStationDeviceCount(1001L);
-        System.out.println(count);
+//        Long count = stationService.getStationDeviceCount(1001L);
+//        System.out.println(count);
     }
 
     @Test

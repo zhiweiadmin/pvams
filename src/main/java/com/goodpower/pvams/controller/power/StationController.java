@@ -9,6 +9,7 @@ import com.goodpower.pvams.service.StationService;
 import com.goodpower.pvams.service.StationTemplateService;
 import com.goodpower.pvams.service.UnitService;
 import com.goodpower.pvams.util.FileHandleUtil;
+import com.google.common.collect.Maps;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -25,6 +26,7 @@ import java.io.*;
 import java.net.URLEncoder;
 import java.text.ParseException;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("station")
@@ -186,16 +188,21 @@ public class StationController {
     @GetMapping("/getStationDevice")
     public ResultMap getStationDevice(@RequestParam(required = false,defaultValue = "1") Integer pageNo,
                             @RequestParam(required = false,defaultValue = "20") Integer pageSize,
-                            @RequestParam("stationId") Long stationId){
+                            @RequestParam("stationId") Long stationId,
+                            String devicename){
         ResultMap resultMap = new ResultMap();
         try{
-            List<PowerStationDevice> deviceList = stationService.getStationDevice(stationId,pageNo,pageSize);
+            Map<String,Object> param = Maps.newHashMap();
+            if(StringUtils.isNotBlank(devicename)){
+                param.put("deviceName",devicename);
+            }
+            List<PowerStationDevice> deviceList = stationService.getStationDevice(stationId,pageNo,pageSize,param);
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("deviceList",deviceList);
             Page page = new Page();
             page.setPage(pageNo);
             page.setPageSize(pageSize);
-            page.setCount(stationService.getStationDeviceCount(stationId));
+            page.setCount(stationService.getStationDeviceCount(stationId,param));
             jsonObject.put("page",page);
             resultMap.success().setData(jsonObject).message("查询成功").code(200);
         }catch (Exception e){
@@ -355,6 +362,22 @@ public class StationController {
             resultMap.fail().message("删除失败");
         }
         return resultMap.success().message("删除成功!");
+    }
+
+    @GetMapping("/getStationDeviceName/{stationId}")
+    public ResultMap getStationDeviceName(@PathVariable Long stationId){
+        ResultMap resultMap = new ResultMap();
+        try{
+            if(stationId == null){
+                return resultMap.fail().message("请先选择电站!");
+            }
+            List<Map<String,Object>> deviceNameList = stationService.getDeviceName(stationId);
+            resultMap.setData(deviceNameList).success();
+        }catch (Exception e){
+            logger.error("获取设备位置信息失败",e);
+            return resultMap.fail().message("获取设备位置信息失败!");
+        }
+        return resultMap;
     }
 
 }
